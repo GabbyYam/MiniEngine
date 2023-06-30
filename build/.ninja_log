@@ -4,10 +4,10 @@
 22	5009	7095397053724554	CMakeFiles/Renderer.dir/Runtime/src/InputSystem/Input.cpp.obj	1579aaf19f109fb6
 2710	4043	7097096912219856	CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGradient.cpp.obj	dff6e76bc7b8d1cd
 43	2290	7095397026395414	CMakeFiles/Renderer.dir/Runtime/src/Render/Camera/Camera.cpp.obj	61bec2e2e49df4ba
-118	1638	7097096888296509	CMakeFiles/imgui.dir/3rdparty/imgui/backends/imgui_impl_glfw.cpp.obj	c95fea336390ef1d
 5564	5760	7096510802244502	Renderer.lib	1efe96edde8d7c46
-99	2846	7097096900215256	CMakeFiles/imgui.dir/3rdparty/imgui/imgui_tables.cpp.obj	9f76987650060f7b
+118	1638	7097096888296509	CMakeFiles/imgui.dir/3rdparty/imgui/backends/imgui_impl_glfw.cpp.obj	c95fea336390ef1d
 32	4608	7096267982503973	CMakeFiles/Renderer.dir/Runtime/src/Scene/Scene.cpp.obj	a40e2575dd179cd1
+99	2846	7097096900215256	CMakeFiles/imgui.dir/3rdparty/imgui/imgui_tables.cpp.obj	9f76987650060f7b
 114	2743	7095397030814577	CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/GraphEditor.cpp.obj	be5732af4ae68758
 1719	4298	7097096914985008	CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImCurveEdit.cpp.obj	a870b7f46f2ce691
 3822	5340	7097096925014399	CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImSequencer.cpp.obj	4beeaa630dc5d59d
@@ -68,3 +68,5 @@
 12	7200	7097162696411787	CMakeFiles/Runtime.dir/Runtime/src/Scene/SceneSerilizer.cpp.obj	369dd4808ee4b472
 43	6579	7097955744956229	CMakeFiles/Editor.dir/Editor/src/Panel/ContentBrowserPanel.cpp.obj	f00dc6a44d260cc8
 39	5897	7097955738113639	CMakeFiles/Editor.dir/Editor/src/EditorLayer.cpp.obj	517d7c9355b5aee3
+28	2407	7098165236258649	CMakeFiles/Editor.dir/Editor/src/Platform/Windows/FileDialogs.cpp.obj	93f1061485763c41
+2407	3052	7098165237641151	Editor.exe	3bcef1c5a5159eaa

@@ -1,17 +1,9 @@
 {
+	"archive" : {},
 	"artifacts" : 
 	[
 		{
-			"path" : "CMakeFiles/imguizmo.dir/./3rdparty/ImGuizmo/ImCurveEdit.cpp.obj"
-		},
-		{
-			"path" : "CMakeFiles/imguizmo.dir/./3rdparty/ImGuizmo/ImGradient.cpp.obj"
-		},
-		{
-			"path" : "CMakeFiles/imguizmo.dir/./3rdparty/ImGuizmo/ImGuizmo.cpp.obj"
-		},
-		{
-			"path" : "CMakeFiles/imguizmo.dir/./3rdparty/ImGuizmo/ImSequencer.cpp.obj"
+			"path" : "imgui.lib"
 		}
 	],
 	"backtrace" : 2,
@@ -21,7 +13,8 @@
 		[
 			"_add_library",
 			"add_library",
-			"target_link_libraries"
+			"target_link_libraries",
+			"target_include_directories"
 		],
 		"files" : 
 		[
@@ -36,7 +29,7 @@
 			{
 				"command" : 1,
 				"file" : 1,
-				"line" : 47,
+				"line" : 40,
 				"parent" : 0
 			},
 			{
@@ -48,7 +41,19 @@
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 49,
+				"line" : 42,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 41,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 48,
 				"parent" : 0
 			}
 		]
@@ -68,15 +73,15 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/imgui"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/backends"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 5,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/ImGuizmo"
 				},
 				{
@@ -102,7 +107,10 @@
 				0,
 				1,
 				2,
-				3
+				3,
+				4,
+				5,
+				6
 			]
 		}
 	],
@@ -110,19 +118,16 @@
 	[
 		{
 			"backtrace" : 3,
-			"id" : "glfw::@0aa6f7fc354a61a17aaf"
-		},
-		{
-			"backtrace" : 3,
 			"id" : "glad::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 3,
-			"id" : "imgui::@6890427a1f51a3e7e1df"
+			"id" : "glfw::@0aa6f7fc354a61a17aaf"
 		}
 	],
-	"id" : "imguizmo::@6890427a1f51a3e7e1df",
-	"name" : "imguizmo",
+	"id" : "imgui::@6890427a1f51a3e7e1df",
+	"name" : "imgui",
+	"nameOnDisk" : "imgui.lib",
 	"paths" : 
 	{
 		"build" : ".",
@@ -137,7 +142,10 @@
 				0,
 				1,
 				2,
-				3
+				3,
+				4,
+				5,
+				6
 			]
 		}
 	],
@@ -146,27 +154,45 @@
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "3rdparty/ImGuizmo/ImCurveEdit.cpp",
+			"path" : "3rdparty/imgui/imgui.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "3rdparty/ImGuizmo/ImGradient.cpp",
+			"path" : "3rdparty/imgui/imgui_demo.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "3rdparty/ImGuizmo/ImGuizmo.cpp",
+			"path" : "3rdparty/imgui/imgui_draw.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "3rdparty/ImGuizmo/ImSequencer.cpp",
+			"path" : "3rdparty/imgui/imgui_tables.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "3rdparty/imgui/imgui_widgets.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "3rdparty/imgui/backends/imgui_impl_glfw.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "3rdparty/imgui/backends/imgui_impl_opengl3.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
-	"type" : "OBJECT_LIBRARY"
+	"type" : "STATIC_LIBRARY"
 }
