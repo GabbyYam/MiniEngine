@@ -1,0 +1,252 @@
+[
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Application.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Application.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Application.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\InputSystem\\Input.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\InputSystem\\Input.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/InputSystem/Input.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\Buffer\\Depthbuffer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\Buffer\\Depthbuffer.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/Buffer/Depthbuffer.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\Buffer\\Framebuffer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\Buffer\\Framebuffer.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/Buffer/Framebuffer.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\Buffer\\HdrFramebuffer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\Buffer\\HdrFramebuffer.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/Buffer/HdrFramebuffer.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\Camera\\Camera.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\Camera\\Camera.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/Camera/Camera.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\Geometry\\Shape\\Shape.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\Geometry\\Shape\\Shape.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/Geometry/Shape/Shape.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\Renderer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\Renderer.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/Renderer.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Scene\\Entity\\Entity.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Scene\\Entity\\Entity.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Scene/Entity/Entity.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Scene\\Scene.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Scene\\Scene.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Scene/Scene.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Scene\\SceneSerilizer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Scene\\SceneSerilizer.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Scene/SceneSerilizer.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -I../3rdparty/glad/include -I../3rdparty/glfw/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -o CMakeFiles\\glad.dir\\3rdparty\\glad\\src\\glad.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glad\\src\\glad.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glad/src/glad.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imgui.dir\\3rdparty\\imgui\\imgui.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\imgui\\imgui.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/imgui.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imgui.dir\\3rdparty\\imgui\\imgui_demo.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\imgui\\imgui_demo.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/imgui_demo.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imgui.dir\\3rdparty\\imgui\\imgui_draw.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\imgui\\imgui_draw.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/imgui_draw.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imgui.dir\\3rdparty\\imgui\\imgui_tables.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\imgui\\imgui_tables.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/imgui_tables.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imgui.dir\\3rdparty\\imgui\\imgui_widgets.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\imgui\\imgui_widgets.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/imgui_widgets.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imgui.dir\\3rdparty\\imgui\\backends\\imgui_impl_glfw.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\imgui\\backends\\imgui_impl_glfw.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/backends/imgui_impl_glfw.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imgui.dir\\3rdparty\\imgui\\backends\\imgui_impl_opengl3.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\imgui\\backends\\imgui_impl_opengl3.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/backends/imgui_impl_opengl3.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imguizmo.dir\\3rdparty\\ImGuizmo\\ImCurveEdit.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\ImGuizmo\\ImCurveEdit.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/ImGuizmo/ImCurveEdit.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imguizmo.dir\\3rdparty\\ImGuizmo\\ImGradient.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\ImGuizmo\\ImGradient.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/ImGuizmo/ImGradient.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imguizmo.dir\\3rdparty\\ImGuizmo\\ImGuizmo.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\ImGuizmo\\ImGuizmo.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/ImGuizmo/ImGuizmo.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imguizmo.dir\\3rdparty\\ImGuizmo\\ImSequencer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\ImGuizmo\\ImSequencer.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/ImGuizmo/ImSequencer.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Editor/src -I../3rdparty/glfw/include -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Editor.dir\\Editor\\src\\Editor.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Editor\\src\\Editor.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Editor/src/Editor.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Editor/src -I../3rdparty/glfw/include -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Editor.dir\\Editor\\src\\EditorLayer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Editor\\src\\EditorLayer.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Editor/src/EditorLayer.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Editor/src -I../3rdparty/glfw/include -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Editor.dir\\Editor\\src\\Panel\\ContentBrowserPanel.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Editor\\src\\Panel\\ContentBrowserPanel.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Editor/src/Panel/ContentBrowserPanel.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Editor/src -I../3rdparty/glfw/include -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Editor.dir\\Editor\\src\\Panel\\SceneHirarchyPanel.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Editor\\src\\Panel\\SceneHirarchyPanel.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Editor/src/Panel/SceneHirarchyPanel.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Editor/src -I../3rdparty/glfw/include -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Editor.dir\\Editor\\src\\Platform\\Windows\\FileDialogs.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Editor\\src\\Platform\\Windows\\FileDialogs.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Editor/src/Platform/Windows/FileDialogs.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Editor/src -I../3rdparty/glfw/include -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Editor.dir\\Editor\\src\\Widget\\CommonWidget.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Editor\\src\\Widget\\CommonWidget.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Editor/src/Widget/CommonWidget.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\context.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\context.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/context.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\init.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\init.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/init.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\input.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\input.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/input.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\monitor.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\monitor.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/monitor.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\platform.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\platform.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/platform.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\vulkan.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\vulkan.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/vulkan.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\window.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\window.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/window.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\egl_context.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\egl_context.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/egl_context.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\osmesa_context.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\osmesa_context.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/osmesa_context.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\null_init.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\null_init.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/null_init.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\null_monitor.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\null_monitor.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/null_monitor.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\null_window.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\null_window.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/null_window.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\null_joystick.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\null_joystick.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/null_joystick.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_module.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\win32_module.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/win32_module.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_time.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\win32_time.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/win32_time.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_thread.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\win32_thread.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/win32_thread.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_init.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\win32_init.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/win32_init.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_joystick.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\win32_joystick.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/win32_joystick.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_monitor.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\win32_monitor.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/win32_monitor.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_window.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\win32_window.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/win32_window.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -I../3rdparty/glfw/include -I../3rdparty/glfw/src -I3rdparty/glfw/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -o 3rdparty\\glfw\\src\\CMakeFiles\\glfw.dir\\wgl_context.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glfw\\src\\wgl_context.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/src/wgl_context.c"
+}
+]
