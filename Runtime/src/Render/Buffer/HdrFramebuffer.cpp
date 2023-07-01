@@ -41,27 +41,56 @@ namespace suplex {
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
-        // Depth Attachment for framebuffer
-        glDeleteRenderbuffers(1, &m_DepthAttachMentID);
-        glGenRenderbuffers(1, &m_DepthAttachMentID);
+        {
+            glDeleteTextures(1, &m_RedIntegerBuffer);
+            glGenTextures(1, &m_RedIntegerBuffer);
+            glBindTexture(GL_TEXTURE_2D, m_RedIntegerBuffer);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_R32I, m_Width, m_Height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
-        glBindRenderbuffer(GL_RENDERBUFFER, m_DepthAttachMentID);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_Width, m_Height);
-        glBindRenderbuffer(GL_RENDERBUFFER, 0);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthAttachMentID);
-        spdlog::info("HdrFramebuffer Depth Renderbuffer id assign to {}", m_DepthAttachMentID);
+            // attach texture to framebuffer
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 2, GL_TEXTURE_2D, m_RedIntegerBuffer, 0);
+
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+
+        // Depth Attachment for framebuffer
+        {
+            glDeleteRenderbuffers(1, &m_DepthAttachMentID);
+            glGenRenderbuffers(1, &m_DepthAttachMentID);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
+            glBindRenderbuffer(GL_RENDERBUFFER, m_DepthAttachMentID);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height);
+            glBindRenderbuffer(GL_RENDERBUFFER, 0);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthAttachMentID);
+            spdlog::info("HdrFramebuffer Depth Renderbuffer id assign to {}", m_DepthAttachMentID);
+        }
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
             spdlog::error("ERROR::FRAMEBUFFER:: HdrFramebuffer is not complete!");
             return;
         }
         // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering
-        unsigned int attachments[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-        glDrawBuffers(2, attachments);
+        unsigned int attachments[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
+        glDrawBuffers(3, attachments);
 
         glViewport(0, 0, m_Width, m_Height);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    int HdrFramebuffer::ReadPixel(int x, int y)
+    {
+        // this->Bind();
+        glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + 2);
+
+        int pixelData = -1;
+        glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
+        return pixelData;
     }
 
 }  // namespace suplex

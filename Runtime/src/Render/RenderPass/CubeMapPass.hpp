@@ -1,4 +1,5 @@
 #pragma once
+#include "Render/Config/Config.hpp"
 #include "Render/RenderPass/RenderPass.hpp"
 #include <glm/gtc/type_ptr.hpp>
 
@@ -6,14 +7,14 @@
 
 namespace suplex {
     class CubeMapPass : public RenderPass {
-        virtual void Render(const std::shared_ptr<Camera>&            camera,
-                            const std::shared_ptr<Scene>&             scene,
-                            const std::shared_ptr<GraphicsConfig>&    config,
-                            const std::shared_ptr<PrecomputeContext>& context) override
+        virtual void Render(const std::shared_ptr<Camera>            camera,
+                            const std::shared_ptr<Scene>             scene,
+                            const std::shared_ptr<GraphicsContext>   graphicsContext,
+                            const std::shared_ptr<PrecomputeContext> context) override
         {
             // render to custom framebuffer
             // ------
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
             // glClearColor(.6f, .7f, .9f, 1.0f);
             // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

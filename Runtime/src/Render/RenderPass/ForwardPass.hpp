@@ -10,6 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
 #include <Scene/Scene.hpp>
+#include <optional>
 #include <vector>
 #include <Scene/Entity/Entity.hpp>
 
@@ -19,19 +20,23 @@ namespace suplex {
 
     class ForwardRenderPass : public RenderPass {
     public:
-        ForwardRenderPass() { m_GridShader = std::make_shared<Shader>("line.vert", "line.frag"); }
-
-        virtual void Render(const std::shared_ptr<Camera>&            camera,
-                            const std::shared_ptr<Scene>&             scene,
-                            const std::shared_ptr<GraphicsConfig>&    config,
-                            const std::shared_ptr<PrecomputeContext>& context) override
+        virtual void Render(const std::shared_ptr<Camera>            camera,
+                            const std::shared_ptr<Scene>             scene,
+                            const std::shared_ptr<GraphicsContext>   graphicsContext,
+                            const std::shared_ptr<PrecomputeContext> context) override
         {
-            // render to custom framebuffer
+            // Enable stencil test
             // ------
+
+            int value = -1;
+            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            glClearTexImage(m_Framebuffer->GetTextureID2(), 0, GL_RED_INTEGER, GL_INT, &value);
+            glDisable(GL_STENCIL_TEST);
+            // =====================================================
+
+            auto config = graphicsContext->config;
             glEnable(GL_CULL_FACE);
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
-            // glClearColor(.6f, .7f, .9f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             auto view = camera->GetView();
             auto proj = camera->GetProjection();
@@ -49,17 +54,14 @@ namespace suplex {
             m_GridShader->Unbind();
 
             // render container
-            std::vector<Entity> entities;
-            for (auto e : scene->GetAllEntitiesWith<TransformComponent, MeshRendererComponent>())
-                entities.push_back(Entity{e, scene.get()});
-
-            for (auto& entity : entities) {
-                // if (m_Running) object->OnUpdate(0.03f);
-
+            // std::optional<std::shared_ptr<Shader>> effectShader = std::nullopt
+            auto DrawEntity = [&](Entity entity, std::optional<std::shared_ptr<Shader>> effectShader = std::nullopt) {
                 auto& meshRenderer = entity.GetComponent<MeshRendererComponent>();
-                auto& shader       = m_Shaders[meshRenderer.m_Model->GetMaterialIndex()];
 
+                // auto shader = effectShader.value_or(m_Shaders[meshRenderer.m_Model->GetMaterialIndex()]);
+                auto shader = effectShader.value_or(m_Shaders[meshRenderer.m_Model->GetMaterialIndex()]);
                 shader->Bind();
+                shader->SetInt("entityID", static_cast<int>(entity.GetID()));
                 // Light Setting
                 shader->SetFloat3("lightDirection", glm::value_ptr(config->lightSetting.cameraLS->GetForward()));
                 shader->SetFloat3("lightPosition", glm::value_ptr(config->lightSetting.cameraLS->GetPosition()));
@@ -89,7 +91,23 @@ namespace suplex {
 
                 for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(shader);
                 shader->Unbind();
-            }
+            };
+
+            auto sceneView = scene->GetAllEntitiesWith<MeshRendererComponent>();
+            for (auto& entityID : sceneView) {
+                Entity entity(entityID, scene.get());
+
+                if (entity == graphicsContext->activeEntity) {
+                    glEnable(GL_STENCIL_TEST);
+                    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+                    glStencilMask(0x00);
+                    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+                    glStencilMask(0xFF);
+                    DrawEntity(entity);
+                    glDisable(GL_STENCIL_TEST);
+                }
+                DrawEntity(entity);
+            };
 
             // Render Directional Light
             {
@@ -117,13 +135,77 @@ namespace suplex {
                 lightShader->Unbind();
             }
 
-            // Return to default framebuffer
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            // Render Stencil for active entity
+            if (auto entity = graphicsContext->activeEntity) {
+                glEnable(GL_STENCIL_TEST);
+                glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+                glStencilMask(0x00);
+
+                m_OutlineShader->Bind();
+                auto& meshRenderer = entity.GetComponent<MeshRendererComponent>();
+
+                m_OutlineShader->SetInt("entityID", static_cast<int>(entity.GetID()));
+
+                // MVP & Light MVP
+                auto transform    = entity.GetComponent<TransformComponent>();
+                transform.m_Scale = vec3(1.01);
+                m_OutlineShader->SetMaterix4("model", glm::value_ptr(transform.GetTransform()));
+                m_OutlineShader->SetMaterix4("view", glm::value_ptr(view));
+                m_OutlineShader->SetMaterix4("proj", glm::value_ptr(proj));
+
+                for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(m_OutlineShader);
+                m_OutlineShader->Unbind();
+
+                glStencilMask(0xFF);
+                glDisable(GL_STENCIL_TEST);
+            }
 
             glDisable(GL_CULL_FACE);
         }
 
     private:
-        std::shared_ptr<Shader> m_GridShader = nullptr;
+        std::shared_ptr<Shader> m_GridShader    = std::make_shared<Shader>("line.vert", "line.frag");
+        std::shared_ptr<Shader> m_OutlineShader = std::make_shared<Shader>("common.vert", "outline.frag");
+    };
+
+    class OutlineRenderPass : public RenderPass {
+    public:
+        OutlineRenderPass() { m_OutlineShader = std::make_shared<Shader>("common.vert", "outline.frag"); }
+        virtual void Render(const std::shared_ptr<Camera>            camera,
+                            const std::shared_ptr<Scene>             scene,
+                            const std::shared_ptr<GraphicsContext>   graphicsContext,
+                            const std::shared_ptr<PrecomputeContext> context) override
+        {
+            glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+            glStencilMask(0x00);
+
+            // render container
+            auto view = camera->GetView();
+            auto proj = camera->GetProjection();
+
+            m_OutlineShader->Bind();
+            if (auto entity = graphicsContext->activeEntity) {
+                // if (m_Running) object->OnUpdate(0.03f);
+                auto& meshRenderer = entity.GetComponent<MeshRendererComponent>();
+
+                m_OutlineShader->SetInt("entityID", static_cast<int>(entity.GetID()));
+
+                // MVP & Light MVP
+                auto transform    = entity.GetComponent<TransformComponent>();
+                transform.m_Scale = vec3(1.01);
+                m_OutlineShader->SetMaterix4("model", glm::value_ptr(transform.GetTransform()));
+                m_OutlineShader->SetMaterix4("view", glm::value_ptr(view));
+                m_OutlineShader->SetMaterix4("proj", glm::value_ptr(proj));
+
+                for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(m_OutlineShader);
+            }
+            m_OutlineShader->Unbind();
+
+            glStencilMask(0xFF);
+            glDisable(GL_STENCIL_TEST);
+        }
+
+    private:
+        std::shared_ptr<Shader> m_OutlineShader;
     };
 }  // namespace suplex

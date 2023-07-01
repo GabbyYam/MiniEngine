@@ -22,15 +22,15 @@ static const glm::mat4 captureViews[]    = {
 namespace suplex {
     class PrecomputePass : public RenderPass {
     public:
-        virtual void Render(const std::shared_ptr<Camera>&            camera,
-                            const std::shared_ptr<Scene>&             scene,
-                            const std::shared_ptr<GraphicsConfig>&    config,
-                            const std::shared_ptr<PrecomputeContext>& context) override
+        virtual void Render(const std::shared_ptr<Camera>            camera,
+                            const std::shared_ptr<Scene>             scene,
+                            const std::shared_ptr<GraphicsContext>   graphicsContext,
+                            const std::shared_ptr<PrecomputeContext> context) override
         {
             // Bake to cubemap
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
-            glBindRenderbuffer(GL_RENDERBUFFER, m_RenderbufferID);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 2048, 2048);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
+            glBindRenderbuffer(GL_RENDERBUFFER, m_Framebuffer->GetRenderbufferID());
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 2048, 2048);
             glViewport(0, 0, 2048, 2048);
 
             auto& shader = m_Shaders[0];
@@ -55,9 +55,9 @@ namespace suplex {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, context->HDR_EnvironmentTexture.GetID());
 
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
-            glBindRenderbuffer(GL_RENDERBUFFER, m_RenderbufferID);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 32, 32);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
+            glBindRenderbuffer(GL_RENDERBUFFER, m_Framebuffer->GetRenderbufferID());
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 32, 32);
             glViewport(0, 0, 32, 32);
 
             for (uint32_t i = 0; i < 6; ++i) {
@@ -83,9 +83,9 @@ namespace suplex {
                 uint32_t mipWidth  = 128 * std::pow(0.5, mip);
                 uint32_t mipHeight = 128 * std::pow(0.5, mip);
 
-                glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
-                glBindRenderbuffer(GL_RENDERBUFFER, m_RenderbufferID);
-                glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
+                glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
+                glBindRenderbuffer(GL_RENDERBUFFER, m_Framebuffer->GetRenderbufferID());
+                glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, mipWidth, mipHeight);
                 glViewport(0, 0, mipWidth, mipHeight);
 
                 float roughness = (float)mip / (float)(maxMipLevels - 1);
@@ -107,9 +107,9 @@ namespace suplex {
             shader->Bind();
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, context->BRDF_LUT.GetID());
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
-            glBindRenderbuffer(GL_RENDERBUFFER, m_RenderbufferID);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
+            glBindRenderbuffer(GL_RENDERBUFFER, m_Framebuffer->GetRenderbufferID());
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 512, 512);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, context->BRDF_LUT.GetID(), 0);
             glViewport(0, 0, 512, 512);
 

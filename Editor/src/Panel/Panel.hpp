@@ -2,6 +2,8 @@
 
 #include "Render/Camera/Camera.hpp"
 #include "Render/Renderer.hpp"
+#include "Scene/Entity/Entity.hpp"
+#include <entt/entity/entity.hpp>
 #include <memory>
 #include <stdint.h>
 namespace suplex {

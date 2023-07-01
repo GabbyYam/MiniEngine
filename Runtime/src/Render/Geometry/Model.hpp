@@ -41,6 +41,11 @@ namespace suplex {
             if (res) debug("Load model {} complete", path);
         }
 
+        ~Model()
+        {
+            // for (auto& mesh : m_Meshes) { mesh.Unbind(); }
+        }
+
         void OnUpdate(float ts) {}
 
         auto& GetMeshes() { return m_Meshes; }

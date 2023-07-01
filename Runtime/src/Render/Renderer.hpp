@@ -5,6 +5,7 @@
 #include "Render/Buffer/Framebuffer.hpp"
 #include "Render/Buffer/HdrFramebuffer.hpp"
 #include "Render/Camera/Camera.hpp"
+#include "Render/Config/Config.hpp"
 #include "Render/Geometry/Model.hpp"
 #include "Render/Postprocess/Bloom.hpp"
 #include "Render/RenderPass/RenderPass.hpp"
@@ -27,6 +28,7 @@ namespace suplex {
         virtual ~Renderer();
         void OnUpdate(float ts);
         void Render(const std::shared_ptr<Camera> camera);
+        void PostProcess(const std::shared_ptr<Camera> camera);
         void OnUIRender();
         void OnResize(uint32_t w, uint32_t h);
 
@@ -35,17 +37,15 @@ namespace suplex {
             for (auto& pass : m_PassQueue) pass->Awake(value);
         }
 
-        // void LoadModel(const std::shared_ptr<Model> model) { m_Scene.emplace_back(model); }
+        uint32_t FramebufferID() const { return m_Framebuffer->GetID(); }
+        uint32_t FramebufferImageID() const { return m_Framebuffer->GetTextureID0(); }
+        // uint32_t DepthbufferID() const { return m_Depthbuffer.GetID(); }
+        // uint32_t DepthMapID() const { return m_Depthbuffer.GetTextureID(); }
+        float LastFrameRenderTime() const { return m_LastRenderTime; }
 
-        uint32_t FramebufferID() const { return m_Framebuffer.GetID(); }
-        uint32_t FramebufferImageID() const { return m_Framebuffer.GetTextureID0(); }
-        uint32_t DepthbufferID() const { return m_Depthbuffer.GetID(); }
-        uint32_t DepthMapID() const { return m_Depthbuffer.GetTextureID(); }
-        float    LastFrameRenderTime() const { return m_LastRenderTime; }
-
-        auto& GetGraphicsConfig() { return m_Config; }
+        auto& GetGraphicsConfig() { return m_Context->config; }
+        auto& GetGraphicsContext() { return m_Context; }
         auto& GetGameObjectList() { return m_Scene; }
-        auto& GetActiveObject() { return m_ActiveObejct; }
         auto& GetShadersList() { return m_ForwardPass->GetShaders(); }
         auto& GetScene() { return m_Scene; }
 
@@ -54,24 +54,25 @@ namespace suplex {
         void BindRenderPass();
         void BakeEnvironmentLight();
 
-    private:
+    public:
         uint32_t m_ViewportWidth = 1920, m_ViewportHeight = 1080;
 
-        HdrFramebuffer m_Framebuffer;
-        Depthbuffer    m_Depthbuffer;
+        std::shared_ptr<HdrFramebuffer> m_Framebuffer = std::make_shared<HdrFramebuffer>();
+        std::shared_ptr<Depthbuffer>    m_Depthbuffer = std::make_shared<Depthbuffer>();
 
+    private:
         std::vector<std::shared_ptr<RenderPass>> m_PassQueue;
         std::shared_ptr<RenderPass>              m_UIRenderPass    = nullptr;
         std::shared_ptr<RenderPass>              m_ForwardPass     = nullptr;
+        std::shared_ptr<RenderPass>              m_OutlinePass     = nullptr;
         std::shared_ptr<RenderPass>              m_DepthPass       = nullptr;
         std::shared_ptr<RenderPass>              m_EnvMapPass      = nullptr;
         std::shared_ptr<RenderPass>              m_PrecomputePass  = nullptr;
         std::shared_ptr<RenderPass>              m_PostprocessPass = nullptr;
-        // std::vector<std::shared_ptr<Model>>      m_Scene;
+
         std::shared_ptr<Scene> m_Scene;
 
         std::shared_ptr<Camera> m_ActiveCamera = nullptr;
-        std::shared_ptr<Model>  m_ActiveObejct = nullptr;
 
         std::shared_ptr<Bloom>  m_Bloom            = nullptr;
         std::shared_ptr<Shader> m_BloomMergeShader = nullptr;
@@ -80,7 +81,7 @@ namespace suplex {
 
         float m_LastRenderTime = 1.0f;
 
-        std::shared_ptr<GraphicsConfig>    m_Config            = nullptr;
+        std::shared_ptr<GraphicsContext>   m_Context           = nullptr;
         std::shared_ptr<PrecomputeContext> m_PrecomputeContext = nullptr;
     };
 }  // namespace suplex

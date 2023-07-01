@@ -1,6 +1,7 @@
 #include "SceneSerilizer.hpp"
 #include "Scene/Component/Component.hpp"
 #include "Scene/SceneSerilizer.hpp"
+#include "UUID.hpp"
 #include <entt/entity/entity.hpp>
 #include <glm/fwd.hpp>
 #include <memory>
@@ -111,7 +112,7 @@ namespace suplex {
     void SceneSerializer::SerializeEntity(YAML::Emitter& out, Entity entity)
     {
         out << YAML::BeginMap;  // Entity
-        out << YAML::Key << "Entity" << YAML::Value << "1270230219381";
+        out << YAML::Key << "Entity" << YAML::Value << entity.GetComponent<IDComponent>().ID;
 
         if (entity.HasComponent<TagComponent>()) {
             out << YAML::Key << "TagComponent";

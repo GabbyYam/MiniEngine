@@ -22,7 +22,6 @@ namespace suplex {
         virtual void Bind()
         {
             glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
-            OnResize(m_Width, m_Height);
             glViewport(0, 0, m_Width, m_Height);
         }
 

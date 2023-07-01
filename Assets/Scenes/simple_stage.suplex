@@ -10,7 +10,7 @@ Entities:
     MeshRendererComponent:
       Filepath: H:/GameDev Asset/Models/sphere.obj
       MaterialIndex: 0
-  - Entity: 1270230219381
+  - Entity: 1270230219382
     TagComponent:
       Tag: Simple Stage
     TransformComponent:
@@ -20,7 +20,7 @@ Entities:
     MeshRendererComponent:
       Filepath: H:/GameDev Asset/Scenes/Simple Stage/park.fbx
       MaterialIndex: 0
-  - Entity: 1270230219381
+  - Entity: 1270230219383
     TagComponent:
       Tag: Vroid JK
     TransformComponent:

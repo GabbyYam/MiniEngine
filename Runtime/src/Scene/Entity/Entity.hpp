@@ -13,6 +13,13 @@ namespace suplex {
     class Entity {
     public:
         Entity(entt::entity entity, Scene* scene);
+        Entity()                    = default;
+        Entity(const Entity& other) = default;
+        void operator=(const Entity& other)
+        {
+            m_EntityHandle = other.m_EntityHandle;
+            m_Scene        = other.m_Scene;
+        }
 
         template <class T>
         T& GetComponent()
@@ -41,7 +48,13 @@ namespace suplex {
             m_Scene->m_Registry.remove<T>();
         }
 
+        auto& GetID() { return m_EntityHandle; }
+
         operator bool() { return m_EntityHandle != entt::null; }
+
+        bool operator==(const Entity& other) const { return m_EntityHandle == other.m_EntityHandle && m_Scene == other.m_Scene; }
+
+        bool operator!=(const Entity& other) const { return !(*this == other); }
 
     private:
         entt::entity m_EntityHandle{entt::null};

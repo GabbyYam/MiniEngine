@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Render/Buffer/Depthbuffer.hpp"
+#include "Render/Buffer/HdrFramebuffer.hpp"
 #include "Render/Geometry/Mesh.hpp"
 #include "Render/Geometry/Model.hpp"
 #include "Render/Buffer/Framebuffer.hpp"
@@ -30,21 +32,20 @@ namespace suplex {
 
     struct PrecomputeContext
     {
-        Texture2D   HDR_EnvironmentTexture;
-        CubeMap     EnvironmentMap;
-        CubeMap     IrradianceMap;
-        CubeMap     PrefilterMap;
-        Texture2D   BRDF_LUT;
-        Framebuffer framebuffer;
-        // uint32_t    fbo = 0, rbo = 0;
+        Texture2D                       HDR_EnvironmentTexture;
+        CubeMap                         EnvironmentMap;
+        CubeMap                         IrradianceMap;
+        CubeMap                         PrefilterMap;
+        Texture2D                       BRDF_LUT;
+        std::shared_ptr<HdrFramebuffer> precomputeFrambuffer = std::make_shared<HdrFramebuffer>();
     };
 
     class RenderPass {
     public:
-        virtual void Render(const std::shared_ptr<Camera>&            camera,
-                            const std::shared_ptr<Scene>&             scene,
-                            const std::shared_ptr<GraphicsConfig>&    config,
-                            const std::shared_ptr<PrecomputeContext>& context)
+        virtual void Render(const std::shared_ptr<Camera>            camera,
+                            const std::shared_ptr<Scene>             scene,
+                            const std::shared_ptr<GraphicsContext>   graphicsContext,
+                            const std::shared_ptr<PrecomputeContext> context)
         {
         }
 
@@ -57,10 +58,10 @@ namespace suplex {
 
         void Awake(bool value) { m_Running = value; }
 
-        void BindFramebuffer(uint32_t id) { m_FramebufferID = id; }
-        void UnbindFramebuffer() { m_FramebufferID = 0; }
+        void BindFramebuffer(const std::shared_ptr<HdrFramebuffer> framebuffer) { m_Framebuffer = framebuffer; }
+        void UnbindFramebuffer() { m_Framebuffer = nullptr; }
 
-        void BindRenderbuffer(uint32_t id) { m_RenderbufferID = id; }
+        void BindDepthbuffer(const std::shared_ptr<Depthbuffer> depthbuffer) { m_Depthbuffer = depthbuffer; }
 
         auto& GetShaders() { return m_Shaders; }
 
@@ -68,24 +69,23 @@ namespace suplex {
 
     protected:
         std::vector<std::shared_ptr<Shader>> m_Shaders;
-        uint32_t                             m_FramebufferID  = 0;
-        uint32_t                             m_RenderbufferID = 0;
+        std::shared_ptr<HdrFramebuffer>      m_Framebuffer;
+        std::shared_ptr<Depthbuffer>         m_Depthbuffer;
 
         bool m_Running = true;
     };
 
     class DepthRenderPass : public RenderPass {
-        virtual void Render(const std::shared_ptr<Camera>&            camera,
-                            const std::shared_ptr<Scene>&             scene,
-                            const std::shared_ptr<GraphicsConfig>&    config,
-                            const std::shared_ptr<PrecomputeContext>& context) override
+        virtual void Render(const std::shared_ptr<Camera>            camera,
+                            const std::shared_ptr<Scene>             scene,
+                            const std::shared_ptr<GraphicsContext>   graphicsContext,
+                            const std::shared_ptr<PrecomputeContext> context) override
         {
             // render to custom framebuffer
             // ------
-            glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_Depthbuffer->GetID());
             glClear(GL_DEPTH_BUFFER_BIT);
-
-            // debug("depth pass shader id = {}", m_Shader->ID());
+            auto  config      = graphicsContext->config;
             auto& lightCamera = config->lightSetting.cameraLS;
             auto  viewLS      = lightCamera->GetView();
             auto  projLS      = lightCamera->GetOrthoProjection();
@@ -98,17 +98,10 @@ namespace suplex {
             int projIndex = glGetUniformLocation(shader->GetID(), "projLS");
             glUniformMatrix4fv(projIndex, 1, GL_FALSE, glm::value_ptr(projLS));
 
-            // render container
-            // for (auto& object : view) {
-            //     if (m_Running) object->OnUpdate(0.03f);
-            //     int modelIndex = glGetUniformLocation(shader->GetID(), "model");
-            //     glUniformMatrix4fv(modelIndex, 1, GL_FALSE, glm::value_ptr(object->GetTransform()));
-
-            //     for (auto& mesh : object->GetMeshes()) mesh.Render(shader);
-            // }
-            auto entities = scene->m_Registry.view<TransformComponent, MeshRendererComponent>();
+            auto entities = scene->m_Registry.view<MeshRendererComponent>();
             for (auto& entity : entities) {
                 auto transform = scene->m_Registry.get<TransformComponent>(entity);
+
                 shader->SetMaterix4("model", glm::value_ptr(transform.GetTransform()));
                 auto& meshRenderer = scene->m_Registry.get<MeshRendererComponent>(entity);
                 for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(shader);
@@ -123,10 +116,10 @@ namespace suplex {
 
     class ImGuiRenderPass : public RenderPass {
     public:
-        virtual void Render(const std::shared_ptr<Camera>&            camera,
-                            const std::shared_ptr<Scene>&             scene,
-                            const std::shared_ptr<GraphicsConfig>&    config,
-                            const std::shared_ptr<PrecomputeContext>& context) override
+        virtual void Render(const std::shared_ptr<Camera>            camera,
+                            const std::shared_ptr<Scene>             scene,
+                            const std::shared_ptr<GraphicsContext>   graphicsContext,
+                            const std::shared_ptr<PrecomputeContext> context) override
         {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             // glClearColor(.6f, 0.7f, 0.9f, 1.0f);

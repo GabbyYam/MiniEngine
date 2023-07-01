@@ -4,10 +4,10 @@
 namespace suplex {
     class PostprocessPass : public RenderPass {
     public:
-        virtual void Render(const std::shared_ptr<Camera>&            camera,
-                            const std::shared_ptr<Scene>&             scene,
-                            const std::shared_ptr<GraphicsConfig>&    config,
-                            const std::shared_ptr<PrecomputeContext>& context) override
+        virtual void Render(const std::shared_ptr<Camera>            camera,
+                            const std::shared_ptr<Scene>             scene,
+                            const std::shared_ptr<GraphicsContext>   graphicsContext,
+                            const std::shared_ptr<PrecomputeContext> context) override
         {
         }
 

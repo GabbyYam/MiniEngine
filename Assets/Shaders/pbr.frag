@@ -2,11 +2,12 @@
 
 layout(location = 0) out vec4 FragColor;
 layout(location = 1) out vec4 BrightColor;
+layout(location = 2) out int EntityID;
 
 in vec2 TexCoord;
 in vec3 normalWS;
-in vec3 fragPos;
 in vec4 shadowCoord;
+in vec3 fragPos;
 
 uniform sampler2D DiffuseMap;
 uniform sampler2D DepthMap;
@@ -15,6 +16,7 @@ uniform samplerCube PrefilterMap;
 uniform sampler2D BRDF_LUT;
 
 uniform int useEnvMap = 1;
+uniform int entityID;
 
 
 uniform vec3 lightPosition;
@@ -301,15 +303,14 @@ void main()
     float visibility = CalculateShadow();
     color.rgb *= visibility;
 
-    // tone mapping should in postprocessing
-    // color = vec3(1.0) - exp(-color * exposure);
-    // color = pow(color, vec3(1.0 / 2.2));
 
     FragColor = vec4(color, 1.0);
 
     float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
 
     if(brightness > bloomThreshold) BrightColor = vec4(FragColor.rgb, 1.0);
+    
+    EntityID = entityID;
 }  
 
 

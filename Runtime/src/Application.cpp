@@ -281,8 +281,8 @@ namespace suplex {
         // glfw: initialize and configure
         // ------------------------------
         glfwInit();
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         // MSAA Buffer
@@ -313,6 +313,13 @@ namespace suplex {
         // ---------------------------------------
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             error("Failed to initialize GLAD");
+            return;
+        }
+
+        auto glClearTexImage = glfwGetProcAddress("glClearTexImage");
+        if (!glClearTexImage) {
+            error("Failed to load glClearTexImage function pointer");
+            glfwTerminate();
             return;
         }
 

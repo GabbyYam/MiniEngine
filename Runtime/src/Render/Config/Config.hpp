@@ -2,8 +2,10 @@
 #include "Render/Camera/Camera.hpp"
 #include "Render/Camera/LightCamera.hpp"
 #include "Render/Buffer/Framebuffer.hpp"
+#include "Render/Config/Config.hpp"
 #include "Render/Postprocess/PostProcess.hpp"
 #include "Render/Texture/CubeMap.hpp"
+#include "Scene/Entity/Entity.hpp"
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/glm.hpp>
 #include <memory>
@@ -61,6 +63,12 @@ namespace suplex {
         PostprocessSetting postprocessSetting;
 
         float environmentMapResolution = 2048;
+    };
+
+    struct GraphicsContext
+    {
+        std::shared_ptr<GraphicsConfig> config = std::make_shared<GraphicsConfig>();
+        Entity                          activeEntity;
     };
 
 }  // namespace suplex

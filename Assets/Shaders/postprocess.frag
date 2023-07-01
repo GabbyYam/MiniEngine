@@ -1,5 +1,6 @@
 #version 410 core
-out vec4 FragColor;
+layout(location = 0) out vec4 FragColor;
+layout(location = 1) out vec4 BrightColor;
 
 in vec2 TexCoords;
 
@@ -82,11 +83,10 @@ void main()
     vec2 rcpFrame = 1. / textureSize(scene, 0).xy;
     vec4 uv = vec4(TexCoords, TexCoords - (rcpFrame * (0.5 + FXAA_SUBPIX_SHIFT)));
 
-    vec3 origin = enableFXAA >= 1 ? Fxaa(uv, scene, rcpFrame) : texture(scene, TexCoords).rgb;
-    // vec4 bloom = enableFXAA >= 1 ? FXAA(bloomBlur, TexCoords) : texture(bloomBlur, TexCoords);
+    vec3 origin = enableFXAA == 1 ? Fxaa(uv, scene, rcpFrame) : texture(scene, TexCoords).rgb;
     vec3 bloom = texture(bloomBlur, TexCoords).rgb;
 
-    vec3 color =  enableBloom >= 1 ? mix(origin, bloom, bloomIntensity) : origin;
+    vec3 color =  enableBloom == 1 ? mix(origin, bloom, bloomIntensity) : origin;
 
     // tone mapping
     switch (tonemappingType) {
@@ -105,4 +105,5 @@ void main()
     color = pow(color, vec3(1.0 / gamma));
 
     FragColor = vec4(color, 1.0);
+
 }

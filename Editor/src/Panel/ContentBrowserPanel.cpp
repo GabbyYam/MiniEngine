@@ -50,7 +50,15 @@ namespace suplex {
             if (ImGui::BeginDragDropSource()) {
                 std::filesystem::path relativePath(path);
                 const wchar_t*        itemPath = relativePath.c_str();
-                ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+                // info(relativePath.string());
+                auto        filename = relativePath.string();
+                std::string extent   = filename.substr(filename.find_last_of('.') + 1);
+
+                if (extent == "suplex")
+                    ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+                else
+                    ImGui::SetDragDropPayload("MODEL_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+
                 ImGui::EndDragDropSource();
             }
 

@@ -19,6 +19,7 @@
 #include "imgui.h"
 #include <ImGuizmo.h>
 #include <array>
+#include <corecrt_math.h>
 #include <cstddef>
 #include <filesystem>
 #include <glm/fwd.hpp>
@@ -36,7 +37,6 @@
 #include "Widget/CommonWidget.hpp"
 #include <Scene/Scene.hpp>
 #include <Scene/Entity/Entity.hpp>
-#include <winscard.h>
 
 const static std::array<std::string, 2> PolygonNames{"Shaded", "WireFrame"};
 const static std::array<std::string, 3> ToneMappingNames{"Logarithmic", "ACES", "None"};
@@ -54,42 +54,18 @@ namespace suplex {
 
         virtual void OnAttach() override
         {
-            // Renderer
             m_Renderer = std::make_shared<Renderer>();
-
-            // Scene
-            // std::string filename      = "H:/GameDev Asset/Models/Vroid_JK.fbx";
-            // std::string sceneName     = "H:/GameDev Asset/Scenes/Sponza/sponza.obj";
-            // std::string stagefileName = "H:/GameDev Asset/Scenes/Simple Stage/park.fbx";
-            // std::string sphereName    = "H:/GameDev Asset/Models/sphere.obj";
-
-            // auto vroidJK     = std::make_shared<Model>(filename);
-            // auto simpleStage = std::make_shared<Model>(stagefileName);
-            // auto sphere      = std::make_shared<Model>(sphereName);
-
-            // Camera
-            m_Camera = std::make_shared<Camera>(45.0f, 0.01f, 10000.f);
+            m_Camera   = std::make_shared<Camera>(45.0f, 0.01f, 10000.f);
 
             // Bind Context for Panels
-            m_Panels.emplace_back(std::make_shared<SceneHirarchyPanel>());
+            m_SceneHirarchyPanel = std::make_shared<SceneHirarchyPanel>();
+            m_Panels.push_back(m_SceneHirarchyPanel);
             m_Panels.emplace_back(std::make_shared<ContentBrowserPanel>());
 
             RuntimeContext context{
                 .renderer = m_Renderer,
                 .camera   = m_Camera,
             };
-
-            // auto e1 = m_Renderer->GetScene()->CreateEntity("Vroid JK");
-            // e1.AddComponent<TransformComponent>(glm::vec3{0.f, 1.2f, 0.f}, glm::vec3{-90.0f, 0.0f, 0.0f});
-            // e1.AddComponent<MeshRendererComponent>(vroidJK);
-
-            // auto e2 = m_Renderer->GetScene()->CreateEntity("Simple Stage");
-            // e2.AddComponent<TransformComponent>(glm::vec3{0.f, 1.f, -3.f}, glm::vec3{-90.0f, 0.0f, 0.0f});
-            // e2.AddComponent<MeshRendererComponent>(simpleStage);
-
-            // auto e3 = m_Renderer->GetScene()->CreateEntity("Sphere");
-            // e3.AddComponent<TransformComponent>(glm::vec3{0.f, 5.f, 5.f});
-            // e3.AddComponent<MeshRendererComponent>(sphere);
 
             m_Context = std::make_shared<RuntimeContext>(context);
             for (auto& panel : m_Panels) panel->SetContext(m_Context);
@@ -99,16 +75,35 @@ namespace suplex {
 
         virtual void OnUpdate(float ts) override
         {
-            OnEvent();
             m_Camera->OnUpdate(ts);
 
             if (m_Play) m_Renderer->OnUpdate(ts);
 
+            m_Renderer->GetGraphicsContext()->activeEntity = m_SceneHirarchyPanel->GetSelectedEntity();
             m_Renderer->Render(m_Camera);
 
             float currentTime = glfwGetTime();
             m_DeltaTime       = currentTime - m_LastTime;
             m_LastTime        = currentTime;
+
+            auto [mx, my] = ImGui::GetMousePos();
+            mx -= m_ViewportBounds[0].x;
+            my -= m_ViewportBounds[0].y;
+
+            glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+            my                     = viewportSize.y - my;
+            int mouseX             = (int)mx;
+            int mouseY             = (int)my;
+
+            if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
+                int pixelData = m_Renderer->m_Framebuffer->ReadPixel(mouseX, mouseY);
+                m_HoveredEntity =
+                    (pixelData == -1 || pixelData > 9961) ? Entity() : Entity((entt::entity)pixelData, m_Renderer->GetScene().get());
+            }
+
+            OnEvent();
+
+            m_Renderer->PostProcess(m_Camera);
         }
 
         virtual void OnUIRender() override
@@ -172,8 +167,16 @@ namespace suplex {
             {
                 ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0.0, 0.0});
 
-                // ImGui::Begin(ICON_FA_CUBE "  Viewport");
                 ImGui::Begin("Scene");
+
+                auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+                auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+                auto viewportOffset    = ImGui::GetWindowPos();
+                m_ViewportBounds[0]    = {viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y};
+                m_ViewportBounds[1]    = {viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y};
+
+                m_ViewportHovered = ImGui::IsWindowHovered();
+
                 auto windowSize = ImGui::GetContentRegionAvail();
                 this->OnResize(windowSize.x, windowSize.y);
 
@@ -190,18 +193,28 @@ namespace suplex {
                         const wchar_t* path = (const wchar_t*)payload->Data;
                         OpenScene(path);
                     }
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MODEL_ITEM")) {
+                        auto path       = (const wchar_t*)payload->Data;
+                        auto wstring    = (std::wstring(path));
+                        auto pathString = std::string(begin(wstring), end(wstring));
+
+                        auto model    = Model(pathString);
+                        auto filename = pathString.substr(max(pathString.find_last_of('\\'), pathString.find_last_of('/')) + 1);
+                        auto e        = m_Renderer->GetScene()->CreateEntity(filename);
+                        e.AddComponent<MeshRendererComponent>(model);
+                    }
                     ImGui::EndDragDropTarget();
                 }
 
-                auto activeEntity = m_Renderer->GetScene()->GetActiveEntity();
-                if (activeEntity) {
+                auto entity = m_SceneHirarchyPanel->GetSelectedEntity();
+                if (entity) {
                     ImGuizmo::SetOrthographic(false);
                     ImGuizmo::SetDrawlist();
                     float w = (float)ImGui::GetWindowWidth(), h = (float)ImGui::GetWindowHeight();
 
                     ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, w, h);
 
-                    auto& transformComponent = activeEntity.GetComponent<TransformComponent>();
+                    auto& transformComponent = entity.GetComponent<TransformComponent>();
                     auto  transform          = transformComponent.GetTransform();
 
                     ImGuizmo::Manipulate(glm::value_ptr(camera->GetView()), glm::value_ptr(camera->GetProjection()), m_ActiveOperation,
@@ -382,6 +395,10 @@ namespace suplex {
             if (Input::IsKeyDown(KeyCode::W)) m_ActiveOperation = ImGuizmo::OPERATION::TRANSLATE;
             if (Input::IsKeyDown(KeyCode::E)) m_ActiveOperation = ImGuizmo::OPERATION::SCALE;
             if (Input::IsKeyDown(KeyCode::R)) m_ActiveOperation = ImGuizmo::OPERATION::ROTATE;
+            if (ImGui::IsMouseClicked(0)) {
+                // if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyDown(Key::LeftAlt))
+                if (m_ViewportHovered) m_SceneHirarchyPanel->SetSelectedEntity(m_HoveredEntity);
+            }
             // if (Input::IsMouseButtonDown(MouseButton::Left) && ImGui::IsWindowHovered()) m_Context->activeEntity = -1;
         }
 
@@ -394,15 +411,21 @@ namespace suplex {
 
         std::shared_ptr<Camera> m_Camera = nullptr;
 
-        bool m_ShowDemoWindow = false;
-        bool m_Play           = true;
+        bool m_ShowDemoWindow  = false;
+        bool m_Play            = true;
+        bool m_ViewportHovered = false;
 
+        std::shared_ptr<SceneHirarchyPanel> m_SceneHirarchyPanel;
         std::vector<std::shared_ptr<Panel>> m_Panels;
 
         std::shared_ptr<SceneSerializer> m_SceneSerilizer;
 
         float m_LastTime  = 0.0f;
         float m_DeltaTime = 0.0f;
+
+        glm::vec2 m_ViewportBounds[2];
+
+        Entity m_HoveredEntity{};
 
         std::shared_ptr<RuntimeContext> m_Context = nullptr;
 

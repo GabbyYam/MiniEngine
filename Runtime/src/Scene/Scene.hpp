@@ -2,6 +2,7 @@
 
 #include "Scene/Component/Component.hpp"
 #include "entt/entt.hpp"
+#include <glm/fwd.hpp>
 #include <iterator>
 #include <memory>
 #include <stdint.h>
@@ -16,6 +17,7 @@ namespace suplex {
         ~Scene() {}
 
         Entity CreateEntity(std::string const& name = "");
+        // Entity CreateEntityWithUUID(std::string const& name, UUID uuid){};
 
         template <class... Components>
         auto GetAllEntitiesWith()
@@ -32,8 +34,6 @@ namespace suplex {
         // }
 
         Entity GetActiveEntity();
-
-        // void   Render(const std::shared_ptr<Camera> camera) { m_Renderer->Render(camera); }
 
     public:
         entt::registry m_Registry;

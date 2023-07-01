@@ -11,8 +11,17 @@
 #include <glm/trigonometric.hpp>
 #include <memory>
 #include <Render/Material/Material.hpp>
+#include <UUID.hpp>
 
 namespace suplex {
+
+    struct IDComponent
+    {
+        UUID ID;
+
+        IDComponent()                   = default;
+        IDComponent(const IDComponent&) = default;
+    };
 
     struct TagComponent
     {
@@ -56,6 +65,10 @@ namespace suplex {
     struct MeshRendererComponent
     {
         std::shared_ptr<Model> m_Model = std::make_shared<Model>();
+
+        MeshRendererComponent() = default;
+        // MeshRendererComponent(const std::shared_ptr<Model> model) : m_Model(model) {}
+        MeshRendererComponent(const Model& model) { m_Model = std::make_shared<Model>(model); }
     };
 
     struct MaterialComponent
@@ -65,6 +78,18 @@ namespace suplex {
 
     struct EnvironmentMapComponent
     {
+    };
+
+    struct LightComponent
+    {
+        enum class LightType {
+            Point,
+            Directional,
+            Area,
+        };
+
+        glm::vec3 m_LightColor{1.0f};
+        float     m_LightIntensity = 1.0f;
     };
 
 }  // namespace suplex
