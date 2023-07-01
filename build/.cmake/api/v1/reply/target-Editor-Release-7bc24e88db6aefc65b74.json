@@ -1,9 +1,11 @@
 {
-	"archive" : {},
 	"artifacts" : 
 	[
 		{
-			"path" : "Runtime.lib"
+			"path" : "Editor.exe"
+		},
+		{
+			"path" : "Editor.pdb"
 		}
 	],
 	"backtrace" : 2,
@@ -11,8 +13,8 @@
 	{
 		"commands" : 
 		[
-			"_add_library",
-			"add_library",
+			"_add_executable",
+			"add_executable",
 			"target_link_libraries",
 			"target_include_directories"
 		],
@@ -29,43 +31,61 @@
 			{
 				"command" : 1,
 				"file" : 1,
-				"line" : 58,
+				"line" : 66,
 				"parent" : 0
 			},
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 632,
+				"line" : 591,
 				"parent" : 1
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 61,
+				"line" : 70,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 62,
-				"parent" : 0
-			},
-			{
-				"command" : 3,
-				"file" : 1,
-				"line" : 59,
-				"parent" : 0
-			},
-			{
-				"command" : 3,
-				"file" : 1,
-				"line" : 60,
+				"line" : 71,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 63,
+				"line" : 72,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 73,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 74,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 67,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 68,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 69,
 				"parent" : 0
 			}
 		]
@@ -92,39 +112,43 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 5,
-					"path" : "E:/Graphics/Toy/MiniEngine/Runtime/src"
+					"backtrace" : 8,
+					"path" : "E:/Graphics/Toy/MiniEngine/Editor/src"
 				},
 				{
-					"backtrace" : 5,
-					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/tinyobjloader"
+					"backtrace" : 9,
+					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/include"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 9,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/stb"
 				},
 				{
-					"backtrace" : 6,
+					"backtrace" : 10,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/IconFontAwesome"
 				},
 				{
 					"backtrace" : 3,
-					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/include"
+					"path" : "E:/Graphics/Toy/MiniEngine/Runtime/src"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/tinyobjloader"
 				},
 				{
 					"backtrace" : 3,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/glad/include"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 3,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/imgui"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 3,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/backends"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 3,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/ImGuizmo"
 				},
 				{
@@ -148,7 +172,7 @@
 			{
 				"backtraces" : 
 				[
-					7
+					3
 				],
 				"standard" : "20"
 			},
@@ -159,12 +183,7 @@
 				2,
 				3,
 				4,
-				5,
-				6,
-				7,
-				8,
-				9,
-				10
+				5
 			]
 		}
 	],
@@ -172,14 +191,18 @@
 	[
 		{
 			"backtrace" : 3,
+			"id" : "Runtime::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 3,
 			"id" : "glad::@6890427a1f51a3e7e1df"
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"id" : "imgui::@6890427a1f51a3e7e1df"
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"id" : "imguizmo::@6890427a1f51a3e7e1df"
 		},
 		{
@@ -187,9 +210,81 @@
 			"id" : "glfw::@0aa6f7fc354a61a17aaf"
 		}
 	],
-	"id" : "Runtime::@6890427a1f51a3e7e1df",
-	"name" : "Runtime",
-	"nameOnDisk" : "Runtime.lib",
+	"id" : "Editor::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Xlinker /subsystem:console",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "Runtime.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "imgui.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "\"C:\\Program Files (x86)\\spdlog\\lib\\spdlog.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "glad.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "3rdparty\\glfw\\src\\glfw3.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 7,
+				"fragment" : "D:\\vcpkg\\installed\\x64-windows\\lib\\yaml-cpp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "imgui.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "glad.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 6,
+				"fragment" : "3rdparty\\glfw\\src\\glfw3.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "D:\\vcpkg\\installed\\x64-windows\\lib\\assimp-vc142-mt.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "D:\\vcpkg\\installed\\x64-windows\\lib\\pugixml.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "Editor",
+	"nameOnDisk" : "Editor.exe",
 	"paths" : 
 	{
 		"build" : ".",
@@ -206,22 +301,17 @@
 				2,
 				3,
 				4,
-				5,
-				6,
-				7,
-				8,
-				9,
-				10
+				5
 			]
 		},
 		{
 			"name" : "Object Libraries",
 			"sourceIndexes" : 
 			[
-				11,
-				12,
-				13,
-				14
+				6,
+				7,
+				8,
+				9
 			]
 		}
 	],
@@ -230,67 +320,37 @@
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Application.cpp",
+			"path" : "Editor/src/Editor.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/InputSystem/Input.cpp",
+			"path" : "Editor/src/EditorLayer.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Render/Buffer/Depthbuffer.cpp",
+			"path" : "Editor/src/Panel/ContentBrowserPanel.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Render/Buffer/Framebuffer.cpp",
+			"path" : "Editor/src/Panel/SceneHirarchyPanel.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Render/Buffer/HdrFramebuffer.cpp",
+			"path" : "Editor/src/Platform/Windows/FileDialogs.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Render/Camera/Camera.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Render/Geometry/Shape/Shape.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Render/Renderer.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Scene/Entity/Entity.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Scene/Scene.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 2,
-			"compileGroupIndex" : 0,
-			"path" : "Runtime/src/Scene/SceneSerilizer.cpp",
+			"path" : "Editor/src/Widget/CommonWidget.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -318,5 +378,5 @@
 			"sourceGroupIndex" : 1
 		}
 	],
-	"type" : "STATIC_LIBRARY"
+	"type" : "EXECUTABLE"
 }

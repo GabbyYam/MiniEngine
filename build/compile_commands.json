@@ -56,6 +56,11 @@
 },
 {
   "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\UUID.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\UUID.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/UUID.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
   "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -I../3rdparty/glad/include -I../3rdparty/glfw/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -o CMakeFiles\\glad.dir\\3rdparty\\glad\\src\\glad.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glad\\src\\glad.c",
   "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glad/src/glad.c"
 },
