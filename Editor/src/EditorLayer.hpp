@@ -4,6 +4,7 @@
 #include "Panel/Panel.hpp"
 #include "Panel/SceneHirarchyPanel.hpp"
 #include "Platform/Windows/FileDialogs.hpp"
+#include "Render/Config/Config.hpp"
 #include "Render/Postprocess/PostProcess.hpp"
 #include "Render/Renderer.hpp"
 #include "Render/Camera/Camera.hpp"
@@ -55,7 +56,7 @@ namespace suplex {
         virtual void OnAttach() override
         {
             m_Renderer = std::make_shared<Renderer>();
-            m_Camera   = std::make_shared<Camera>(45.0f, 0.01f, 10000.f);
+            m_Camera   = std::make_shared<Camera>(45.0f, 0.01f, 1000.f, ProjectionType::Perspective);
 
             // Bind Context for Panels
             m_SceneHirarchyPanel = std::make_shared<SceneHirarchyPanel>();
@@ -228,12 +229,20 @@ namespace suplex {
             }
 
             {
-                // ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0.0, 0.0});
-                // ImGui::Begin("Depth Buffer (Light Space)");
+                ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0.0, 0.0});
+                ImGui::Begin("Depth Buffer (Light Space)");
 
-                // ImGui::Image((void*)(intptr_t)m_Renderer->DepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f}, {1.0f, 0.0f});
-                // ImGui::End();
-                // ImGui::PopStyleVar(1);
+                ImGui::Image((void*)(intptr_t)m_Renderer->DepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f}, {1.0f, 0.0f});
+
+                ImGui::End();
+
+                ImGui::Begin("Depth Buffer (View Space)");
+
+                ImGui::Image((void*)(intptr_t)m_Renderer->SceneDepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f},
+                             {1.0f, 0.0f});
+                ImGui::End();
+
+                ImGui::PopStyleVar(1);
             }
 
             {
@@ -300,7 +309,7 @@ namespace suplex {
                 bool distanceChange = false;
                 distanceChange |= ImGui::InputFloat("Light Camera Near", &cameraLS->GetNearClip());
                 distanceChange |= ImGui::InputFloat("Light Camera Far", &cameraLS->GetFarClip());
-                if (distanceChange) cameraLS->RecalculateOrthoProjection();
+                // if (distanceChange) cameraLS->Recal();
 
                 // Rotate Directional Light
                 float        radius = 10;
@@ -355,6 +364,24 @@ namespace suplex {
 
                     ImGui::Text("Anti-aliasing");
                     ImGui::Checkbox("FXAA", &config->postprocessSetting.enableFXAA);
+
+                    {
+                        ImGui::Text("Fog");
+                        std::vector<std::string> fogTypeNames{"None", "Linear", "Exponential", "ExponentialSquare"};
+
+                        int index = (int)config->postprocessSetting.fogType;
+                        if (ImGui::BeginCombo("Fog Function", fogTypeNames[index].data(), 0)) {
+                            for (int i = 0; i < fogTypeNames.size(); i++) {
+                                const bool is_selected = (index == i);
+                                if (ImGui::Selectable(fogTypeNames[i].data(), is_selected))
+                                    config->postprocessSetting.fogType = (FogType)i;
+                                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                                if (is_selected) ImGui::SetItemDefaultFocus();
+                            }
+                            ImGui::EndCombo();
+                        }
+                        ImGui::SliderFloat("Fog Density", &config->postprocessSetting.fogDensity, 0.0f, 1.0f);
+                    }
                 }
 
                 ImGui::End();
@@ -391,6 +418,7 @@ namespace suplex {
 
         void OnEvent()
         {
+            if (ImGuizmo::IsUsingAny()) return;
             if (Input::IsMouseButtonDown(MouseButton::Right)) return;
             if (Input::IsKeyDown(KeyCode::W)) m_ActiveOperation = ImGuizmo::OPERATION::TRANSLATE;
             if (Input::IsKeyDown(KeyCode::E)) m_ActiveOperation = ImGuizmo::OPERATION::SCALE;

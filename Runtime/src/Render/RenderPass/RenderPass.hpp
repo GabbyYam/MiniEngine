@@ -67,6 +67,11 @@ namespace suplex {
 
         auto PushShader(const std::shared_ptr<Shader> shader) { return m_Shaders.emplace_back(shader); }
 
+        auto GetFramebufferImage() { return m_Framebuffer->GetTextureID(); }
+        auto GetDepthMapID() { return m_Depthbuffer->GetTextureID(); }
+        auto GetFramebuffer() { return m_Framebuffer; }
+        auto GetDepthbuffer() { return m_Depthbuffer; }
+
     protected:
         std::vector<std::shared_ptr<Shader>> m_Shaders;
         std::shared_ptr<HdrFramebuffer>      m_Framebuffer;
@@ -76,6 +81,14 @@ namespace suplex {
     };
 
     class DepthRenderPass : public RenderPass {
+    public:
+        DepthRenderPass()
+        {
+            m_Depthbuffer = std::make_shared<Depthbuffer>();
+            m_Depthbuffer->OnResize(2048, 2048);
+            m_Shaders.emplace_back(std::make_shared<Shader>("depth.vert", "depth.frag"));
+        }
+
         virtual void Render(const std::shared_ptr<Camera>            camera,
                             const std::shared_ptr<Scene>             scene,
                             const std::shared_ptr<GraphicsContext>   graphicsContext,
@@ -83,12 +96,13 @@ namespace suplex {
         {
             // render to custom framebuffer
             // ------
+            glViewport(0, 0, 2048, 2048);
+            glCullFace(GL_FRONT);
             glBindFramebuffer(GL_FRAMEBUFFER, m_Depthbuffer->GetID());
             glClear(GL_DEPTH_BUFFER_BIT);
-            auto  config      = graphicsContext->config;
-            auto& lightCamera = config->lightSetting.cameraLS;
-            auto  viewLS      = lightCamera->GetView();
-            auto  projLS      = lightCamera->GetOrthoProjection();
+            auto config = graphicsContext->config;
+            auto viewLS = camera->GetView();
+            auto projLS = camera->GetProjection();
 
             auto& shader = m_Shaders[0];
             shader->Bind();

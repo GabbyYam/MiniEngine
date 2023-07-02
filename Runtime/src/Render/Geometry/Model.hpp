@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Render/Geometry/Mesh.hpp"
 #include "Render/Geometry/Model.hpp"
 #include "Render/Texture/Texture.hpp"
 #include "Render/Texture/Texture2D.hpp"
@@ -24,11 +25,55 @@
 #include "ImGuizmo.h"
 #include "Mesh.hpp"
 #include "imgui_internal.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 using namespace glm;
 using namespace spdlog;
 
+namespace utils {
+    static inline glm::mat4 ConvertMatrixToGLMFormat(const aiMatrix4x4& from)
+    {
+        glm::mat4 to;
+        //the a,b,c,d in assimp is the row ; the 1,2,3,4 is the column
+        to[0][0] = from.a1;
+        to[1][0] = from.a2;
+        to[2][0] = from.a3;
+        to[3][0] = from.a4;
+        to[0][1] = from.b1;
+        to[1][1] = from.b2;
+        to[2][1] = from.b3;
+        to[3][1] = from.b4;
+        to[0][2] = from.c1;
+        to[1][2] = from.c2;
+        to[2][2] = from.c3;
+        to[3][2] = from.c4;
+        to[0][3] = from.d1;
+        to[1][3] = from.d2;
+        to[2][3] = from.d3;
+        to[3][3] = from.d4;
+        return to;
+    }
+
+    static inline glm::vec3 GetGLMVec(const aiVector3D& vec) { return glm::vec3(vec.x, vec.y, vec.z); }
+
+    static inline glm::quat GetGLMQuat(const aiQuaternion& pOrientation)
+    {
+        return glm::quat(pOrientation.w, pOrientation.x, pOrientation.y, pOrientation.z);
+    }
+}  // namespace utils
+
 namespace suplex {
+
+    struct BoneInfo
+    {
+        /*id is index in finalBoneMatrices*/
+        int id;
+
+        /*offset matrix transforms vertex from model space to bone space*/
+        glm::mat4 offset;
+    };
 
     class Model {
     public:
@@ -71,12 +116,16 @@ namespace suplex {
                 spdlog::error("ERROR::ASSIMP:: {}", importer.GetErrorString());
                 return false;
             }
-            auto postfix = path.substr(path.find_last_of('.') + 1);
-            m_Directory  = path.substr(0, path.find_last_of('/'));
+
+            auto suffix = path.substr(path.find_last_of('.') + 1);
+            m_Directory = path.substr(0, path.find_last_of('/'));
             // process ASSIMP's root node recursively
             ProcessNode(scene->mRootNode, scene);
             return true;
         }
+
+        auto& GetBoneInfoMap() { return m_BoneInfoMap; }
+        int&  GetBoneCount() { return m_BoneCounter; }
 
     private:
         // processes a node in a recursive fashion. Processes each individual
@@ -109,33 +158,24 @@ namespace suplex {
             for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
                 Vertex    vertex;
                 glm::vec3 vector;
-                // we declare a placeholder vector since assimp
-                // uses its own vector class that doesn't directly
-                // convert to glm's vec3 class so we transfer the
-                // data to this placeholder glm::vec3 first.
-                // positions
+                vertex.Reset();
+
                 vector.x        = mesh->mVertices[i].x;
                 vector.y        = mesh->mVertices[i].y;
                 vector.z        = mesh->mVertices[i].z;
                 vertex.position = vector;
-                // normals
                 if (mesh->HasNormals()) {
                     vector.x      = mesh->mNormals[i].x;
                     vector.y      = mesh->mNormals[i].y;
                     vector.z      = mesh->mNormals[i].z;
                     vertex.normal = vector;
                 }
-                // texture coordinates
-                // does the mesh contain texture coordinates?
+
                 if (mesh->mTextureCoords[0]) {
-                    glm::vec2 vec;
-                    // a vertex can contain up to 8 different texture
-                    // coordinates. We thus make the assumption that we
-                    // won't use models where a vertex can have multiple
-                    // texture coordinates so we always take the first set (0).
-                    vec.x           = mesh->mTextureCoords[0][i].x;
-                    vec.y           = mesh->mTextureCoords[0][i].y;
-                    vertex.texCoord = vec;
+                    glm::vec2 uv;
+                    uv.x            = mesh->mTextureCoords[0][i].x;
+                    uv.y            = mesh->mTextureCoords[0][i].y;
+                    vertex.texCoord = uv;
                     // tangent
                     vector.x       = mesh->mTangents[i].x;
                     vector.y       = mesh->mTangents[i].y;
@@ -152,22 +192,16 @@ namespace suplex {
 
                 vertices.push_back(vertex);
             }
-            // now wak through each of the mesh's faces (a face is a mesh its
-            // triangle) and retrieve the corresponding vertex indices.
+
+            ProcessBoneWeight(vertices, mesh, scene);
+
             for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
                 aiFace face = mesh->mFaces[i];
-                // retrieve all indices of the face and store them in the
-                // indices vector
+
                 for (unsigned int j = 0; j < face.mNumIndices; j++) indices.push_back(face.mIndices[j]);
             }
             // process materials
             aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-            // we assume a convention for sampler names in the shaders. Each
-            // diffuse texture should be named as 'texture_diffuseN' where N is
-            // a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
-            // Same applies to other texture as the following list
-            // summarizes: diffuse: texture_diffuseN specular:
-            // texture_specularN normal: texture_normalN
 
             // 1. diffuse maps
             std::vector<Texture2D> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "DiffuseMap", scene);
@@ -184,6 +218,35 @@ namespace suplex {
 
             // return a mesh object created from the extracted mesh data
             return Mesh(std::move(vertices), std::move(indices), std::move(textures));
+        }
+
+        void ProcessBoneWeight(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
+        {
+            for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+                int         boneID   = -1;
+                std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
+                if (m_BoneInfoMap.find(boneName) == m_BoneInfoMap.end()) {
+                    BoneInfo newBoneInfo;
+                    newBoneInfo.id          = m_BoneCounter;
+                    newBoneInfo.offset      = utils::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+                    m_BoneInfoMap[boneName] = newBoneInfo;
+                    boneID                  = m_BoneCounter;
+                    m_BoneCounter++;
+                }
+                else {
+                    boneID = m_BoneInfoMap[boneName].id;
+                }
+                assert(boneID != -1);
+                auto weights    = mesh->mBones[boneIndex]->mWeights;
+                int  numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+                for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex) {
+                    int   vertexId = weights[weightIndex].mVertexId;
+                    float weight   = weights[weightIndex].mWeight;
+                    assert(vertexId <= vertices.size());
+                    vertices[vertexId].SetBoneData(boneID, weight);
+                }
+            }
         }
 
         // checks all material textures of a given type and loads the textures
@@ -215,6 +278,9 @@ namespace suplex {
         }
 
     public:
+        std::map<std::string, BoneInfo> m_BoneInfoMap;
+        int                             m_BoneCounter = 0;
+
         std::vector<Mesh> m_Meshes;
         std::string       m_Directory;
         std::string       m_FilePath;

@@ -3,6 +3,7 @@
 #include "Render/Geometry/Mesh.hpp"
 #include "Render/Geometry/Shape/Shape.hpp"
 #include "Render/Shader/Shader.hpp"
+#include "Render/Texture/Texture.hpp"
 #include "Render/Texture/Texture2D.hpp"
 #include "RenderPass.hpp"
 #include "Scene/Component/Component.hpp"
@@ -15,11 +16,21 @@
 #include <Scene/Entity/Entity.hpp>
 
 extern suplex::Texture2D solidWhite;
+extern glm::vec3         lightColors[];
+extern glm::vec3         lightPositions[];
 
 namespace suplex {
 
     class ForwardRenderPass : public RenderPass {
     public:
+        ForwardRenderPass()
+        {
+            PushShader(std::make_shared<Shader>("common.vert", "pbr.frag"));
+            PushShader(std::make_shared<Shader>("phong.vert", "phong.frag"));
+            PushShader(std::make_shared<Shader>("toon.vert", "toon.frag"));
+            PushShader(std::make_shared<Shader>("common.vert", "light.frag"));
+        }
+
         virtual void Render(const std::shared_ptr<Camera>            camera,
                             const std::shared_ptr<Scene>             scene,
                             const std::shared_ptr<GraphicsContext>   graphicsContext,
@@ -28,7 +39,9 @@ namespace suplex {
             // Enable stencil test
             // ------
 
-            int value = -1;
+            Bind(camera, graphicsContext, context);
+
+            static int value = -1;
             glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
             glClearTexImage(m_Framebuffer->GetTextureID2(), 0, GL_RED_INTEGER, GL_INT, &value);
@@ -43,7 +56,7 @@ namespace suplex {
 
             auto& lightCamera = config->lightSetting.cameraLS;
             auto  viewLS      = lightCamera->GetView();
-            auto  projLS      = lightCamera->GetOrthoProjection();
+            auto  projLS      = lightCamera->GetProjection();
 
             auto mvpLS = projLS * viewLS;
 
@@ -54,7 +67,6 @@ namespace suplex {
             m_GridShader->Unbind();
 
             // render container
-            // std::optional<std::shared_ptr<Shader>> effectShader = std::nullopt
             auto DrawEntity = [&](Entity entity, std::optional<std::shared_ptr<Shader>> effectShader = std::nullopt) {
                 auto& meshRenderer = entity.GetComponent<MeshRendererComponent>();
 
@@ -109,63 +121,29 @@ namespace suplex {
                 DrawEntity(entity);
             };
 
-            // Render Directional Light
-            {
-                auto& lightShader = m_Shaders[3];
-                lightShader->Bind();
-                // Light Setting
-                lightShader->SetFloat3("lightDirection", glm::value_ptr(config->lightSetting.cameraLS->GetForward()));
-                lightShader->SetFloat3("lightPosition", glm::value_ptr(config->lightSetting.cameraLS->GetPosition()));
-                lightShader->SetFloat("lightIntensity", &config->lightSetting.lightIntensity);
-                lightShader->SetFloat3("lightColor", glm::value_ptr(config->lightSetting.lightColor));
-
-                // Camera Position
-                lightShader->SetFloat3("viewPos", glm::value_ptr(camera->GetPosition()));
-
-                // MVP & Light MVP
-                auto model = glm::translate(glm::mat4(1.0f), config->lightSetting.cameraLS->GetPosition());
-                model      = glm::scale(model, vec3(0.5f));
-
-                lightShader->SetMaterix4("model", glm::value_ptr(model));
-                lightShader->SetMaterix4("view", glm::value_ptr(view));
-                lightShader->SetMaterix4("proj", glm::value_ptr(proj));
-                lightShader->SetMaterix4("mvpLS", glm::value_ptr(mvpLS));
-
-                utils::RenderSphere(lightShader);
-                lightShader->Unbind();
-            }
-
-            // Render Stencil for active entity
-            if (auto entity = graphicsContext->activeEntity) {
-                glEnable(GL_STENCIL_TEST);
-                glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-                glStencilMask(0x00);
-
-                m_OutlineShader->Bind();
-                auto& meshRenderer = entity.GetComponent<MeshRendererComponent>();
-
-                m_OutlineShader->SetInt("entityID", static_cast<int>(entity.GetID()));
-
-                // MVP & Light MVP
-                auto transform    = entity.GetComponent<TransformComponent>();
-                transform.m_Scale = vec3(1.01);
-                m_OutlineShader->SetMaterix4("model", glm::value_ptr(transform.GetTransform()));
-                m_OutlineShader->SetMaterix4("view", glm::value_ptr(view));
-                m_OutlineShader->SetMaterix4("proj", glm::value_ptr(proj));
-
-                for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(m_OutlineShader);
-                m_OutlineShader->Unbind();
-
-                glStencilMask(0xFF);
-                glDisable(GL_STENCIL_TEST);
-            }
+            RenderLight(camera, graphicsContext, context);
+            RenderOutline(camera, graphicsContext, context);
 
             glDisable(GL_CULL_FACE);
         }
 
+        void Bind(const std::shared_ptr<Camera>            camera,
+                  const std::shared_ptr<GraphicsContext>   graphicsContext,
+                  const std::shared_ptr<PrecomputeContext> context);
+
+        void RenderLight(const std::shared_ptr<Camera>            camera,
+                         const std::shared_ptr<GraphicsContext>   graphicsContext,
+                         const std::shared_ptr<PrecomputeContext> context);
+
+        void RenderOutline(const std::shared_ptr<Camera>            camera,
+                           const std::shared_ptr<GraphicsContext>   graphicsContext,
+                           const std::shared_ptr<PrecomputeContext> context);
+
     private:
-        std::shared_ptr<Shader> m_GridShader    = std::make_shared<Shader>("line.vert", "line.frag");
-        std::shared_ptr<Shader> m_OutlineShader = std::make_shared<Shader>("common.vert", "outline.frag");
+        std::shared_ptr<Shader>    m_GridShader    = std::make_shared<Shader>("line.vert", "line.frag");
+        std::shared_ptr<Shader>    m_OutlineShader = std::make_shared<Shader>("common.vert", "outline.frag");
+        std::shared_ptr<Shader>    m_IconShader    = std::make_shared<Shader>("quad.vert", "quad.frag");
+        std::shared_ptr<Texture2D> m_LightIcon     = std::make_shared<Texture2D>("../Assets/Icons/icon-light.png", ImageFormat::RGBA);
     };
 
     class OutlineRenderPass : public RenderPass {

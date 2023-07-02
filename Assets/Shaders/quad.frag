@@ -7,8 +7,8 @@ uniform sampler2D albedo;
 
 void main()
 {       
-    vec3 color = texture(albedo, TexCoords).rgb;
+    vec4 color = texture(albedo, TexCoords);
     // color = color / (color + vec3(1.0));
     // color = pow(color, vec3(1.0 / 2.2));
-    FragColor = vec4(color, 1.0);
+    FragColor = color;
 }

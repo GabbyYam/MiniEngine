@@ -11,6 +11,7 @@
 #include "Widget/CommonWidget.hpp"
 #include <IconsFontAwesome6.h>
 #include <Scene/Entity/Entity.hpp>
+#include <string.h>
 
 namespace suplex {
     void SceneHirarchyPanel::OnUIRender()
@@ -47,8 +48,10 @@ namespace suplex {
 
                     // auto object = renderer->GetGameObjectList()[activeEntityIndex];
 
+                    char buffer[256]{};
+                    strcpy_s(buffer, tag.m_Tag.data());
                     widget::ItemLabel(ICON_FA_TAG "  Tag", widget::Left);
-                    ImGui::InputText("##Tag", tag.m_Tag.data(), 256);
+                    if (ImGui::InputText("##Tag", buffer, 256)) { tag.m_Tag = buffer; }
 
                     bool active = true;
                     if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen)) {

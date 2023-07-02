@@ -35,6 +35,41 @@ CONFIGURATION = Release
 include CMakeFiles/rules.ninja
 
 # =============================================================================
+# Object build statements for STATIC_LIBRARY target glad
+
+
+#############################################
+# Order-only phony target for glad
+
+build cmake_object_order_depends_target_glad: phony || cmake_object_order_depends_target_glfw
+
+build CMakeFiles/glad.dir/3rdparty/glad/src/glad.c.obj: C_COMPILER__glad_Release ../3rdparty/glad/src/glad.c || cmake_object_order_depends_target_glad
+  DEP_FILE = CMakeFiles\glad.dir\3rdparty\glad\src\glad.c.obj.d
+  FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt
+  INCLUDES = -I../3rdparty/glad/include -I../3rdparty/glfw/include
+  OBJECT_DIR = CMakeFiles\glad.dir
+  OBJECT_FILE_DIR = CMakeFiles\glad.dir\3rdparty\glad\src
+  TARGET_COMPILE_PDB = CMakeFiles\glad.dir\glad.pdb
+  TARGET_PDB = glad.pdb
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target glad
+
+
+#############################################
+# Link the static library glad.lib
+
+build glad.lib: C_STATIC_LIBRARY_LINKER__glad_Release CMakeFiles/glad.dir/3rdparty/glad/src/glad.c.obj || 3rdparty/glfw/src/glfw3.lib
+  LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt
+  OBJECT_DIR = CMakeFiles\glad.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_COMPILE_PDB = CMakeFiles\glad.dir\glad.pdb
+  TARGET_FILE = glad.lib
+  TARGET_PDB = glad.pdb
+
+# =============================================================================
 # Object build statements for STATIC_LIBRARY target Runtime
 
 
@@ -113,6 +148,16 @@ build CMakeFiles/Runtime.dir/Runtime/src/Render/Geometry/Shape/Shape.cpp.obj: CX
   TARGET_COMPILE_PDB = CMakeFiles\Runtime.dir\Runtime.pdb
   TARGET_PDB = Runtime.pdb
 
+build CMakeFiles/Runtime.dir/Runtime/src/Render/RenderPass/ForwardPass.cpp.obj: CXX_COMPILER__Runtime_Release ../Runtime/src/Render/RenderPass/ForwardPass.cpp || cmake_object_order_depends_target_Runtime
+  DEFINES = -DSPDLOG_COMPILED_LIB
+  DEP_FILE = CMakeFiles\Runtime.dir\Runtime\src\Render\RenderPass\ForwardPass.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20
+  INCLUDES = -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem "C:/Program Files (x86)/spdlog/include" -isystem "C:/Program Files (x86)/glm/include" -isystem D:/vcpkg/installed/x64-windows/include
+  OBJECT_DIR = CMakeFiles\Runtime.dir
+  OBJECT_FILE_DIR = CMakeFiles\Runtime.dir\Runtime\src\Render\RenderPass
+  TARGET_COMPILE_PDB = CMakeFiles\Runtime.dir\Runtime.pdb
+  TARGET_PDB = Runtime.pdb
+
 build CMakeFiles/Runtime.dir/Runtime/src/Render/Renderer.cpp.obj: CXX_COMPILER__Runtime_Release ../Runtime/src/Render/Renderer.cpp || cmake_object_order_depends_target_Runtime
   DEFINES = -DSPDLOG_COMPILED_LIB
   DEP_FILE = CMakeFiles\Runtime.dir\Runtime\src\Render\Renderer.cpp.obj.d
@@ -171,7 +216,7 @@ build CMakeFiles/Runtime.dir/Runtime/src/UUID.cpp.obj: CXX_COMPILER__Runtime_Rel
 #############################################
 # Link the static library Runtime.lib
 
-build Runtime.lib: CXX_STATIC_LIBRARY_LINKER__Runtime_Release CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImCurveEdit.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGradient.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGuizmo.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImSequencer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Application.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/InputSystem/Input.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Depthbuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Framebuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/HdrFramebuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Camera/Camera.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Geometry/Shape/Shape.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Renderer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/Entity/Entity.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/Scene.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/SceneSerilizer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/UUID.cpp.obj || 3rdparty/glfw/src/glfw3.lib glad.lib imgui.lib imguizmo
+build Runtime.lib: CXX_STATIC_LIBRARY_LINKER__Runtime_Release CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImCurveEdit.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGradient.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGuizmo.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImSequencer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Application.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/InputSystem/Input.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Depthbuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Framebuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/HdrFramebuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Camera/Camera.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Geometry/Shape/Shape.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/RenderPass/ForwardPass.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Renderer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/Entity/Entity.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/Scene.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/SceneSerilizer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/UUID.cpp.obj || 3rdparty/glfw/src/glfw3.lib glad.lib imgui.lib imguizmo
   LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt
   OBJECT_DIR = CMakeFiles\Runtime.dir
   POST_BUILD = cd .
@@ -181,39 +226,39 @@ build Runtime.lib: CXX_STATIC_LIBRARY_LINKER__Runtime_Release CMakeFiles/imguizm
   TARGET_PDB = Runtime.pdb
 
 # =============================================================================
-# Object build statements for STATIC_LIBRARY target glad
+# Object build statements for STATIC_LIBRARY target Utils
 
 
 #############################################
-# Order-only phony target for glad
+# Order-only phony target for Utils
 
-build cmake_object_order_depends_target_glad: phony || cmake_object_order_depends_target_glfw
+build cmake_object_order_depends_target_Utils: phony || CMakeFiles/Utils.dir
 
-build CMakeFiles/glad.dir/3rdparty/glad/src/glad.c.obj: C_COMPILER__glad_Release ../3rdparty/glad/src/glad.c || cmake_object_order_depends_target_glad
-  DEP_FILE = CMakeFiles\glad.dir\3rdparty\glad\src\glad.c.obj.d
-  FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt
-  INCLUDES = -I../3rdparty/glad/include -I../3rdparty/glfw/include
-  OBJECT_DIR = CMakeFiles\glad.dir
-  OBJECT_FILE_DIR = CMakeFiles\glad.dir\3rdparty\glad\src
-  TARGET_COMPILE_PDB = CMakeFiles\glad.dir\glad.pdb
-  TARGET_PDB = glad.pdb
+build CMakeFiles/Utils.dir/Utils/src/JSON/JsonParser.cpp.obj: CXX_COMPILER__Utils_Release ../Utils/src/JSON/JsonParser.cpp || cmake_object_order_depends_target_Utils
+  DEP_FILE = CMakeFiles\Utils.dir\Utils\src\JSON\JsonParser.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20
+  INCLUDES = -I../Utils/src
+  OBJECT_DIR = CMakeFiles\Utils.dir
+  OBJECT_FILE_DIR = CMakeFiles\Utils.dir\Utils\src\JSON
+  TARGET_COMPILE_PDB = CMakeFiles\Utils.dir\Utils.pdb
+  TARGET_PDB = Utils.pdb
 
 
 # =============================================================================
-# Link build statements for STATIC_LIBRARY target glad
+# Link build statements for STATIC_LIBRARY target Utils
 
 
 #############################################
-# Link the static library glad.lib
+# Link the static library Utils.lib
 
-build glad.lib: C_STATIC_LIBRARY_LINKER__glad_Release CMakeFiles/glad.dir/3rdparty/glad/src/glad.c.obj || 3rdparty/glfw/src/glfw3.lib
+build Utils.lib: CXX_STATIC_LIBRARY_LINKER__Utils_Release CMakeFiles/Utils.dir/Utils/src/JSON/JsonParser.cpp.obj
   LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt
-  OBJECT_DIR = CMakeFiles\glad.dir
+  OBJECT_DIR = CMakeFiles\Utils.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_COMPILE_PDB = CMakeFiles\glad.dir\glad.pdb
-  TARGET_FILE = glad.lib
-  TARGET_PDB = glad.pdb
+  TARGET_COMPILE_PDB = CMakeFiles\Utils.dir\Utils.pdb
+  TARGET_FILE = Utils.lib
+  TARGET_PDB = Utils.pdb
 
 # =============================================================================
 # Object build statements for STATIC_LIBRARY target imgui
@@ -303,6 +348,45 @@ build imgui.lib: CXX_STATIC_LIBRARY_LINKER__imgui_Release CMakeFiles/imgui.dir/3
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
   TARGET_FILE = imgui.lib
   TARGET_PDB = imgui.pdb
+
+# =============================================================================
+# Object build statements for EXECUTABLE target Sandbox
+
+
+#############################################
+# Order-only phony target for Sandbox
+
+build cmake_object_order_depends_target_Sandbox: phony || cmake_object_order_depends_target_Runtime cmake_object_order_depends_target_glad cmake_object_order_depends_target_glfw cmake_object_order_depends_target_imgui cmake_object_order_depends_target_imguizmo
+
+build CMakeFiles/Sandbox.dir/Sandbox/src/main.cpp.obj: CXX_COMPILER__Sandbox_Release ../Sandbox/src/main.cpp || cmake_object_order_depends_target_Sandbox
+  DEFINES = -DSPDLOG_COMPILED_LIB
+  DEP_FILE = CMakeFiles\Sandbox.dir\Sandbox\src\main.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20
+  INCLUDES = -I../Editor/src -I../3rdparty/glfw/include -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem "C:/Program Files (x86)/spdlog/include" -isystem "C:/Program Files (x86)/glm/include" -isystem D:/vcpkg/installed/x64-windows/include
+  OBJECT_DIR = CMakeFiles\Sandbox.dir
+  OBJECT_FILE_DIR = CMakeFiles\Sandbox.dir\Sandbox\src
+  TARGET_COMPILE_PDB = CMakeFiles\Sandbox.dir\
+  TARGET_PDB = Sandbox.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target Sandbox
+
+
+#############################################
+# Link the executable Sandbox.exe
+
+build Sandbox.exe: CXX_EXECUTABLE_LINKER__Sandbox_Release CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImCurveEdit.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGradient.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGuizmo.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImSequencer.cpp.obj CMakeFiles/Sandbox.dir/Sandbox/src/main.cpp.obj | Runtime.lib imgui.lib C$:/Program$ Files$ (x86)/spdlog/lib/spdlog.lib glad.lib 3rdparty/glfw/src/glfw3.lib D$:/vcpkg/installed/x64-windows/lib/yaml-cpp.lib imgui.lib glad.lib 3rdparty/glfw/src/glfw3.lib D$:/vcpkg/installed/x64-windows/lib/assimp-vc142-mt.lib D$:/vcpkg/installed/x64-windows/lib/pugixml.lib || 3rdparty/glfw/src/glfw3.lib Runtime.lib glad.lib imgui.lib imguizmo
+  FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt
+  LINK_FLAGS = -Xlinker /subsystem:console
+  LINK_LIBRARIES = Runtime.lib  imgui.lib  "C:/Program Files (x86)/spdlog/lib/spdlog.lib"  glad.lib  3rdparty/glfw/src/glfw3.lib  D:/vcpkg/installed/x64-windows/lib/yaml-cpp.lib  imgui.lib  glad.lib  3rdparty/glfw/src/glfw3.lib  D:/vcpkg/installed/x64-windows/lib/assimp-vc142-mt.lib  D:/vcpkg/installed/x64-windows/lib/pugixml.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames
+  OBJECT_DIR = CMakeFiles\Sandbox.dir
+  POST_BUILD = cmd.exe /C "cd /D E:\Graphics\Toy\MiniEngine\build && C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file D:/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary E:/Graphics/Toy/MiniEngine/build/Sandbox.exe -installedDir D:/vcpkg/installed/x64-windows/bin -OutVariable out"
+  PRE_LINK = cd .
+  TARGET_COMPILE_PDB = CMakeFiles\Sandbox.dir\
+  TARGET_FILE = Sandbox.exe
+  TARGET_IMPLIB = Sandbox.lib
+  TARGET_PDB = Sandbox.pdb
 
 # =============================================================================
 # Object build statements for OBJECT_LIBRARY target imguizmo
@@ -784,6 +868,10 @@ build Editor: phony Editor.exe
 
 build Runtime: phony Runtime.lib
 
+build Sandbox: phony Sandbox.exe
+
+build Utils: phony Utils.lib
+
 build glad: phony glad.lib
 
 build glfw: phony 3rdparty/glfw/src/glfw3.lib
@@ -802,7 +890,7 @@ build update_mappings: phony 3rdparty/glfw/src/update_mappings
 #############################################
 # Folder: E:/Graphics/Toy/MiniEngine/build
 
-build all: phony Runtime.lib glad.lib imgui.lib imguizmo Editor.exe 3rdparty/glfw/all
+build all: phony glad.lib Runtime.lib Utils.lib imgui.lib Sandbox.exe imguizmo Editor.exe 3rdparty/glfw/all
 
 # =============================================================================
 

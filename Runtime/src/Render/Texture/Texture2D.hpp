@@ -73,8 +73,7 @@ namespace suplex {
                 glGenTextures(1, &m_TextureID);
                 glBindTexture(GL_TEXTURE_2D, m_TextureID);
                 // set the texture wrapping parameters
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                                GL_REPEAT);  // set texture wrapping to GL_REPEAT (default wrapping method)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
                 // set texture filtering parameters
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -98,8 +97,7 @@ namespace suplex {
                 glGenTextures(1, &m_TextureID);
                 glBindTexture(GL_TEXTURE_2D, m_TextureID);
                 // set the texture wrapping parameters
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                                GL_REPEAT);  // set texture wrapping to GL_REPEAT (default wrapping method)
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
                 // set texture filtering parameters
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -126,8 +124,7 @@ namespace suplex {
                 if (data) {
                     glGenTextures(1, &m_TextureID);
                     glBindTexture(GL_TEXTURE_2D, m_TextureID);
-                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT,
-                                 data);  // note how we specify the texture's data value to be float
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, data);
 
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

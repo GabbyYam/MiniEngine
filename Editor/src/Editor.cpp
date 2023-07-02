@@ -35,3 +35,14 @@ std::shared_ptr<suplex::Application> suplex::CreateApplication(int argc, char** 
     app->PushLayer<EditorLayer>();
     return app;
 }
+
+bool g_Running = true;
+
+int main(int argc, char** argv)
+{
+    auto app = suplex::CreateApplication(argc, argv);
+    app->Initialize();
+    app->Run();
+    app->Cleanup();
+    return 0;
+}

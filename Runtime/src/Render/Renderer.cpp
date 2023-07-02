@@ -27,20 +27,6 @@
 
 extern GLFWwindow* g_WindowHandle;
 
-glm::vec3 lightPositions[] = {
-    glm::vec3(-10.0f, 10.0f, 10.0f),
-    glm::vec3(10.0f, 10.0f, 10.0f),
-    glm::vec3(-10.0f, -10.0f, 10.0f),
-    glm::vec3(10.0f, -10.0f, 10.0f),
-};
-
-glm::vec3 lightColors[] = {
-    glm::vec3(300.0f, 300.0f, 300.0f),
-    glm::vec3(300.0f, 300.0f, 300.0f),
-    glm::vec3(300.0f, 300.0f, 300.0f),
-    glm::vec3(300.0f, 300.0f, 300.0f),
-};
-
 suplex::Texture2D solidWhite;
 
 namespace suplex {
@@ -54,7 +40,6 @@ namespace suplex {
 
         // m_Framebuffer = Framebuffer(m_ViewportWidth, m_ViewportHeight);
         m_Framebuffer->OnResize(m_ViewportWidth, m_ViewportHeight);
-        m_Depthbuffer->OnResize(2048, 2048);
 
         m_Context = std::make_shared<GraphicsContext>();
         // m_Context->config   = std::make_shared<GraphicsConfig>();
@@ -84,52 +69,19 @@ namespace suplex {
         // }
     }
 
-    void Renderer::Render(const std::shared_ptr<Camera> camera)
+    void Renderer::Render(const std::shared_ptr<Camera> camera, RenderType renderType)
     {
         m_ActiveCamera = camera;
         Walnut::Timer timer;
 
-        glViewport(0, 0, 2048, 2048);
-        glCullFace(GL_FRONT);
-        auto config = m_Context->config;
-        m_DepthPass->Render(camera, m_Scene, m_Context, nullptr);
-
-        m_Framebuffer->Bind();
-
-        glCullFace(GL_BACK);
-        auto& shaders = m_ForwardPass->GetShaders();
-        for (auto& shader : shaders) {
-            // // Bind Depth buffer to forward sampler
-            shader->Bind();
-
-            shader->SetInt("useEnvMap", config->lightSetting.useEnvMap);
-
-            shader->BindTexture("DepthMap", m_Depthbuffer->GetTextureID(), 15, SamplerType::Texture2D);
-
-            shader->BindTexture("IrradianceMap", m_PrecomputeContext->IrradianceMap.GetID(), 14, SamplerType::CubeMap);
-
-            shader->BindTexture("PrefilterMap", m_PrecomputeContext->PrefilterMap.GetID(), 13, SamplerType::CubeMap);
-
-            shader->BindTexture("BRDF_LUT", m_PrecomputeContext->BRDF_LUT.GetID(), 12, SamplerType::Texture2D);
-
-            // Light position
-            for (unsigned int i = 0; i < sizeof(lightPositions) / sizeof(lightPositions[0]); ++i) {
-                glm::vec3 newPos = lightPositions[i] + glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
-                newPos           = lightPositions[i];
-                shader->SetFloat3("lightPositions[" + std::to_string(i) + "]", glm::value_ptr(newPos));
-                shader->SetFloat3("lightColors[" + std::to_string(i) + "]", glm::value_ptr(lightColors[i]));
-            }
-
-            shader->Unbind();
-        }
-
+        m_DepthPass->Render(m_Context->config->lightSetting.cameraLS, m_Scene, m_Context, m_PrecomputeContext);
+        m_DepthPass2->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
         m_ForwardPass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
-        // m_OutlinePass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
 
         m_LastRenderTime = timer.ElapsedMillis();
     }
 
-    void Renderer::PostProcess(const std::shared_ptr<Camera> camera)
+    void Renderer::PostProcess(const std::shared_ptr<Camera> camera, RenderType renderType)
     {
         auto config = m_Context->config;
         if (config->lightSetting.useEnvMap) {
@@ -148,6 +100,10 @@ namespace suplex {
 
             m_BloomMergeShader->Bind();
 
+            m_BloomMergeShader->SetFloat3("viewPos", glm::value_ptr(camera->GetPosition()));
+            m_BloomMergeShader->SetFloat("nearClip", camera->GetNearClip());
+            m_BloomMergeShader->SetFloat("farClip", camera->GetFarClip());
+
             m_BloomMergeShader->SetInt("tonemappingType", (int)config->postprocessSetting.tonemappingType);
             m_BloomMergeShader->SetFloat("exposure", &config->postprocessSetting.exposure);
 
@@ -155,14 +111,18 @@ namespace suplex {
             m_BloomMergeShader->SetFloat("bloomIntensity", &config->postprocessSetting.bloomIntensity);
 
             m_BloomMergeShader->SetInt("enableFXAA", config->postprocessSetting.enableFXAA);
+            m_BloomMergeShader->SetInt("fogType", (int)config->postprocessSetting.fogType);
+            m_BloomMergeShader->SetFloat("fogDensity", config->postprocessSetting.fogDensity);
 
             m_BloomMergeShader->BindTexture("scene", m_Framebuffer->GetTextureID0(), 0, SamplerType::Texture2D);
             m_BloomMergeShader->BindTexture("bloomBlur", m_Bloom->GetResultID(), 1, SamplerType::Texture2D);
+            m_BloomMergeShader->BindTexture("DepthMap", m_DepthPass2->GetDepthMapID(), 2, SamplerType::Texture2D);
 
             // Render result in screen space quad
             glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
             glViewport(0, 0, m_ViewportWidth, m_ViewportHeight);
-            utils::RenderQuad(m_BloomMergeShader);
+
+            utils::RenderQuad(m_BloomMergeShader, QuadRenderSpecification::Screen);
 
             m_BloomMergeShader->Unbind();
         }
@@ -230,21 +190,15 @@ namespace suplex {
     void Renderer::BindRenderPass()
     {
         // Depth Pass
-        m_DepthPass = m_PassQueue.emplace_back(std::make_shared<DepthRenderPass>());
-        m_DepthPass->PushShader(std::make_shared<Shader>("depth.vert", "depth.frag"));
-        m_DepthPass->BindDepthbuffer(m_Depthbuffer);
+        m_DepthPass  = m_PassQueue.emplace_back(std::make_shared<DepthRenderPass>());
+        m_DepthPass2 = m_PassQueue.emplace_back(std::make_shared<DepthRenderPass>());
 
         // Forward Pass
         m_Framebuffer->Bind();
         m_ForwardPass = m_PassQueue.emplace_back(std::make_shared<ForwardRenderPass>());
-        m_ForwardPass->PushShader(std::make_shared<Shader>("common.vert", "pbr.frag"));
-        m_ForwardPass->PushShader(std::make_shared<Shader>("phong.vert", "phong.frag"));
-        m_ForwardPass->PushShader(std::make_shared<Shader>("toon.vert", "toon.frag"));
-        m_ForwardPass->PushShader(std::make_shared<Shader>("common.vert", "light.frag"));
-        m_ForwardPass->BindFramebuffer(m_Framebuffer);
 
-        m_OutlinePass = m_PassQueue.emplace_back(std::make_shared<OutlineRenderPass>());
-        m_OutlinePass->BindFramebuffer(m_Framebuffer);
+        m_ForwardPass->BindFramebuffer(m_Framebuffer);
+        m_ForwardPass->BindDepthbuffer(m_DepthPass->GetDepthbuffer());
 
         // EnvironmentMap Pass
         m_Framebuffer->Bind();

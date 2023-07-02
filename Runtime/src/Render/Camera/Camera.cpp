@@ -10,7 +10,8 @@
 
 namespace suplex {
 
-    Camera::Camera(float fov, float nearClip, float farClip) : m_VerticalFOV(fov), m_NearClip(nearClip), m_FarClip(farClip)
+    Camera::Camera(float fov, float nearClip, float farClip, ProjectionType projectionType)
+        : m_VerticalFOV(fov), m_NearClip(nearClip), m_FarClip(farClip), m_ProjectionType(projectionType)
     {
         m_Position = {0.f, 5.f, 15.f};
         m_Forward  = {0.f, -.2f, -1.f};
@@ -99,9 +100,12 @@ namespace suplex {
 
     void Camera::RecalculateProjection()
     {
-        m_Projection =
-            glm::perspectiveFov(glm::radians(m_VerticalFOV), (float)m_ViewportWidth, (float)m_ViewportHeight, m_NearClip, m_FarClip);
-
-        // m_InverseProjection = glm::inverse(m_Projection);
+        switch (m_ProjectionType) {
+            case ProjectionType::Perspective:
+                m_Projection = glm::perspectiveFov(glm::radians(m_VerticalFOV), (float)m_ViewportWidth, (float)m_ViewportHeight,
+                                                   m_NearClip, m_FarClip);
+                break;
+            case ProjectionType::Orthogonal: m_Projection = glm::ortho<float>(-10, 10, -10, 10, m_NearClip, m_FarClip); break;
+        }
     }
 }  // namespace suplex

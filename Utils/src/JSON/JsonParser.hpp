@@ -4,7 +4,7 @@
 #include <variant>
 #include <vector>
 namespace suplex {
-    struct JsonEntity
+    struct JsonObject
     {
         std::variant<std::monostate,
                      bool,
@@ -12,8 +12,8 @@ namespace suplex {
                      float,
                      double,
                      std::string,
-                     std::vector<JsonEntity>,
-                     std::unordered_map<std::string, JsonEntity>>
+                     std::vector<JsonObject>,
+                     std::unordered_map<std::string, JsonObject>>
             inner;
     };
 }  // namespace suplex

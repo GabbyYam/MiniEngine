@@ -1,6 +1,11 @@
 [
 {
   "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -I../3rdparty/glad/include -I../3rdparty/glfw/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -o CMakeFiles\\glad.dir\\3rdparty\\glad\\src\\glad.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glad\\src\\glad.c",
+  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glad/src/glad.c"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
   "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Application.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Application.cpp",
   "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Application.cpp"
 },
@@ -36,6 +41,11 @@
 },
 {
   "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\RenderPass\\ForwardPass.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\RenderPass\\ForwardPass.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/RenderPass/ForwardPass.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
   "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\Renderer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\Renderer.cpp",
   "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/Renderer.cpp"
 },
@@ -61,8 +71,8 @@
 },
 {
   "directory": "E:/Graphics/Toy/MiniEngine/build",
-  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -I../3rdparty/glad/include -I../3rdparty/glfw/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -o CMakeFiles\\glad.dir\\3rdparty\\glad\\src\\glad.c.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\glad\\src\\glad.c",
-  "file": "E:/Graphics/Toy/MiniEngine/3rdparty/glad/src/glad.c"
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../Utils/src -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Utils.dir\\Utils\\src\\JSON\\JsonParser.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Utils\\src\\JSON\\JsonParser.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Utils/src/JSON/JsonParser.cpp"
 },
 {
   "directory": "E:/Graphics/Toy/MiniEngine/build",
@@ -98,6 +108,11 @@
   "directory": "E:/Graphics/Toy/MiniEngine/build",
   "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -I../3rdparty/glfw/include -I../3rdparty/glad/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\imgui.dir\\3rdparty\\imgui\\backends\\imgui_impl_opengl3.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\3rdparty\\imgui\\backends\\imgui_impl_opengl3.cpp",
   "file": "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/backends/imgui_impl_opengl3.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Editor/src -I../3rdparty/glfw/include -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Sandbox.dir\\Sandbox\\src\\main.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Sandbox\\src\\main.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Sandbox/src/main.cpp"
 },
 {
   "directory": "E:/Graphics/Toy/MiniEngine/build",

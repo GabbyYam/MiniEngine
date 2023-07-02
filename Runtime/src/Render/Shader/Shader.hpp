@@ -118,6 +118,12 @@ namespace suplex {
             glUniform1fv(id, 1, value_ptr);
         }
 
+        void SetFloat(std::string const& uniformName, const float value)
+        {
+            auto id = glGetUniformLocation(m_ShaderID, uniformName.data());
+            glUniform1f(id, value);
+        }
+
         void SetFloat2(std::string const& uniformName, const float* value_ptr)
         {
             auto id = glGetUniformLocation(m_ShaderID, uniformName.data());

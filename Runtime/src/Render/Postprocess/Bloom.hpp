@@ -114,7 +114,7 @@ namespace suplex {
                 glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mip.textureID, 0);
 
                 // Render screen-filled quad of resolution of current mip
-                utils::RenderQuad(m_DownsampleShader);
+                utils::RenderQuad(m_DownsampleShader, QuadRenderSpecification::Screen);
 
                 // Set current mip resolution as srcResolution for next iteration
                 m_DownsampleShader->SetFloat2("resolution", glm::value_ptr(mip.size));
@@ -148,7 +148,7 @@ namespace suplex {
                 glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, nextMip.textureID, 0);
 
                 // Render screen-filled quad of resolution of current mip
-                utils::RenderQuad(m_UpsampleShader);
+                utils::RenderQuad(m_UpsampleShader, QuadRenderSpecification::Screen);
             }
 
             // Disable additive blending

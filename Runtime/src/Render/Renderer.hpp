@@ -22,13 +22,15 @@
 
 namespace suplex {
 
+    enum class RenderType { Forward, Deferred };
+
     class Renderer {
     public:
         Renderer();
         virtual ~Renderer();
         void OnUpdate(float ts);
-        void Render(const std::shared_ptr<Camera> camera);
-        void PostProcess(const std::shared_ptr<Camera> camera);
+        void Render(const std::shared_ptr<Camera> camera, RenderType renderType = RenderType::Forward);
+        void PostProcess(const std::shared_ptr<Camera> camera, RenderType renderType = RenderType::Forward);
         void OnUIRender();
         void OnResize(uint32_t w, uint32_t h);
 
@@ -37,10 +39,12 @@ namespace suplex {
             for (auto& pass : m_PassQueue) pass->Awake(value);
         }
 
-        uint32_t FramebufferID() const { return m_Framebuffer->GetID(); }
+        // uint32_t FramebufferID() const { return m_Framebuffer->GetID(); }
         uint32_t FramebufferImageID() const { return m_Framebuffer->GetTextureID0(); }
-        // uint32_t DepthbufferID() const { return m_Depthbuffer.GetID(); }
-        // uint32_t DepthMapID() const { return m_Depthbuffer.GetTextureID(); }
+
+        uint32_t DepthMapID() const { return m_DepthPass->GetDepthMapID(); }
+        uint32_t SceneDepthMapID() const { return m_DepthPass2->GetDepthMapID(); }
+
         float LastFrameRenderTime() const { return m_LastRenderTime; }
 
         auto& GetGraphicsConfig() { return m_Context->config; }
@@ -57,8 +61,8 @@ namespace suplex {
     public:
         uint32_t m_ViewportWidth = 1920, m_ViewportHeight = 1080;
 
-        std::shared_ptr<HdrFramebuffer> m_Framebuffer = std::make_shared<HdrFramebuffer>();
-        std::shared_ptr<Depthbuffer>    m_Depthbuffer = std::make_shared<Depthbuffer>();
+        std::shared_ptr<HdrFramebuffer> m_Framebuffer  = std::make_shared<HdrFramebuffer>();
+        std::shared_ptr<Depthbuffer>    m_Depthbuffer2 = std::make_shared<Depthbuffer>();
 
     private:
         std::vector<std::shared_ptr<RenderPass>> m_PassQueue;
@@ -66,6 +70,7 @@ namespace suplex {
         std::shared_ptr<RenderPass>              m_ForwardPass     = nullptr;
         std::shared_ptr<RenderPass>              m_OutlinePass     = nullptr;
         std::shared_ptr<RenderPass>              m_DepthPass       = nullptr;
+        std::shared_ptr<RenderPass>              m_DepthPass2      = nullptr;
         std::shared_ptr<RenderPass>              m_EnvMapPass      = nullptr;
         std::shared_ptr<RenderPass>              m_PrecomputePass  = nullptr;
         std::shared_ptr<RenderPass>              m_PostprocessPass = nullptr;

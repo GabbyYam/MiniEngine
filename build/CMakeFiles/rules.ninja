@@ -12,25 +12,6 @@
 # =============================================================================
 
 #############################################
-# Rule for compiling CXX files.
-
-rule CXX_COMPILER__Runtime_Release
-  depfile = $DEP_FILE
-  deps = gcc
-  command = C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
-  description = Building CXX object $out
-
-
-#############################################
-# Rule for linking CXX static library.
-
-rule CXX_STATIC_LIBRARY_LINKER__Runtime_Release
-  command = cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && D:\MinGW\bin\ar.exe qc $TARGET_FILE $LINK_FLAGS $in && D:\MinGW\bin\ranlib.exe $TARGET_FILE && $POST_BUILD"
-  description = Linking CXX static library $TARGET_FILE
-  restat = $RESTAT
-
-
-#############################################
 # Rule for compiling C files.
 
 rule C_COMPILER__glad_Release
@@ -52,6 +33,44 @@ rule C_STATIC_LIBRARY_LINKER__glad_Release
 #############################################
 # Rule for compiling CXX files.
 
+rule CXX_COMPILER__Runtime_Release
+  depfile = $DEP_FILE
+  deps = gcc
+  command = C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX static library.
+
+rule CXX_STATIC_LIBRARY_LINKER__Runtime_Release
+  command = cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && D:\MinGW\bin\ar.exe qc $TARGET_FILE $LINK_FLAGS $in && D:\MinGW\bin\ranlib.exe $TARGET_FILE && $POST_BUILD"
+  description = Linking CXX static library $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
+rule CXX_COMPILER__Utils_Release
+  depfile = $DEP_FILE
+  deps = gcc
+  command = C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX static library.
+
+rule CXX_STATIC_LIBRARY_LINKER__Utils_Release
+  command = cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && D:\MinGW\bin\ar.exe qc $TARGET_FILE $LINK_FLAGS $in && D:\MinGW\bin\ranlib.exe $TARGET_FILE && $POST_BUILD"
+  description = Linking CXX static library $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
 rule CXX_COMPILER__imgui_Release
   depfile = $DEP_FILE
   deps = gcc
@@ -65,6 +84,25 @@ rule CXX_COMPILER__imgui_Release
 rule CXX_STATIC_LIBRARY_LINKER__imgui_Release
   command = cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E rm -f $TARGET_FILE && D:\MinGW\bin\ar.exe qc $TARGET_FILE $LINK_FLAGS $in && D:\MinGW\bin\ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling CXX files.
+
+rule CXX_COMPILER__Sandbox_Release
+  depfile = $DEP_FILE
+  deps = gcc
+  command = C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX executable.
+
+rule CXX_EXECUTABLE_LINKER__Sandbox_Release
+  command = cmd.exe /C "$PRE_LINK && C:\PROGRA~1\LLVM\bin\CLANG_~1.EXE -fuse-ld=lld-link -nostartfiles -nostdlib $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Xlinker /implib:$TARGET_IMPLIB -Xlinker /pdb:$TARGET_PDB -Xlinker /version:0.0  $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
+  description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT
 
 

@@ -5,16 +5,22 @@
 #include <stdint.h>
 
 namespace suplex {
-    namespace utils {
-        enum class Shape { Cube, Quad, Sphere };
 
-        void RenderQuad(const std::shared_ptr<Shader>& shader)
+    namespace utils {
+
+        void RenderQuad(const std::shared_ptr<Shader> shader, QuadRenderSpecification spec)
         {
             static unsigned int quadVAO = 0;
             static unsigned int quadVBO = 0;
 
             shader->Bind();
-            // debug("Draw Quad");
+            if (spec == QuadRenderSpecification::Screen) {
+                auto I = glm::mat4(1.0f);
+                shader->SetMaterix4("model", glm::value_ptr(I));
+                shader->SetMaterix4("view", glm::value_ptr(I));
+                shader->SetMaterix4("proj", glm::value_ptr(I));
+            }
+
             if (quadVAO == 0) {
                 float quadVertices[] = {
                     // positions        // texture Coords
@@ -37,7 +43,7 @@ namespace suplex {
             glBindVertexArray(0);
         }
 
-        void RenderCube(const std::shared_ptr<Shader>& shader)
+        void RenderCube(const std::shared_ptr<Shader> shader)
         {
             static unsigned int cubeVAO = 0;
             static unsigned int cubeVBO = 0;
@@ -113,7 +119,7 @@ namespace suplex {
             glBindVertexArray(0);
         }
 
-        void RenderSphere(const std::shared_ptr<Shader>& shader)
+        void RenderSphere(const std::shared_ptr<Shader> shader)
         {
             static unsigned int sphereVAO = 0;
             static unsigned int indexCount;
@@ -200,7 +206,7 @@ namespace suplex {
             glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
         }
 
-        void RenderGird(const std::shared_ptr<Shader>& shader)
+        void RenderGird(const std::shared_ptr<Shader> shader)
         {
             static uint32_t gridVAO = 0;
             static uint32_t gridVBO = 0;

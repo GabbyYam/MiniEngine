@@ -21,8 +21,10 @@
 						0,
 						1,
 						2,
+						3,
 						4,
-						5
+						6,
+						7
 					]
 				},
 				{
@@ -50,8 +52,8 @@
 					"source" : "3rdparty/glfw/src",
 					"targetIndexes" : 
 					[
-						3,
-						6
+						5,
+						8
 					]
 				}
 			],
@@ -73,8 +75,10 @@
 						0,
 						1,
 						2,
+						3,
 						4,
-						5
+						6,
+						7
 					]
 				},
 				{
@@ -87,8 +91,8 @@
 					"parentIndex" : 0,
 					"targetIndexes" : 
 					[
-						3,
-						6
+						5,
+						8
 					]
 				}
 			],
@@ -97,21 +101,35 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Editor::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Editor-Release-7bc24e88db6aefc65b74.json",
+					"jsonFile" : "target-Editor-Release-e7c371971901e087425f.json",
 					"name" : "Editor",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "Runtime::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Runtime-Release-6982f04eccdffd9dc19c.json",
+					"jsonFile" : "target-Runtime-Release-301c4848d7e1371adeff.json",
 					"name" : "Runtime",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
+					"id" : "Sandbox::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Sandbox-Release-56b6fe30f3b5f859af46.json",
+					"name" : "Sandbox",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Utils::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Utils-Release-983a7e900d35abdfdcc4.json",
+					"name" : "Utils",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "glad::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-glad-Release-d40ca1c77bdbd133eaf5.json",
+					"jsonFile" : "target-glad-Release-a7f15b6ef93a24f5d7a8.json",
 					"name" : "glad",
 					"projectIndex" : 0
 				},
@@ -125,14 +143,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "imgui::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-imgui-Release-f62e1dce4f50130a74ad.json",
+					"jsonFile" : "target-imgui-Release-08bf1919a791aa620c1d.json",
 					"name" : "imgui",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "imguizmo::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-imguizmo-Release-2d8553c10f7cd5d491aa.json",
+					"jsonFile" : "target-imguizmo-Release-ab9af98c66f0c57dc1f3.json",
 					"name" : "imguizmo",
 					"projectIndex" : 0
 				},

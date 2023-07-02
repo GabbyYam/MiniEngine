@@ -3,9 +3,11 @@ layout(location = 0) out vec4 FragColor;
 layout(location = 1) out vec4 BrightColor;
 
 in vec2 TexCoords;
+in vec3 fragPos;
 
 uniform sampler2D scene;
 uniform sampler2D bloomBlur;
+uniform sampler2D DepthMap;
 
 uniform int tonemappingType = 0;
 uniform float exposure;
@@ -14,6 +16,15 @@ uniform int enableBloom = 1;
 uniform float bloomIntensity;
 
 uniform int enableFXAA;
+
+
+uniform vec3 viewPos;
+uniform int fogType;
+uniform float fogDensity;
+
+uniform float nearClip;
+uniform float farClip;
+
 
 #define FXAA_SPAN_MAX 8.0
 #define FXAA_REDUCE_MUL   (1.0 / FXAA_SPAN_MAX)
@@ -76,6 +87,11 @@ vec3 ACES_ToneMapping(const vec3 x) {
     return clamp((x * (a * x + b)) / (x * (c * x + d ) + e), 0.0, 1.0);
 }
 
+float LinearizeDepth(float depth)
+{
+    float z = depth * 2.0 - 1.0; // Back to NDC 
+    return (2.0 * nearClip * farClip) / (farClip + nearClip - z * (farClip - nearClip));
+}
 
 void main()
 {
@@ -88,6 +104,31 @@ void main()
 
     vec3 color =  enableBloom == 1 ? mix(origin, bloom, bloomIntensity) : origin;
 
+    {
+        float fogFactor = 1.0;
+        float depth = texture(DepthMap, TexCoords).r;
+        float dist = LinearizeDepth(depth) / farClip;
+        switch (fogType) {
+            case 0:
+                break;
+            case 1:
+                fogFactor = (1.0 - fogDensity *  dist);
+                break;
+            case 2:
+                fogFactor = exp(-(fogDensity * dist));
+                break;
+            case 3:
+                fogFactor = exp(-pow(fogDensity * dist, 2));
+                break;
+        }
+        fogFactor = clamp(fogFactor, 0.0, 1.0);
+        
+
+        vec3 fogColor = vec3(0.5, 0.5, 0.5);
+        color = mix(fogColor, color, fogFactor);
+        // color = vec3(dist);
+    }
+
     // tone mapping
     switch (tonemappingType) {
         case 0:
@@ -99,6 +140,8 @@ void main()
         case 2:
             break;
     }
+
+    
 
     // // also gamma correct while we're at it
     const float gamma = 2.2;

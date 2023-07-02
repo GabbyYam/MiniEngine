@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.20)
 set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Editor/resources)
 set(EDITOR_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Editor/src)
 set(RUNTIME_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Runtime/src)
+set(UTILS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Utils/src)
+set(SANDBOX_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Sandbox/src)
 set(WALNUT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Walnut/src)
 set(THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 set(ICON_FONT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/IconFontAwesome)
@@ -11,7 +13,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_BUILD_TYPE Release)
 
 project(MiniEngine VERSION 0.2.0)
-
 
 find_package(spdlog REQUIRED)
 find_package(glm REQUIRED)
@@ -52,7 +53,13 @@ target_link_libraries(imguizmo PUBLIC imgui glfw glad)
 file(GLOB_RECURSE walnut_src ${WALNUT_SOURCE_DIR}/*.cpp )
 file(GLOB_RECURSE runtime_src ${RUNTIME_SOURCE_DIR}/*.cpp ${RUNTIME_SOURCE_DIR}/*.embed)
 file(GLOB_RECURSE editor_src ${EDITOR_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE utils_src ${UTILS_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE sandbox_src ${SANDBOX_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE resources ${RESOURCE_DIR}/*.rc)
+
+# Utils
+add_library(Utils ${utils_src})
+target_include_directories(Utils PUBLIC ${UTILS_SOURCE_DIR})
 
 # Engine Runtime for Editor
 add_library(Runtime ${runtime_src})
@@ -72,3 +79,14 @@ target_link_libraries(Editor PRIVATE imgui imguizmo)
 target_link_libraries(Editor PRIVATE spdlog::spdlog)
 target_link_libraries(Editor PRIVATE glad glfw glm::glm)
 target_link_libraries(Editor PRIVATE EnTT::EnTT yaml-cpp)
+
+# Sandbox
+add_executable(Sandbox ${sandbox_src})
+target_include_directories(Sandbox PRIVATE ${EDITOR_SOURCE_DIR})
+target_include_directories(Sandbox PRIVATE ${THIRD_PARTY_DIR}/glfw/include ${THIRD_PARTY_DIR}/stb)
+target_include_directories(Sandbox PRIVATE ${ICON_FONT_DIR})
+target_link_libraries(Sandbox PRIVATE Runtime)
+target_link_libraries(Sandbox PRIVATE imgui imguizmo)
+target_link_libraries(Sandbox PRIVATE spdlog::spdlog)
+target_link_libraries(Sandbox PRIVATE glad glfw glm::glm)
+target_link_libraries(Sandbox PRIVATE EnTT::EnTT yaml-cpp)

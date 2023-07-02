@@ -16,6 +16,9 @@
 #include <vector>
 
 namespace suplex {
+
+    constexpr int MAX_BONE_INFLUENCE = 4;
+
     struct Vertex
     {
         glm::vec3 position  = {0, 0, 0};
@@ -23,6 +26,33 @@ namespace suplex {
         glm::vec2 texCoord  = {0, 0};
         glm::vec3 tangent   = {0, 0, 0};
         glm::vec3 bitangent = {0, 0, 0};
+
+        int   boneIDs[MAX_BONE_INFLUENCE]{-1};
+        float weights[MAX_BONE_INFLUENCE]{0.0f};
+
+        Vertex()
+        {
+            for (int i = 0; i < MAX_BONE_INFLUENCE; i++) {
+                boneIDs[i] = -1;
+                weights[i] = 0.0f;
+            }
+        }
+
+        void Reset()
+        {
+            for (int i = 0; i < MAX_BONE_INFLUENCE; i++) {
+                boneIDs[i] = -1;
+                weights[i] = 0.0f;
+            }
+        }
+
+        void SetBoneData(int boneID, float weight)
+        {
+            for (int i = 0; i < MAX_BONE_INFLUENCE; ++i) {
+                boneIDs[i] = boneID;
+                weights[i] = weight;
+            }
+        }
     };
 
     class Mesh {
@@ -81,6 +111,13 @@ namespace suplex {
             // vertex bitangent
             glEnableVertexAttribArray(4);
             glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, bitangent));
+
+            // Bone Id & weights
+            glEnableVertexAttribArray(5);
+            glVertexAttribIPointer(5, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, boneIDs));
+            glEnableVertexAttribArray(6);
+            glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, weights));
+
             glBindVertexArray(0);
         }
 

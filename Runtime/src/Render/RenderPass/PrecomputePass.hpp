@@ -114,7 +114,7 @@ namespace suplex {
             glViewport(0, 0, 512, 512);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            utils::RenderQuad(shader);
+            utils::RenderQuad(shader, QuadRenderSpecification::Screen);
             shader->Unbind();
 
             // Return to default framebuffer

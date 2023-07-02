@@ -7,6 +7,7 @@
 #include <memory>
 #include <spdlog/spdlog.h>
 #include <stdint.h>
+#include <utility>
 #include <yaml-cpp/emitter.h>
 #include <yaml-cpp/emittermanip.h>
 #include <yaml-cpp/exceptions.h>

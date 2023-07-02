@@ -14,11 +14,12 @@ using namespace glm;
 
 namespace suplex {
     enum class PolygonMode { Shaded, WireFrame };
+    enum class FogType { None, Linear, Exponential, ExponentialSquare };
 
     struct LightSetting
     {
         // Light space camera
-        std::shared_ptr<LightCamera> cameraLS = std::make_shared<LightCamera>(45.0f, 0.01f, 32.0f);
+        std::shared_ptr<Camera> cameraLS = std::make_shared<Camera>(45.0f, 0.01f, 64.0f, ProjectionType::Orthogonal);
 
         // Light Parameters
         vec3  lightColor{0.2, 1.0, 0.2f};
@@ -43,6 +44,11 @@ namespace suplex {
 
         // Anti-aliasing
         bool enableFXAA = true;
+
+        // Fog
+        bool    enableFog  = true;
+        FogType fogType    = FogType::None;
+        float   fogDensity = 0.3f;
     };
 
     struct PBRSetting
