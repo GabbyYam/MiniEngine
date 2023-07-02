@@ -15,7 +15,7 @@ namespace suplex {
             Default = Left,
         };
 
-        void ItemLabel(std::string const& title, ItemLabelFlag flag);
+        void ItemLabel(std::string const& title, ItemLabelFlag flag = ItemLabelFlag::Left);
         void Vec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
         void EditTransform(float* cameraView, float* cameraProjection, ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode);
     }  // namespace widget

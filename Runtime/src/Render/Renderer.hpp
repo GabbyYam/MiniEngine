@@ -36,22 +36,51 @@ namespace suplex {
 
         void OnAwake(bool value)
         {
-            for (auto& pass : m_PassQueue) pass->Awake(value);
+            for (auto& pass : m_PassQueue)
+                pass->Awake(value);
         }
 
         // uint32_t FramebufferID() const { return m_Framebuffer->GetID(); }
-        uint32_t FramebufferImageID() const { return m_Framebuffer->GetTextureID0(); }
+        uint32_t FramebufferImageID() const
+        {
+            return m_Framebuffer2->GetTextureID0();
+        }
 
-        uint32_t DepthMapID() const { return m_DepthPass->GetDepthMapID(); }
-        uint32_t SceneDepthMapID() const { return m_DepthPass2->GetDepthMapID(); }
+        uint32_t DepthMapID() const
+        {
+            return m_DepthPass->GetDepthMapID();
+        }
 
-        float LastFrameRenderTime() const { return m_LastRenderTime; }
+        uint32_t SceneDepthMapID() const
+        {
+            return m_DepthPass2->GetDepthMapID();
+        }
 
-        auto& GetGraphicsConfig() { return m_Context->config; }
-        auto& GetGraphicsContext() { return m_Context; }
-        auto& GetGameObjectList() { return m_Scene; }
-        auto& GetShadersList() { return m_ForwardPass->GetShaders(); }
-        auto& GetScene() { return m_Scene; }
+        float LastFrameRenderTime() const
+        {
+            return m_LastRenderTime;
+        }
+
+        auto& GetGraphicsConfig()
+        {
+            return m_Context->config;
+        }
+        auto& GetGraphicsContext()
+        {
+            return m_Context;
+        }
+        auto& GetGameObjectList()
+        {
+            return m_Scene;
+        }
+        auto& GetShadersList()
+        {
+            return m_ForwardPass->GetShaders();
+        }
+        auto& GetScene()
+        {
+            return m_Scene;
+        }
 
     private:
         void OnBufferResize();
@@ -62,6 +91,7 @@ namespace suplex {
         uint32_t m_ViewportWidth = 1920, m_ViewportHeight = 1080;
 
         std::shared_ptr<HdrFramebuffer> m_Framebuffer  = std::make_shared<HdrFramebuffer>();
+        std::shared_ptr<HdrFramebuffer> m_Framebuffer2 = std::make_shared<HdrFramebuffer>();
         std::shared_ptr<Depthbuffer>    m_Depthbuffer2 = std::make_shared<Depthbuffer>();
 
     private:

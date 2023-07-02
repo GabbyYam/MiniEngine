@@ -50,9 +50,11 @@ namespace suplex {
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER,
-                            GL_LINEAR_MIPMAP_LINEAR);  // enable pre-filter mipmap sampling (combatting visible dots artifact)
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
 
             glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
         }
@@ -83,7 +85,8 @@ namespace suplex {
                         break;
                 }
 
-                if (data == nullptr) spdlog::error("Cubemap texture failed to load at path: {}", paths[i]);
+                if (data == nullptr)
+                    spdlog::error("Cubemap texture failed to load at path: {}", paths[i]);
                 stbi_image_free(data);
             }
             stbi_set_flip_vertically_on_load(false);

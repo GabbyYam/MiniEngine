@@ -13,7 +13,8 @@ namespace suplex {
 
     void HdrFramebuffer::OnResize(uint32_t w, uint32_t h)
     {
-        if (w == m_Width && h == m_Height) return;
+        if (w == m_Width && h == m_Height)
+            return;
         m_Width = w, m_Height = h;
 
         // Bind to self
@@ -27,16 +28,19 @@ namespace suplex {
             // glGenBuffers(1, &m_Colorbuffer[i]);
 
             glBindTexture(GL_TEXTURE_2D, m_Colorbuffer[i]);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_Width, m_Height, 0, GL_RGB, GL_FLOAT, NULL);
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_Width, m_Height, 0, GL_RGB, GL_FLOAT, NULL);
+            glGenerateMipmap(GL_TEXTURE_2D);
+
             // attach texture to framebuffer
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_Colorbuffer[i], 0);
-
-            glGenerateMipmap(GL_TEXTURE_2D);
 
             glBindTexture(GL_TEXTURE_2D, 0);
         }

@@ -1,20 +1,21 @@
 #pragma once
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <memory>
+
+#include "Render/Buffer/Framebuffer.hpp"
 #include "Render/Camera/Camera.hpp"
 #include "Render/Camera/LightCamera.hpp"
-#include "Render/Buffer/Framebuffer.hpp"
 #include "Render/Config/Config.hpp"
 #include "Render/Postprocess/PostProcess.hpp"
 #include "Render/Texture/CubeMap.hpp"
 #include "Scene/Entity/Entity.hpp"
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/glm.hpp>
-#include <memory>
 
 using namespace glm;
 
 namespace suplex {
     enum class PolygonMode { Shaded, WireFrame };
-    enum class FogType { None, Linear, Exponential, ExponentialSquare };
+    enum class FogType { None, Linear, Exponential, Exponential2 };
 
     struct LightSetting
     {
@@ -47,8 +48,12 @@ namespace suplex {
 
         // Fog
         bool    enableFog  = true;
-        FogType fogType    = FogType::None;
-        float   fogDensity = 0.3f;
+        FogType fogType    = FogType::Exponential2;
+        float   fogDensity = 0.2f;
+        float   fogStart   = 0.0f;
+        float   fogEnd     = 300.0f;
+
+        bool enableDoF = false;
     };
 
     struct PBRSetting

@@ -40,6 +40,7 @@ namespace suplex {
 
         // m_Framebuffer = Framebuffer(m_ViewportWidth, m_ViewportHeight);
         m_Framebuffer->OnResize(m_ViewportWidth, m_ViewportHeight);
+        m_Framebuffer2->OnResize(m_ViewportWidth, m_ViewportHeight);
 
         m_Context = std::make_shared<GraphicsContext>();
         // m_Context->config   = std::make_shared<GraphicsConfig>();
@@ -113,14 +114,19 @@ namespace suplex {
             m_BloomMergeShader->SetInt("enableFXAA", config->postprocessSetting.enableFXAA);
             m_BloomMergeShader->SetInt("fogType", (int)config->postprocessSetting.fogType);
             m_BloomMergeShader->SetFloat("fogDensity", config->postprocessSetting.fogDensity);
+            m_BloomMergeShader->SetFloat("fogStart", config->postprocessSetting.fogStart);
+            m_BloomMergeShader->SetFloat("fogEnd", config->postprocessSetting.fogEnd);
+
+            m_BloomMergeShader->SetInt("enableDoF", config->postprocessSetting.enableDoF);
 
             m_BloomMergeShader->BindTexture("scene", m_Framebuffer->GetTextureID0(), 0, SamplerType::Texture2D);
             m_BloomMergeShader->BindTexture("bloomBlur", m_Bloom->GetResultID(), 1, SamplerType::Texture2D);
             m_BloomMergeShader->BindTexture("DepthMap", m_DepthPass2->GetDepthMapID(), 2, SamplerType::Texture2D);
 
             // Render result in screen space quad
-            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
+            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer2->GetID());
             glViewport(0, 0, m_ViewportWidth, m_ViewportHeight);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             utils::RenderQuad(m_BloomMergeShader, QuadRenderSpecification::Screen);
 
@@ -128,7 +134,10 @@ namespace suplex {
         }
     }
 
-    void Renderer::OnUIRender() { m_UIRenderPass->Render(m_ActiveCamera, m_Scene, m_Context, m_PrecomputeContext); }
+    void Renderer::OnUIRender()
+    {
+        m_UIRenderPass->Render(m_ActiveCamera, m_Scene, m_Context, m_PrecomputeContext);
+    }
 
     void Renderer::OnUpdate(float ts)
     {
@@ -147,10 +156,12 @@ namespace suplex {
 
     void Renderer::OnResize(uint32_t w, uint32_t h)
     {
-        if (m_ViewportWidth == w && m_ViewportHeight == h) return;
+        if (m_ViewportWidth == w && m_ViewportHeight == h)
+            return;
 
         m_ViewportWidth = w, m_ViewportHeight = h;
         m_Framebuffer->OnResize(w, h);
+        m_Framebuffer2->OnResize(w, h);
     }
 
     void Renderer::BakeEnvironmentLight()

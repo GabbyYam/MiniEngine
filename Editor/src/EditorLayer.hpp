@@ -69,7 +69,8 @@ namespace suplex {
             };
 
             m_Context = std::make_shared<RuntimeContext>(context);
-            for (auto& panel : m_Panels) panel->SetContext(m_Context);
+            for (auto& panel : m_Panels)
+                panel->SetContext(m_Context);
 
             m_SceneSerilizer = std::make_shared<SceneSerializer>(m_Renderer->GetScene());
         }
@@ -78,7 +79,8 @@ namespace suplex {
         {
             m_Camera->OnUpdate(ts);
 
-            if (m_Play) m_Renderer->OnUpdate(ts);
+            if (m_Play)
+                m_Renderer->OnUpdate(ts);
 
             m_Renderer->GetGraphicsContext()->activeEntity = m_SceneHirarchyPanel->GetSelectedEntity();
             m_Renderer->Render(m_Camera);
@@ -126,7 +128,8 @@ namespace suplex {
                 ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
             window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
-            if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) window_flags |= ImGuiWindowFlags_NoBackground;
+            if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+                window_flags |= ImGuiWindowFlags_NoBackground;
 
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
             ImGui::Begin("DockSpace Demo", nullptr, window_flags);
@@ -221,7 +224,9 @@ namespace suplex {
                     ImGuizmo::Manipulate(glm::value_ptr(camera->GetView()), glm::value_ptr(camera->GetProjection()), m_ActiveOperation,
                                          m_ActiveMode, glm::value_ptr(transform));
 
-                    if (ImGuizmo::IsUsing()) { transformComponent.SetTransform(transform); }
+                    if (ImGuizmo::IsUsing()) {
+                        transformComponent.SetTransform(transform);
+                    }
                 }
 
                 ImGui::End();
@@ -229,20 +234,20 @@ namespace suplex {
             }
 
             {
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0.0, 0.0});
-                ImGui::Begin("Depth Buffer (Light Space)");
+                // ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0.0, 0.0});
+                // ImGui::Begin("Depth Buffer (Light Space)");
 
-                ImGui::Image((void*)(intptr_t)m_Renderer->DepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f}, {1.0f, 0.0f});
+                // ImGui::Image((void*)(intptr_t)m_Renderer->DepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f}, {1.0f, 0.0f});
 
-                ImGui::End();
+                // ImGui::End();
 
-                ImGui::Begin("Depth Buffer (View Space)");
+                // ImGui::Begin("Depth Buffer (View Space)");
 
-                ImGui::Image((void*)(intptr_t)m_Renderer->SceneDepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f},
-                             {1.0f, 0.0f});
-                ImGui::End();
+                // ImGui::Image((void*)(intptr_t)m_Renderer->SceneDepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f},
+                //              {1.0f, 0.0f});
+                // ImGui::End();
 
-                ImGui::PopStyleVar(1);
+                // ImGui::PopStyleVar(1);
             }
 
             {
@@ -264,9 +269,11 @@ namespace suplex {
                     if (ImGui::BeginCombo("Polygon Mode", previewName.data(), 0)) {
                         for (int i = 0; i < PolygonNames.size(); i++) {
                             const bool is_selected = (index == i);
-                            if (ImGui::Selectable(PolygonNames[i].data(), is_selected)) config->polygonMode = (PolygonMode)i;
+                            if (ImGui::Selectable(PolygonNames[i].data(), is_selected))
+                                config->polygonMode = (PolygonMode)i;
                             // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                            if (is_selected) ImGui::SetItemDefaultFocus();
+                            if (is_selected)
+                                ImGui::SetItemDefaultFocus();
                         }
                         ImGui::EndCombo();
                     }
@@ -280,9 +287,11 @@ namespace suplex {
                     if (ImGui::BeginCombo("##Operation Mode", previewName.data(), 0)) {
                         for (int i = 0; i < OperationModes.size(); i++) {
                             const bool is_selected = (index == i);
-                            if (ImGui::Selectable(OperationModes[i].data(), is_selected)) m_ActiveMode = (ImGuizmo::MODE)i;
+                            if (ImGui::Selectable(OperationModes[i].data(), is_selected))
+                                m_ActiveMode = (ImGuizmo::MODE)i;
                             // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                            if (is_selected) ImGui::SetItemDefaultFocus();
+                            if (is_selected)
+                                ImGui::SetItemDefaultFocus();
                         }
                         ImGui::EndCombo();
                     }
@@ -314,7 +323,8 @@ namespace suplex {
                 // Rotate Directional Light
                 float        radius = 10;
                 static float time   = 0;
-                if (m_Play) time += m_DeltaTime * 0.2;
+                if (m_Play)
+                    time += m_DeltaTime * 0.2;
 
                 cameraLS->GetPosition() = vec3(radius * sin(time), cameraLS->GetPosition().y, radius * cos(time));
                 cameraLS->GetForward()  = vec3(0.0f) - cameraLS->GetPosition();
@@ -346,7 +356,8 @@ namespace suplex {
                                 if (ImGui::Selectable(ToneMappingNames[i].data(), is_selected))
                                     config->postprocessSetting.tonemappingType = (ToneMappingType)i;
                                 // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                                if (is_selected) ImGui::SetItemDefaultFocus();
+                                if (is_selected)
+                                    ImGui::SetItemDefaultFocus();
                             }
                             ImGui::EndCombo();
                         }
@@ -376,11 +387,25 @@ namespace suplex {
                                 if (ImGui::Selectable(fogTypeNames[i].data(), is_selected))
                                     config->postprocessSetting.fogType = (FogType)i;
                                 // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                                if (is_selected) ImGui::SetItemDefaultFocus();
+                                if (is_selected)
+                                    ImGui::SetItemDefaultFocus();
                             }
                             ImGui::EndCombo();
                         }
+                        if (config->postprocessSetting.fogType == FogType::Linear) {
+                            auto& start = config->postprocessSetting.fogStart;
+                            auto& end   = config->postprocessSetting.fogEnd;
+                            widget::ItemLabel("Fog Start");
+                            ImGui::DragFloat("##FogStart", &start, 5.0f, 0.0f, end);
+                            widget::ItemLabel("Fog End");
+                            ImGui::DragFloat("##FogEnd", &end, 5.0f, start, 10000.0f);
+                        }
                         ImGui::SliderFloat("Fog Density", &config->postprocessSetting.fogDensity, 0.0f, 1.0f);
+                    }
+
+                    {
+                        ImGui::Text("Depth of Field");
+                        ImGui::Checkbox("Enable DoF", &config->postprocessSetting.enableDoF);
                     }
                 }
 
@@ -399,16 +424,19 @@ namespace suplex {
             ImGui::End();
 
             // Render Panel
-            for (auto panel : m_Panels) panel->OnUIRender();
+            for (auto panel : m_Panels)
+                panel->OnUIRender();
 
-            if (m_ShowDemoWindow) ImGui::ShowDemoWindow();
+            if (m_ShowDemoWindow)
+                ImGui::ShowDemoWindow();
 
             m_Renderer->OnUIRender();
         }
 
         virtual void OnResize(uint32_t w, uint32_t h) override
         {
-            if (w == m_ViewportWidth && h == m_ViewportHeight) return;
+            if (w == m_ViewportWidth && h == m_ViewportHeight)
+                return;
             m_ViewportWidth  = w;
             m_ViewportHeight = h;
 
@@ -418,14 +446,20 @@ namespace suplex {
 
         void OnEvent()
         {
-            if (ImGuizmo::IsUsingAny()) return;
-            if (Input::IsMouseButtonDown(MouseButton::Right)) return;
-            if (Input::IsKeyDown(KeyCode::W)) m_ActiveOperation = ImGuizmo::OPERATION::TRANSLATE;
-            if (Input::IsKeyDown(KeyCode::E)) m_ActiveOperation = ImGuizmo::OPERATION::SCALE;
-            if (Input::IsKeyDown(KeyCode::R)) m_ActiveOperation = ImGuizmo::OPERATION::ROTATE;
+            if (ImGuizmo::IsUsingAny())
+                return;
+            if (Input::IsMouseButtonDown(MouseButton::Right))
+                return;
+            if (Input::IsKeyDown(KeyCode::W))
+                m_ActiveOperation = ImGuizmo::OPERATION::TRANSLATE;
+            if (Input::IsKeyDown(KeyCode::E))
+                m_ActiveOperation = ImGuizmo::OPERATION::SCALE;
+            if (Input::IsKeyDown(KeyCode::R))
+                m_ActiveOperation = ImGuizmo::OPERATION::ROTATE;
             if (ImGui::IsMouseClicked(0)) {
                 // if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyDown(Key::LeftAlt))
-                if (m_ViewportHovered) m_SceneHirarchyPanel->SetSelectedEntity(m_HoveredEntity);
+                if (m_ViewportHovered)
+                    m_SceneHirarchyPanel->SetSelectedEntity(m_HoveredEntity);
             }
             // if (Input::IsMouseButtonDown(MouseButton::Left) && ImGui::IsWindowHovered()) m_Context->activeEntity = -1;
         }
