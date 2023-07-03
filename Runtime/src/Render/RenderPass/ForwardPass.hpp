@@ -44,7 +44,7 @@ namespace suplex {
             static int value = -1;
             glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-            glClearTexImage(m_Framebuffer->GetTextureID2(), 0, GL_RED_INTEGER, GL_INT, &value);
+            glClearTexImage(m_Framebuffer->GetColorAttachmentID(2), 0, GL_RED_INTEGER, GL_INT, &value);
             glDisable(GL_STENCIL_TEST);
             // =====================================================
 
@@ -70,7 +70,6 @@ namespace suplex {
             auto DrawEntity = [&](Entity entity, std::optional<std::shared_ptr<Shader>> effectShader = std::nullopt) {
                 auto& meshRenderer = entity.GetComponent<MeshRendererComponent>();
 
-                // auto shader = effectShader.value_or(m_Shaders[meshRenderer.m_Model->GetMaterialIndex()]);
                 auto shader = effectShader.value_or(m_Shaders[meshRenderer.m_Model->GetMaterialIndex()]);
                 shader->Bind();
                 shader->SetInt("entityID", static_cast<int>(entity.GetID()));
@@ -101,7 +100,8 @@ namespace suplex {
 
                 shader->BindTexture("DiffuseMap", solidWhite.GetID(), 0, SamplerType::Texture2D);
 
-                for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(shader);
+                for (auto& mesh : meshRenderer.m_Model->GetMeshes())
+                    mesh.Render(shader);
                 shader->Unbind();
             };
 
@@ -175,7 +175,8 @@ namespace suplex {
                 m_OutlineShader->SetMaterix4("view", glm::value_ptr(view));
                 m_OutlineShader->SetMaterix4("proj", glm::value_ptr(proj));
 
-                for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(m_OutlineShader);
+                for (auto& mesh : meshRenderer.m_Model->GetMeshes())
+                    mesh.Render(m_OutlineShader);
             }
             m_OutlineShader->Unbind();
 

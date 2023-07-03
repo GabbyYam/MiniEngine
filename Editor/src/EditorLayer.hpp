@@ -99,7 +99,7 @@ namespace suplex {
             int mouseY             = (int)my;
 
             if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y) {
-                int pixelData = m_Renderer->m_Framebuffer->ReadPixel(mouseX, mouseY);
+                int pixelData = m_Renderer->m_Framebuffer->ReadPixel(2, mouseX, mouseY);
                 m_HoveredEntity =
                     (pixelData == -1 || pixelData > 9961) ? Entity() : Entity((entt::entity)pixelData, m_Renderer->GetScene().get());
             }
@@ -378,7 +378,7 @@ namespace suplex {
 
                     {
                         ImGui::Text("Fog");
-                        std::vector<std::string> fogTypeNames{"None", "Linear", "Exponential", "ExponentialSquare"};
+                        std::vector<std::string> fogTypeNames{"None", "Linear", "Exponential", "Exponential2"};
 
                         int index = (int)config->postprocessSetting.fogType;
                         if (ImGui::BeginCombo("Fog Function", fogTypeNames[index].data(), 0)) {

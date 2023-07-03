@@ -8,14 +8,16 @@
 #include <vcruntime_typeinfo.h>
 
 namespace suplex {
-    constexpr char* s_DefaultAssetPath = "../Assets";
+    // const char* m_DefaultDirectory = "../Assets";
 
-    ContentBrowserPanel::ContentBrowserPanel() : m_CurrentDirectory(s_DefaultAssetPath)
+    ContentBrowserPanel::ContentBrowserPanel() : m_CurrentDirectory(m_DefaultDirectory)
     {
         m_DirectoryICON =
-            std::make_shared<Texture2D>(std::string(s_DefaultAssetPath) + "/Icons/icons8-folder-50.png", ImageFormat::RGBA);
-        m_FileICON   = std::make_shared<Texture2D>(std::string(s_DefaultAssetPath) + "/Icons/icons8-file-50.png", ImageFormat::RGBA);
-        m_ReturnICON = std::make_shared<Texture2D>(std::string(s_DefaultAssetPath) + "/Icons/icons8-return-50.png", ImageFormat::RGBA);
+            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-folder-50.png", ImageFormat::RGBA);
+        m_FileICON =
+            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-file-50.png", ImageFormat::RGBA);
+        m_ReturnICON =
+            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-return-50.png", ImageFormat::RGBA);
     }
 
     void ContentBrowserPanel::OnUIRender()
@@ -23,7 +25,7 @@ namespace suplex {
         ImGui::Begin("Content Browser");
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0, 0, 0, 0});
 
-        if (m_CurrentDirectory != std::filesystem::path(s_DefaultAssetPath)) {
+        if (m_CurrentDirectory != std::filesystem::path(m_DefaultDirectory)) {
             static float returnSize = 16.0f;
             if (ImGui::ImageButton("##Return", (void*)(intptr_t)m_ReturnICON->GetID(), {returnSize, returnSize})) {
                 m_CurrentDirectory = m_CurrentDirectory.parent_path();
@@ -63,7 +65,8 @@ namespace suplex {
             }
 
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
-                if (it.is_directory()) m_CurrentDirectory /= path.filename();
+                if (it.is_directory())
+                    m_CurrentDirectory /= path.filename();
             }
             ImGui::TextWrapped("%s", filename.data());
             ImGui::NextColumn();

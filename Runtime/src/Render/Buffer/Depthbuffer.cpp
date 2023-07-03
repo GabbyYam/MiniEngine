@@ -10,7 +10,8 @@ namespace suplex {
 
     void Depthbuffer::OnResize(uint32_t w, uint32_t h)
     {
-        if (w == m_Width && h == m_Height) return;
+        if (w == m_Width && h == m_Height)
+            return;
         m_Width = w, m_Height = h;
         glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
 

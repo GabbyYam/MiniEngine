@@ -15,6 +15,7 @@ namespace suplex {
         virtual void OnEvent() override;
 
     private:
+        std::filesystem::path      m_DefaultDirectory = "../Assets";
         std::filesystem::path      m_CurrentDirectory;
         std::shared_ptr<Texture2D> m_DirectoryICON;
         std::shared_ptr<Texture2D> m_FileICON;

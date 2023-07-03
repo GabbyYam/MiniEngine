@@ -39,8 +39,15 @@ namespace suplex {
         glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
         // m_Framebuffer = Framebuffer(m_ViewportWidth, m_ViewportHeight);
+        FramebufferSpecification spec;
+        spec.Attachments = {
+            {TextureFormat::RGBA, TextureFilter::Linear, TextureWrap::ClampToEdge},
+            {TextureFormat::RGBA, TextureFilter::Linear, TextureWrap::ClampToEdge},
+            {TextureFormat::Depth, TextureFilter::Linear, TextureWrap::ClampToBorder},
+            {TextureFormat::RED_INTEGER, TextureFilter::Linear, TextureWrap::ClampToEdge},
+        };
+        m_Framebuffer = std::make_shared<Framebuffer>(spec);
         m_Framebuffer->OnResize(m_ViewportWidth, m_ViewportHeight);
-        m_Framebuffer2->OnResize(m_ViewportWidth, m_ViewportHeight);
 
         m_Context = std::make_shared<GraphicsContext>();
         // m_Context->config   = std::make_shared<GraphicsConfig>();
@@ -75,8 +82,8 @@ namespace suplex {
         m_ActiveCamera = camera;
         Walnut::Timer timer;
 
-        m_DepthPass->Render(m_Context->config->lightSetting.cameraLS, m_Scene, m_Context, m_PrecomputeContext);
-        m_DepthPass2->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
+        m_DepthPassLS->Render(m_Context->config->lightSetting.cameraLS, m_Scene, m_Context, m_PrecomputeContext);
+        m_DepthPass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
         m_ForwardPass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
 
         m_LastRenderTime = timer.ElapsedMillis();
@@ -96,48 +103,10 @@ namespace suplex {
             m_EnvMapPass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
         }
 
-        if (config->postprocessSetting.enablePostprocess) {
-            m_Bloom->Render(m_Framebuffer->GetTextureID1(), config->postprocessSetting.bloomFilterRadius);
-
-            m_BloomMergeShader->Bind();
-
-            m_BloomMergeShader->SetFloat3("viewPos", glm::value_ptr(camera->GetPosition()));
-            m_BloomMergeShader->SetFloat("nearClip", camera->GetNearClip());
-            m_BloomMergeShader->SetFloat("farClip", camera->GetFarClip());
-
-            m_BloomMergeShader->SetInt("tonemappingType", (int)config->postprocessSetting.tonemappingType);
-            m_BloomMergeShader->SetFloat("exposure", &config->postprocessSetting.exposure);
-
-            m_BloomMergeShader->SetInt("enableBloom", config->postprocessSetting.enableBloom);
-            m_BloomMergeShader->SetFloat("bloomIntensity", &config->postprocessSetting.bloomIntensity);
-
-            m_BloomMergeShader->SetInt("enableFXAA", config->postprocessSetting.enableFXAA);
-            m_BloomMergeShader->SetInt("fogType", (int)config->postprocessSetting.fogType);
-            m_BloomMergeShader->SetFloat("fogDensity", config->postprocessSetting.fogDensity);
-            m_BloomMergeShader->SetFloat("fogStart", config->postprocessSetting.fogStart);
-            m_BloomMergeShader->SetFloat("fogEnd", config->postprocessSetting.fogEnd);
-
-            m_BloomMergeShader->SetInt("enableDoF", config->postprocessSetting.enableDoF);
-
-            m_BloomMergeShader->BindTexture("scene", m_Framebuffer->GetTextureID0(), 0, SamplerType::Texture2D);
-            m_BloomMergeShader->BindTexture("bloomBlur", m_Bloom->GetResultID(), 1, SamplerType::Texture2D);
-            m_BloomMergeShader->BindTexture("DepthMap", m_DepthPass2->GetDepthMapID(), 2, SamplerType::Texture2D);
-
-            // Render result in screen space quad
-            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer2->GetID());
-            glViewport(0, 0, m_ViewportWidth, m_ViewportHeight);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            utils::RenderQuad(m_BloomMergeShader, QuadRenderSpecification::Screen);
-
-            m_BloomMergeShader->Unbind();
-        }
+        m_PostprocessPass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
     }
 
-    void Renderer::OnUIRender()
-    {
-        m_UIRenderPass->Render(m_ActiveCamera, m_Scene, m_Context, m_PrecomputeContext);
-    }
+    void Renderer::OnUIRender() { m_UIRenderPass->Render(m_ActiveCamera, m_Scene, m_Context, m_PrecomputeContext); }
 
     void Renderer::OnUpdate(float ts)
     {
@@ -161,7 +130,9 @@ namespace suplex {
 
         m_ViewportWidth = w, m_ViewportHeight = h;
         m_Framebuffer->OnResize(w, h);
-        m_Framebuffer2->OnResize(w, h);
+
+        for (auto& pass : m_PassQueue)
+            pass->OnResize(w, h);
     }
 
     void Renderer::BakeEnvironmentLight()
@@ -201,26 +172,25 @@ namespace suplex {
     void Renderer::BindRenderPass()
     {
         // Depth Pass
-        m_DepthPass  = m_PassQueue.emplace_back(std::make_shared<DepthRenderPass>());
-        m_DepthPass2 = m_PassQueue.emplace_back(std::make_shared<DepthRenderPass>());
+        m_DepthPass           = m_PassQueue.emplace_back(std::make_shared<DepthRenderPass>());
+        m_DepthPassLS         = m_PassQueue.emplace_back(std::make_shared<DepthRenderPass>());
+        m_Context->depthMap   = m_DepthPass->GetFramebufferImage();
+        m_Context->depthMapLS = m_DepthPassLS->GetFramebufferImage();
 
         // Forward Pass
         m_Framebuffer->Bind();
         m_ForwardPass = m_PassQueue.emplace_back(std::make_shared<ForwardRenderPass>());
 
         m_ForwardPass->BindFramebuffer(m_Framebuffer);
-        m_ForwardPass->BindDepthbuffer(m_DepthPass->GetDepthbuffer());
 
         // EnvironmentMap Pass
-        m_Framebuffer->Bind();
         m_EnvMapPass = m_PassQueue.emplace_back(std::make_shared<CubeMapPass>());
         m_EnvMapPass->PushShader(std::make_shared<Shader>("cubemap.vert", "cubemap.frag"));
         m_EnvMapPass->BindFramebuffer(m_Framebuffer);
 
         // Postprocessing Pass
-        // m_Framebuffer->Bind();
-        // m_PostprocessPass = m_PassQueue.emplace_back(std::make_shared<PostprocessPass>());
-        // m_PostprocessPass->BindFramebuffer(m_Framebuffer->GetID());
+        m_PostprocessPass = m_PassQueue.emplace_back(std::make_shared<PostprocessPass>());
+        m_PostprocessPass->BindFramebuffer(m_Framebuffer);
 
         // UI RenderPass
         m_UIRenderPass = std::make_shared<suplex::ImGuiRenderPass>();

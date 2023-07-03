@@ -2,10 +2,10 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/glm.hpp>
 #include <memory>
+#include <stdint.h>
 
 #include "Render/Buffer/Framebuffer.hpp"
 #include "Render/Camera/Camera.hpp"
-#include "Render/Camera/LightCamera.hpp"
 #include "Render/Config/Config.hpp"
 #include "Render/Postprocess/PostProcess.hpp"
 #include "Render/Texture/CubeMap.hpp"
@@ -80,6 +80,8 @@ namespace suplex {
     {
         std::shared_ptr<GraphicsConfig> config = std::make_shared<GraphicsConfig>();
         Entity                          activeEntity;
+        uint32_t                        depthMap   = 0;
+        uint32_t                        depthMapLS = 0;
     };
 
 }  // namespace suplex

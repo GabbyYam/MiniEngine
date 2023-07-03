@@ -34,7 +34,7 @@ namespace suplex {
 
             shader->SetInt("useEnvMap", config->lightSetting.useEnvMap);
 
-            shader->BindTexture("DepthMap", m_Depthbuffer->GetTextureID(), 15, SamplerType::Texture2D);
+            shader->BindTexture("DepthMap", graphicsContext->depthMapLS, 15, SamplerType::Texture2D);
 
             shader->BindTexture("IrradianceMap", context->IrradianceMap.GetID(), 14, SamplerType::CubeMap);
 
@@ -134,7 +134,8 @@ namespace suplex {
             m_OutlineShader->SetMaterix4("view", glm::value_ptr(view));
             m_OutlineShader->SetMaterix4("proj", glm::value_ptr(proj));
 
-            for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(m_OutlineShader);
+            for (auto& mesh : meshRenderer.m_Model->GetMeshes())
+                mesh.Render(m_OutlineShader);
             m_OutlineShader->Unbind();
 
             glStencilMask(0xFF);

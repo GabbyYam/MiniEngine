@@ -137,7 +137,6 @@ void main()
     {
         float fogFactor = 1.0;
         float dist      = depth / farClip;
-        // float dh = viewPos.y - fragPos.y;
         switch (fogType) {
             case 0: break;
             case 1:

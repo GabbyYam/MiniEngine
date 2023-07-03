@@ -32,12 +32,23 @@ namespace suplex {
 
     struct PrecomputeContext
     {
-        Texture2D                       HDR_EnvironmentTexture;
-        CubeMap                         EnvironmentMap;
-        CubeMap                         IrradianceMap;
-        CubeMap                         PrefilterMap;
-        Texture2D                       BRDF_LUT;
-        std::shared_ptr<HdrFramebuffer> precomputeFrambuffer = std::make_shared<HdrFramebuffer>();
+        PrecomputeContext()
+        {
+            FramebufferSpecification spec;
+            spec.Attachments = {
+                {TextureFormat::RGBA, TextureFilter::Linear, TextureWrap::ClampToEdge},
+                {TextureFormat::RGBA, TextureFilter::Linear, TextureWrap::ClampToEdge},
+                {TextureFormat::Depth, TextureFilter::Linear, TextureWrap::ClampToBorder},
+                {TextureFormat::RED_INTEGER, TextureFilter::Linear, TextureWrap::ClampToEdge},
+            };
+            precomputeFrambuffer = std::make_shared<Framebuffer>(spec);
+        }
+        Texture2D                    HDR_EnvironmentTexture;
+        CubeMap                      EnvironmentMap;
+        CubeMap                      IrradianceMap;
+        CubeMap                      PrefilterMap;
+        Texture2D                    BRDF_LUT;
+        std::shared_ptr<Framebuffer> precomputeFrambuffer;
     };
 
     class RenderPass {
@@ -58,24 +69,25 @@ namespace suplex {
 
         void Awake(bool value) { m_Running = value; }
 
-        void BindFramebuffer(const std::shared_ptr<HdrFramebuffer> framebuffer) { m_Framebuffer = framebuffer; }
-        void UnbindFramebuffer() { m_Framebuffer = nullptr; }
+        void BindFramebuffer(const std::shared_ptr<Framebuffer> framebuffer) { m_Framebuffer = framebuffer; }
 
-        void BindDepthbuffer(const std::shared_ptr<Depthbuffer> depthbuffer) { m_Depthbuffer = depthbuffer; }
+        void UnbindFramebuffer() { m_Framebuffer = nullptr; }
 
         auto& GetShaders() { return m_Shaders; }
 
         auto PushShader(const std::shared_ptr<Shader> shader) { return m_Shaders.emplace_back(shader); }
 
-        auto GetFramebufferImage() { return m_Framebuffer->GetTextureID(); }
-        auto GetDepthMapID() { return m_Depthbuffer->GetTextureID(); }
+        virtual uint32_t GetFramebufferImage() { return m_Framebuffer->GetColorAttachmentID(0); }
+
+        virtual uint32_t GetDepthMapID() { return m_Framebuffer->GetDepthAttachmentID(); }
+
         auto GetFramebuffer() { return m_Framebuffer; }
-        auto GetDepthbuffer() { return m_Depthbuffer; }
+
+        auto GetDepthbuffer() { return 0; }
 
     protected:
         std::vector<std::shared_ptr<Shader>> m_Shaders;
-        std::shared_ptr<HdrFramebuffer>      m_Framebuffer;
-        std::shared_ptr<Depthbuffer>         m_Depthbuffer;
+        std::shared_ptr<Framebuffer>         m_Framebuffer;
 
         bool m_Running = true;
     };
@@ -84,9 +96,13 @@ namespace suplex {
     public:
         DepthRenderPass()
         {
-            m_Depthbuffer = std::make_shared<Depthbuffer>();
+            // FramebufferSpecification spec;
+            // spec.Attachments = {{TextureFormat::Depth}};
+            // m_Framebuffer    = std::make_shared<Framebuffer>(spec);
+            // m_Framebuffer->OnResize(2048, 2048);
+            m_Shaders = {std::make_shared<Shader>("depth.vert", "depth.frag")};
+
             m_Depthbuffer->OnResize(2048, 2048);
-            m_Shaders.emplace_back(std::make_shared<Shader>("depth.vert", "depth.frag"));
         }
 
         virtual void Render(const std::shared_ptr<Camera>            camera,
@@ -118,7 +134,8 @@ namespace suplex {
 
                 shader->SetMaterix4("model", glm::value_ptr(transform.GetTransform()));
                 auto& meshRenderer = scene->m_Registry.get<MeshRendererComponent>(entity);
-                for (auto& mesh : meshRenderer.m_Model->GetMeshes()) mesh.Render(shader);
+                for (auto& mesh : meshRenderer.m_Model->GetMeshes())
+                    mesh.Render(shader);
             }
 
             shader->Unbind();
@@ -126,6 +143,12 @@ namespace suplex {
             // Return to default framebuffer
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
+
+        // virtual uint32_t GetFramebufferImage() override { return m_Framebuffer->GetDepthAttachmentID(); }
+        virtual uint32_t GetFramebufferImage() override { return m_Depthbuffer->GetTextureID(); }
+
+    private:
+        std::shared_ptr<Depthbuffer> m_Depthbuffer = std::make_shared<Depthbuffer>();
     };
 
     class ImGuiRenderPass : public RenderPass {

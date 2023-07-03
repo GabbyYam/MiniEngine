@@ -6,6 +6,5 @@ namespace suplex {
 
     class Postprocess {
     public:
-    private:
     };
 }  // namespace suplex
