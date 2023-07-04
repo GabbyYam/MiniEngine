@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 #include <memory>
 #include <stdint.h>
@@ -54,6 +55,8 @@ namespace suplex {
         float   fogEnd     = 300.0f;
 
         bool enableDoF = false;
+
+        bool enableSSAO = true;
     };
 
     struct PBRSetting
@@ -82,6 +85,8 @@ namespace suplex {
         Entity                          activeEntity;
         uint32_t                        depthMap   = 0;
         uint32_t                        depthMapLS = 0;
+        uint32_t                        gPosition  = 0;
+        uint32_t                        gNormal    = 0;
     };
 
 }  // namespace suplex

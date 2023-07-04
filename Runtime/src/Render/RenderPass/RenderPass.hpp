@@ -96,13 +96,14 @@ namespace suplex {
     public:
         DepthRenderPass()
         {
-            // FramebufferSpecification spec;
-            // spec.Attachments = {{TextureFormat::Depth}};
-            // m_Framebuffer    = std::make_shared<Framebuffer>(spec);
-            // m_Framebuffer->OnResize(2048, 2048);
-            m_Shaders = {std::make_shared<Shader>("depth.vert", "depth.frag")};
+            FramebufferSpecification spec;
+            spec.Attachments     = {{TextureFormat::Depth}, {TextureFormat::RGBA}, {TextureFormat::RGB}};
+            spec.SwapChainTarget = false;
+            m_Framebuffer        = std::make_shared<Framebuffer>(spec);
+            m_Framebuffer->OnResize(2048, 2048);
+            // m_Depthbuffer->OnResize(2048, 2048);
 
-            m_Depthbuffer->OnResize(2048, 2048);
+            m_Shaders = {std::make_shared<Shader>("depth.vert", "depth.frag")};
         }
 
         virtual void Render(const std::shared_ptr<Camera>            camera,
@@ -112,21 +113,22 @@ namespace suplex {
         {
             // render to custom framebuffer
             // ------
-            glViewport(0, 0, 2048, 2048);
             glCullFace(GL_FRONT);
-            glBindFramebuffer(GL_FRAMEBUFFER, m_Depthbuffer->GetID());
-            glClear(GL_DEPTH_BUFFER_BIT);
+            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
+            // glBindFramebuffer(GL_FRAMEBUFFER, m_Depthbuffer->GetID());
+            glViewport(0, 0, 2048, 2048);
+            // glBindFramebuffer(GL_FRAMEBUFFER, m_OutputFramebuffer->GetID());
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             auto config = graphicsContext->config;
             auto viewLS = camera->GetView();
             auto projLS = camera->GetProjection();
 
             auto& shader = m_Shaders[0];
             shader->Bind();
-            int viewIndex = glGetUniformLocation(shader->GetID(), "viewLS");
-            glUniformMatrix4fv(viewIndex, 1, GL_FALSE, glm::value_ptr(viewLS));
-
-            int projIndex = glGetUniformLocation(shader->GetID(), "projLS");
-            glUniformMatrix4fv(projIndex, 1, GL_FALSE, glm::value_ptr(projLS));
+            shader->SetMaterix4("viewLS", glm::value_ptr(viewLS));
+            shader->SetMaterix4("projLS", glm::value_ptr(projLS));
+            shader->SetFloat("farClip", camera->GetFarClip());
+            shader->SetFloat("nearClip", camera->GetNearClip());
 
             auto entities = scene->m_Registry.view<MeshRendererComponent>();
             for (auto& entity : entities) {
@@ -144,11 +146,11 @@ namespace suplex {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        // virtual uint32_t GetFramebufferImage() override { return m_Framebuffer->GetDepthAttachmentID(); }
-        virtual uint32_t GetFramebufferImage() override { return m_Depthbuffer->GetTextureID(); }
+        virtual uint32_t GetFramebufferImage() override { return m_Framebuffer->GetDepthAttachmentID(); }
+        // virtual uint32_t GetFramebufferImage() override { return m_Depthbuffer->GetTextureID(); }
 
     private:
-        std::shared_ptr<Depthbuffer> m_Depthbuffer = std::make_shared<Depthbuffer>();
+        // std::shared_ptr<Depthbuffer> m_Depthbuffer = std::make_shared<Depthbuffer>();
     };
 
     class ImGuiRenderPass : public RenderPass {

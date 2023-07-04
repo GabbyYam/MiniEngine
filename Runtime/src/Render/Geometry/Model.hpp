@@ -83,7 +83,8 @@ namespace suplex {
         {
             m_FilePath = path;
             auto res   = LoadModel();
-            if (res) debug("Load model {} complete", path);
+            if (res)
+                debug("Load model {} complete", path);
         }
 
         ~Model()
@@ -144,7 +145,9 @@ namespace suplex {
             }
             // after we've processed all of the meshes (if any) we then
             // recursively process each of the children nodes
-            for (unsigned int i = 0; i < node->mNumChildren; i++) { ProcessNode(node->mChildren[i], scene); }
+            for (unsigned int i = 0; i < node->mNumChildren; i++) {
+                ProcessNode(node->mChildren[i], scene);
+            }
         }
 
         Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene)
@@ -198,7 +201,8 @@ namespace suplex {
             for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
                 aiFace face = mesh->mFaces[i];
 
-                for (unsigned int j = 0; j < face.mNumIndices; j++) indices.push_back(face.mIndices[j]);
+                for (unsigned int j = 0; j < face.mNumIndices; j++)
+                    indices.push_back(face.mIndices[j]);
             }
             // process materials
             aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -261,13 +265,15 @@ namespace suplex {
                 auto      embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
                 Texture2D texture;
 
-                if (embeddedTexture) { texture.LoadData(embeddedTexture, ImageFormat::RGB); }
+                if (embeddedTexture) {
+                    texture.LoadData(embeddedTexture, TextureFormat::RGB);
+                }
                 else {
                     // To prevent temporary object been constructed
                     // use emplace_back here instead of push_back(Texture2D(str.C_Str())))
                     auto textureFilename = m_Directory + "/" + std::string(str.C_Str());
                     debug("Try to find {} {}", typeName, textureFilename);
-                    texture.LoadData(textureFilename, ImageFormat::RGB);
+                    texture.LoadData(textureFilename, TextureFormat::RGB);
                 }
 
                 texture.SetType(typeName);

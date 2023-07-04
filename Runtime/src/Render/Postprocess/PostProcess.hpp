@@ -2,7 +2,11 @@
 
 namespace suplex {
 
-    enum class ToneMappingType { Logarithmic, ACES, None };
+    enum class ToneMappingType {
+        None,
+        Logarithmic,
+        ACES,
+    };
 
     class Postprocess {
     public:

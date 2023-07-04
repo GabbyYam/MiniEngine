@@ -14,7 +14,7 @@ namespace suplex {
 
     Framebuffer::Framebuffer(uint32_t w, uint32_t h) : Buffer(w, h) { spdlog::info("Framebuffer id assign to {}", m_BufferID); }
 
-    Framebuffer::Framebuffer(FramebufferSpecification const& spec) : Buffer()
+    Framebuffer::Framebuffer(FramebufferSpecification const& spec) : Buffer(), m_IsSwapChainTarget(spec.SwapChainTarget)
     {
         for (auto attachmentSpec : spec.Attachments.Attachments) {
             if (attachmentSpec.TextureFormat == TextureFormat::Depth) {
@@ -32,6 +32,7 @@ namespace suplex {
         if (w == m_Width && h == m_Height)
             return;
         m_Width = w, m_Height = h;
+        spdlog::info("Framebuffer {} Resize to ({}, {})", m_BufferID, w, h);
 
         // Bind to self
         glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
@@ -90,9 +91,12 @@ namespace suplex {
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_ColorAttachments[i], 0);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
-        std::vector<uint32_t> drawAttachments(m_ColorAttachments.size());
-        std::iota(begin(drawAttachments), end(drawAttachments), GL_COLOR_ATTACHMENT0);
-        glDrawBuffers(drawAttachments.size(), drawAttachments.data());
+
+        if (m_ColorAttachments.size()) {
+            std::vector<uint32_t> drawAttachments(m_ColorAttachments.size());
+            std::iota(begin(drawAttachments), end(drawAttachments), GL_COLOR_ATTACHMENT0);
+            glDrawBuffers(drawAttachments.size(), drawAttachments.data());
+        }
 
         // Depth Attachment
         if (m_DepthAttachmentSpecification.TextureFormat != TextureFormat::None) {
@@ -120,11 +124,14 @@ namespace suplex {
             glDeleteRenderbuffers(1, &m_DepthRenderbufferID);
             glGenRenderbuffers(1, &m_DepthRenderbufferID);
 
-            glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
-            glBindRenderbuffer(GL_RENDERBUFFER, m_DepthRenderbufferID);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height);
-            glBindRenderbuffer(GL_RENDERBUFFER, 0);
-            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderbufferID);
+            if (m_IsSwapChainTarget) {
+                glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
+                glBindRenderbuffer(GL_RENDERBUFFER, m_DepthRenderbufferID);
+                glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height);
+                glBindRenderbuffer(GL_RENDERBUFFER, 0);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderbufferID);
+                glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
+            }
         }
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {

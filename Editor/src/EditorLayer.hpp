@@ -40,7 +40,7 @@
 #include <Scene/Entity/Entity.hpp>
 
 const static std::array<std::string, 2> PolygonNames{"Shaded", "WireFrame"};
-const static std::array<std::string, 3> ToneMappingNames{"Logarithmic", "ACES", "None"};
+const static std::array<std::string, 3> ToneMappingNames{"None", "Logarithmic", "ACES"};
 const static std::array<std::string, 2> OperationModes{"Local", "World"};
 
 static float randomRadians = rand() % 100;
@@ -406,6 +406,11 @@ namespace suplex {
                     {
                         ImGui::Text("Depth of Field");
                         ImGui::Checkbox("Enable DoF", &config->postprocessSetting.enableDoF);
+                    }
+
+                    {
+                        ImGui::Text("SSAO");
+                        ImGui::Checkbox("Enable SSAO", &config->postprocessSetting.enableSSAO);
                     }
                 }
 

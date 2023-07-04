@@ -46,7 +46,8 @@ namespace suplex {
             {TextureFormat::Depth, TextureFilter::Linear, TextureWrap::ClampToBorder},
             {TextureFormat::RED_INTEGER, TextureFilter::Linear, TextureWrap::ClampToEdge},
         };
-        m_Framebuffer = std::make_shared<Framebuffer>(spec);
+        spec.SwapChainTarget = true;
+        m_Framebuffer        = std::make_shared<Framebuffer>(spec);
         m_Framebuffer->OnResize(m_ViewportWidth, m_ViewportHeight);
 
         m_Context = std::make_shared<GraphicsContext>();
@@ -142,7 +143,7 @@ namespace suplex {
         glDisable(GL_CULL_FACE);
         float resolution = config->environmentMapResolution;
         m_PrecomputeContext->HDR_EnvironmentTexture.LoadData("H:/GameDev Asset/Textures/EnvironmentMap/newport_loft.hdr",
-                                                             ImageFormat::RGBA32F);
+                                                             TextureFormat::RGBA32F);
         m_PrecomputeContext->EnvironmentMap.Allocate();
         m_PrecomputeContext->EnvironmentMap.AllocateCubeMap(resolution);
 
@@ -176,6 +177,8 @@ namespace suplex {
         m_DepthPassLS         = m_PassQueue.emplace_back(std::make_shared<DepthRenderPass>());
         m_Context->depthMap   = m_DepthPass->GetFramebufferImage();
         m_Context->depthMapLS = m_DepthPassLS->GetFramebufferImage();
+        m_Context->gPosition  = m_DepthPass->GetFramebuffer()->GetColorAttachmentID(0);
+        m_Context->gNormal    = m_DepthPass->GetFramebuffer()->GetColorAttachmentID(1);
 
         // Forward Pass
         m_Framebuffer->Bind();

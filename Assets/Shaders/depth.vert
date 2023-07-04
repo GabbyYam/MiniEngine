@@ -7,4 +7,13 @@ uniform mat4 model;
 uniform mat4 viewLS;
 uniform mat4 projLS;
 
-void main() { gl_Position = projLS * viewLS * model * vec4(aPos, 1.0); }
+out vec3 fragPos;
+out vec3 normalWS;
+
+void main()
+{
+    gl_Position = projLS * viewLS * model * vec4(aPos, 1.0);
+
+    fragPos  = (viewLS * model * vec4(aPos, 1.0)).xyz;
+    normalWS = transpose(inverse(mat3(viewLS * model))) * aNormal;
+}

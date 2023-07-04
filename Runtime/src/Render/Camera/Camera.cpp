@@ -22,7 +22,8 @@ namespace suplex {
 
     void Camera::OnResize(uint32_t w, uint32_t h)
     {
-        if (w == m_ViewportWidth && h == m_ViewportHeight) return;
+        if (w == m_ViewportWidth && h == m_ViewportHeight)
+            return;
         m_ViewportWidth  = w;
         m_ViewportHeight = h;
         RecalculateProjection();
@@ -85,7 +86,9 @@ namespace suplex {
             moved     = true;
         }
 
-        if (moved) { RecalculateView(); }
+        if (moved) {
+            RecalculateView();
+        }
 
         return moved;
     }
@@ -105,7 +108,7 @@ namespace suplex {
                 m_Projection = glm::perspectiveFov(glm::radians(m_VerticalFOV), (float)m_ViewportWidth, (float)m_ViewportHeight,
                                                    m_NearClip, m_FarClip);
                 break;
-            case ProjectionType::Orthogonal: m_Projection = glm::ortho<float>(-10, 10, -10, 10, m_NearClip, m_FarClip); break;
+            case ProjectionType::Orthogonal: m_Projection = glm::ortho<float>(-100, 100, -100, 100, 0, 64); break;
         }
     }
 }  // namespace suplex

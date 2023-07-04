@@ -1,11 +1,9 @@
 {
+	"archive" : {},
 	"artifacts" : 
 	[
 		{
-			"path" : "Sandbox.exe"
-		},
-		{
-			"path" : "Sandbox.pdb"
+			"path" : "Runtime.lib"
 		}
 	],
 	"backtrace" : 2,
@@ -13,8 +11,8 @@
 	{
 		"commands" : 
 		[
-			"_add_executable",
-			"add_executable",
+			"_add_library",
+			"add_library",
 			"target_link_libraries",
 			"target_include_directories"
 		],
@@ -31,61 +29,43 @@
 			{
 				"command" : 1,
 				"file" : 1,
-				"line" : 84,
+				"line" : 65,
 				"parent" : 0
 			},
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 591,
+				"line" : 632,
 				"parent" : 1
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 88,
+				"line" : 69,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 89,
-				"parent" : 0
-			},
-			{
-				"command" : 2,
-				"file" : 1,
-				"line" : 90,
-				"parent" : 0
-			},
-			{
-				"command" : 2,
-				"file" : 1,
-				"line" : 91,
-				"parent" : 0
-			},
-			{
-				"command" : 2,
-				"file" : 1,
-				"line" : 92,
+				"line" : 68,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 1,
-				"line" : 85,
+				"line" : 66,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 1,
-				"line" : 86,
+				"line" : 67,
 				"parent" : 0
 			},
 			{
-				"command" : 3,
+				"command" : 2,
 				"file" : 1,
-				"line" : 87,
+				"line" : 70,
 				"parent" : 0
 			}
 		]
@@ -105,38 +85,34 @@
 			"defines" : 
 			[
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"define" : "SPDLOG_COMPILED_LIB"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 8,
-					"path" : "E:/Graphics/Toy/MiniEngine/Editor/src"
-				},
-				{
-					"backtrace" : 9,
-					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/include"
-				},
-				{
-					"backtrace" : 9,
-					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/stb"
-				},
-				{
-					"backtrace" : 10,
-					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/IconFontAwesome"
-				},
-				{
-					"backtrace" : 3,
+					"backtrace" : 5,
 					"path" : "E:/Graphics/Toy/MiniEngine/Runtime/src"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 5,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/tinyobjloader"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 5,
+					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/stb"
+				},
+				{
+					"backtrace" : 6,
+					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/IconFontAwesome"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/include"
+				},
+				{
+					"backtrace" : 4,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/glad/include"
 				},
 				{
@@ -152,17 +128,17 @@
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/ImGuizmo"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"isSystem" : true,
 					"path" : "C:/Program Files (x86)/spdlog/include"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"isSystem" : true,
 					"path" : "C:/Program Files (x86)/glm/include"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"isSystem" : true,
 					"path" : "D:/vcpkg/installed/x64-windows/include"
 				}
@@ -172,13 +148,26 @@
 			{
 				"backtraces" : 
 				[
-					3
+					7
 				],
 				"standard" : "20"
 			},
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13
 			]
 		}
 	],
@@ -186,100 +175,24 @@
 	[
 		{
 			"backtrace" : 3,
-			"id" : "glad::@6890427a1f51a3e7e1df"
+			"id" : "imgui::@6890427a1f51a3e7e1df"
 		},
 		{
-			"backtrace" : 3,
-			"id" : "Runtime::@6890427a1f51a3e7e1df"
+			"backtrace" : 4,
+			"id" : "glad::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 3,
 			"id" : "imguizmo::@6890427a1f51a3e7e1df"
 		},
 		{
-			"backtrace" : 3,
-			"id" : "imgui::@6890427a1f51a3e7e1df"
-		},
-		{
-			"backtrace" : 3,
+			"backtrace" : 4,
 			"id" : "glfw::@0aa6f7fc354a61a17aaf"
 		}
 	],
-	"id" : "Sandbox::@6890427a1f51a3e7e1df",
-	"link" : 
-	{
-		"commandFragments" : 
-		[
-			{
-				"fragment" : "-O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt",
-				"role" : "flags"
-			},
-			{
-				"fragment" : "-Xlinker /subsystem:console",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 3,
-				"fragment" : "Runtime.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 4,
-				"fragment" : "imgui.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 5,
-				"fragment" : "\"C:\\Program Files (x86)\\spdlog\\lib\\spdlog.lib\"",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 6,
-				"fragment" : "glad.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 6,
-				"fragment" : "3rdparty\\glfw\\src\\glfw3.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 7,
-				"fragment" : "D:\\vcpkg\\installed\\x64-windows\\lib\\yaml-cpp.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 4,
-				"fragment" : "imgui.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 6,
-				"fragment" : "glad.lib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 6,
-				"fragment" : "3rdparty\\glfw\\src\\glfw3.lib",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "D:\\vcpkg\\installed\\x64-windows\\lib\\assimp-vc142-mt.lib",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "D:\\vcpkg\\installed\\x64-windows\\lib\\pugixml.lib",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames",
-				"role" : "libraries"
-			}
-		],
-		"language" : "CXX"
-	},
-	"name" : "Sandbox",
-	"nameOnDisk" : "Sandbox.exe",
+	"id" : "Runtime::@6890427a1f51a3e7e1df",
+	"name" : "Runtime",
+	"nameOnDisk" : "Runtime.lib",
 	"paths" : 
 	{
 		"build" : ".",
@@ -291,17 +204,30 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13
 			]
 		},
 		{
 			"name" : "Object Libraries",
 			"sourceIndexes" : 
 			[
-				1,
-				2,
-				3,
-				4
+				14,
+				15,
+				16,
+				17
 			]
 		}
 	],
@@ -310,33 +236,111 @@
 		{
 			"backtrace" : 2,
 			"compileGroupIndex" : 0,
-			"path" : "Sandbox/src/main.cpp",
+			"path" : "Runtime/src/Application.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/InputSystem/Input.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Random/Random.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Render/Buffer/Depthbuffer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Render/Buffer/Framebuffer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Render/Buffer/HdrFramebuffer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Render/Camera/Camera.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Render/Geometry/Shape/Shape.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Render/RenderPass/ForwardPass.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Render/Renderer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Scene/Entity/Entity.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Scene/Scene.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/Scene/SceneSerilizer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "Runtime/src/UUID.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImCurveEdit.cpp.obj",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGradient.cpp.obj",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGuizmo.cpp.obj",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImSequencer.cpp.obj",
 			"sourceGroupIndex" : 1
 		}
 	],
-	"type" : "EXECUTABLE"
+	"type" : "STATIC_LIBRARY"
 }

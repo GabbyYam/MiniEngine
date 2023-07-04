@@ -2,7 +2,9 @@
 
 #include "Render/Buffer/Framebuffer.hpp"
 #include "Render/Buffer/HdrFramebuffer.hpp"
+#include "Render/Postprocess/Noise.hpp"
 #include "Render/RenderPass/RenderPass.hpp"
+#include "Render/Texture/Texture2D.hpp"
 #include <Render/Postprocess/Bloom.hpp>
 #include <memory>
 #include <stdint.h>
@@ -21,6 +23,15 @@ namespace suplex {
                 {TextureFormat::RED_INTEGER, TextureFilter::Nearest, TextureWrap::ClampToEdge},
             };
 
+            auto  ssaoNoise  = noise.SSAONoise();
+            auto  ssaoKernel = noise.SSAOKernel();
+            void* data       = ssaoNoise.data();
+
+            m_NoiseMap = std::make_shared<Texture2D>(data);
+            m_MergeShader->Bind();
+            for (int i = 0; i < 64; ++i)
+                m_MergeShader->SetFloat3(("samples[" + std::to_string(i) + "]"), glm::value_ptr(ssaoKernel[i]));
+
             // Framebuffer out();
             m_OutputFramebuffer = std::make_shared<Framebuffer>(spec);
         }
@@ -31,10 +42,13 @@ namespace suplex {
                             const std::shared_ptr<PrecomputeContext> context) override
         {
             auto config = graphicsContext->config;
+
             if (config->postprocessSetting.enablePostprocess) {
                 m_Bloom->Render(m_Framebuffer->GetColorAttachmentID(1), config->postprocessSetting.bloomFilterRadius);
 
                 m_MergeShader->Bind();
+
+                m_MergeShader->SetMaterix4("projection", glm::value_ptr(camera->GetProjection()));
 
                 m_MergeShader->SetFloat3("viewPos", glm::value_ptr(camera->GetPosition()));
                 m_MergeShader->SetFloat("nearClip", camera->GetNearClip());
@@ -56,7 +70,12 @@ namespace suplex {
 
                 m_MergeShader->BindTexture("scene", m_Framebuffer->GetColorAttachmentID(0), 0, SamplerType::Texture2D);
                 m_MergeShader->BindTexture("bloomBlur", m_Bloom->GetResultID(), 1, SamplerType::Texture2D);
+
+                m_MergeShader->SetInt("enableSSAO", config->postprocessSetting.enableSSAO);
                 m_MergeShader->BindTexture("DepthMap", graphicsContext->depthMap, 2, SamplerType::Texture2D);
+                m_MergeShader->BindTexture("gPosition", graphicsContext->gPosition, 3, SamplerType::Texture2D);
+                m_MergeShader->BindTexture("gNormal", graphicsContext->gNormal, 4, SamplerType::Texture2D);
+                m_MergeShader->BindTexture("ssaoNoise", m_NoiseMap->GetID(), 5, SamplerType::Texture2D);
 
                 // Render result in screen space quad
                 m_OutputFramebuffer->Bind();
@@ -80,5 +99,7 @@ namespace suplex {
         std::shared_ptr<Bloom>       m_Bloom       = nullptr;
         std::shared_ptr<Shader>      m_MergeShader = nullptr;
         std::shared_ptr<Framebuffer> m_OutputFramebuffer;
+        std::shared_ptr<Texture2D>   m_NoiseMap;
+        Noise                        noise;
     };
 }  // namespace suplex

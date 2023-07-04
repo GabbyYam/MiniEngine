@@ -13,11 +13,11 @@ namespace suplex {
     ContentBrowserPanel::ContentBrowserPanel() : m_CurrentDirectory(m_DefaultDirectory)
     {
         m_DirectoryICON =
-            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-folder-50.png", ImageFormat::RGBA);
+            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-folder-50.png", TextureFormat::RGBA);
         m_FileICON =
-            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-file-50.png", ImageFormat::RGBA);
+            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-file-50.png", TextureFormat::RGBA);
         m_ReturnICON =
-            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-return-50.png", ImageFormat::RGBA);
+            std::make_shared<Texture2D>(std::string(m_DefaultDirectory.string()) + "/Icons/icons8-return-50.png", TextureFormat::RGBA);
     }
 
     void ContentBrowserPanel::OnUIRender()

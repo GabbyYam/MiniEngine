@@ -1,15 +1,13 @@
 #pragma once
 
 #include "Render/Buffer/Buffer.hpp"
+#include <Render/Texture/Texture.hpp>
 #include <stdint.h>
 #include <vector>
 #include <cassert>
 
 namespace suplex {
 
-    enum class TextureFormat { None = 0, RGB, RGBA, DEPTH24STENCIL8, Depth = DEPTH24STENCIL8, RED_INTEGER };
-    enum class TextureWrap { ClampToEdge, ClampToBorder, Repeat };
-    enum class TextureFilter { Nearest, Linear };
     struct FramebufferTextureSpecification
     {
         FramebufferTextureSpecification() = default;
@@ -68,6 +66,7 @@ namespace suplex {
         FramebufferTextureSpecification m_DepthAttachmentSpecification;
         uint32_t                        m_DepthAttachMentID = 0;
 
+        bool     m_IsSwapChainTarget   = false;
         uint32_t m_DepthRenderbufferID = 0;
     };
 }  // namespace suplex

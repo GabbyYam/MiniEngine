@@ -1,4 +1,5 @@
 #pragma once
+#include "Render/Buffer/Framebuffer.hpp"
 #include "Render/Texture/Texture.hpp"
 #include <algorithm>
 #include <assimp/texture.h>
@@ -20,11 +21,23 @@ using namespace glm;
 using namespace spdlog;
 
 namespace suplex {
+
+    struct Texture2DSpecification
+    {
+        uint32_t      w, h;
+        TextureFormat format = TextureFormat::RGB;
+        TextureWrap   wrap   = TextureWrap::Repeat;
+        TextureFilter filter = TextureFilter::Linear;
+
+        std::string path;
+    };
+
     class Texture2D : public Texture {
     public:
         Texture2D() = default;
 
-        Texture2D(std::string const& path, ImageFormat format = ImageFormat::RGB) { LoadData(path, format); }
+        Texture2D(std::string const& path, TextureFormat format = TextureFormat::RGB) { LoadData(path, format); }
+        Texture2D(void* data, TextureFormat format = TextureFormat::RGB) { LoadData(data, format); }
 
         virtual void Allocate(uint32_t w, uint32_t h) override
         {
@@ -53,10 +66,11 @@ namespace suplex {
 
         virtual ~Texture2D()
         {
-            if (m_ImageData) stbi_image_free(m_ImageData);
+            if (m_ImageData)
+                stbi_image_free(m_ImageData);
         }
 
-        virtual void LoadData(std::string const& path, ImageFormat format) override
+        virtual void LoadData(std::string const& path, TextureFormat format) override
         {
             stbi_set_flip_vertically_on_load(true);
 
@@ -64,12 +78,23 @@ namespace suplex {
 
             stbi_set_flip_vertically_on_load(false);
         }
-        virtual void LoadData(const aiTexture* aiTex, ImageFormat format) override { LoadTextureFromMemory(aiTex); }
+
+        virtual void LoadData(void* data, TextureFormat format) override
+        {
+            glBindTexture(GL_TEXTURE_2D, m_TextureID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 4, 4, 0, GL_RGB, GL_FLOAT, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        }
+
+        virtual void LoadData(const aiTexture* aiTex, TextureFormat format) override { LoadTextureFromMemory(aiTex); }
 
     private:
-        void LoadTextureFromFile(std::string_view path, ImageFormat format)
+        void LoadTextureFromFile(std::string_view path, TextureFormat format)
         {
-            if (format == ImageFormat::RGB) {
+            if (format == TextureFormat::RGB) {
                 glGenTextures(1, &m_TextureID);
                 glBindTexture(GL_TEXTURE_2D, m_TextureID);
                 // set the texture wrapping parameters
@@ -93,7 +118,7 @@ namespace suplex {
                 }
                 stbi_image_free(data);
             }
-            else if (format == ImageFormat::RGBA) {
+            else if (format == TextureFormat::RGBA) {
                 glGenTextures(1, &m_TextureID);
                 glBindTexture(GL_TEXTURE_2D, m_TextureID);
                 // set the texture wrapping parameters

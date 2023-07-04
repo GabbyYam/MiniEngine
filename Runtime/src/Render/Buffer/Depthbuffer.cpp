@@ -35,8 +35,17 @@ namespace suplex {
 
         glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_BufferTextureID, 0);
-        glDrawBuffer(GL_NONE);
-        glReadBuffer(GL_NONE);
+
+        // {
+        //     glDeleteRenderbuffers(1, &m_DepthRenderbufferID);
+        //     glGenRenderbuffers(1, &m_DepthRenderbufferID);
+
+        //     glBindFramebuffer(GL_FRAMEBUFFER, m_BufferID);
+        //     glBindRenderbuffer(GL_RENDERBUFFER, m_DepthRenderbufferID);
+        //     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height);
+        //     glBindRenderbuffer(GL_RENDERBUFFER, 0);
+        //     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthRenderbufferID);
+        // }
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
             spdlog::error("ERROR::FRAMEBUFFER:: Framebuffer is not complete!");

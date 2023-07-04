@@ -143,7 +143,7 @@ namespace suplex {
         std::shared_ptr<Shader>    m_GridShader    = std::make_shared<Shader>("line.vert", "line.frag");
         std::shared_ptr<Shader>    m_OutlineShader = std::make_shared<Shader>("common.vert", "outline.frag");
         std::shared_ptr<Shader>    m_IconShader    = std::make_shared<Shader>("quad.vert", "quad.frag");
-        std::shared_ptr<Texture2D> m_LightIcon     = std::make_shared<Texture2D>("../Assets/Icons/icon-light.png", ImageFormat::RGBA);
+        std::shared_ptr<Texture2D> m_LightIcon = std::make_shared<Texture2D>("../Assets/Icons/icon-light.png", TextureFormat::RGBA);
     };
 
     class OutlineRenderPass : public RenderPass {

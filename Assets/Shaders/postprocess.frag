@@ -3,11 +3,16 @@ layout(location = 0) out vec4 FragColor;
 layout(location = 1) out vec4 BrightColor;
 
 in vec2 TexCoords;
-in vec3 fragPos;
+
+uniform vec3 samples[64];
+uniform mat4 projection;
 
 uniform sampler2D scene;
 uniform sampler2D bloomBlur;
 uniform sampler2D DepthMap;
+uniform sampler2D gPosition;
+uniform sampler2D gNormal;
+uniform sampler2D ssaoNoise;
 
 uniform int   tonemappingType = 0;
 uniform float exposure;
@@ -17,6 +22,7 @@ uniform float bloomIntensity;
 
 uniform int enableFXAA;
 uniform int enableDoF;
+uniform int enableSSAO;
 
 uniform vec3  viewPos;
 uniform int   fogType;
@@ -115,9 +121,53 @@ vec3 GuassianBlur(sampler2D txr, vec2 uv)
     return Color.rgb;
 }
 
+float SSAO(vec2 coord)
+{
+    // parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
+    int   kernelSize = 64;
+    float radius     = 10;
+    float bias       = 0.5;
+
+    // tile noise texture over screen based on screen dimensions divided by noise size
+    vec2 noiseScale = textureSize(scene, 0) * 0.25;
+
+    // Get input for SSAO algorithm
+    vec3 fragPos   = texture(gPosition, TexCoords).xyz;
+    vec3 normal    = texture(gNormal, TexCoords).rgb;
+    vec3 randomVec = texture(ssaoNoise, TexCoords * noiseScale).xyz;
+    // Create TBN change-of-basis matrix: from tangent-space to view-space
+    vec3 tangent   = normalize(randomVec - normal * dot(randomVec, normal));
+    vec3 bitangent = cross(normal, tangent);
+    mat3 TBN       = mat3(tangent, bitangent, normal);
+    // Iterate over the sample kernel and calculate occlusion factor
+    float occlusion = 0.0;
+    for (int i = 0; i < kernelSize; ++i) {
+        // get sample position
+        vec3 samplePos = TBN * samples[i];  // From tangent to view-space
+        samplePos      = fragPos + samplePos * radius;
+
+        // project sample position (to sample texture) (to get position on screen/texture)
+        vec4 offset = vec4(samplePos, 1.0);
+        offset      = projection * offset;    // from view to clip-space
+        offset.xyz /= offset.w;               // perspective divide
+        offset.xyz = offset.xyz * 0.5 + 0.5;  // transform to range 0.0 - 1.0
+
+        // get sample depth
+        float sampleDepth = -texture(gPosition, offset.xy).w;  // Get depth value of kernel sample
+        // float sampleDepth = LinearizeDepth(-texture(DepthMap, offset.xy).r);
+        // range check & accumulate
+        float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth));
+        occlusion += (sampleDepth >= samplePos.z + bias ? 1.0 : 0.0) * rangeCheck;
+    }
+    occlusion = 1.0 - (occlusion / kernelSize);
+    return occlusion;
+}
+
 void main()
 {
+    // float depth = texture(gPosition, TexCoords).w;
     float depth = LinearizeDepth(texture(DepthMap, TexCoords).r);
+    float ao    = SSAO(TexCoords);
 
     highp vec2 rcpFrame = 1.0 / (textureSize(scene, 0).xy);
     vec4       uv       = vec4(TexCoords, TexCoords - (rcpFrame * (0.5 + FXAA_SUBPIX_SHIFT)));
@@ -130,19 +180,18 @@ void main()
 
     vec3 color = enableBloom == 1 ? mix(origin, bloom, bloomIntensity) : origin;
 
-    // Depth of field
     if (enableDoF != 0)
         color = mix(color, guassian, depth / farClip);
+
+    if (enableSSAO != 0)
+        color *= ao;
 
     {
         float fogFactor = 1.0;
         float dist      = depth / farClip;
         switch (fogType) {
             case 0: break;
-            case 1:
-                dist      = (fogEnd / farClip - dist) / ((fogEnd - fogStart) / farClip);
-                fogFactor = (1.0 - fogDensity * dist);
-                break;
+            case 1: fogFactor = (1.0 - fogDensity * dist); break;
             case 2: fogFactor = exp(-(fogDensity * dist)); break;
             case 3: fogFactor = exp(-pow(fogDensity * dist, 2)); break;
         }
@@ -154,9 +203,9 @@ void main()
 
     // tone mapping
     switch (tonemappingType) {
-        case 0: color = vec3(1.0) - exp(-color * exposure); break;
-        case 1: color = ACES_ToneMapping(color); break;
-        case 2: break;
+        case 0: break;
+        case 1: color = vec3(1.0) - exp(-color * exposure); break;
+        case 2: color = ACES_ToneMapping(color); break;
     }
 
     // // also gamma correct while we're at it
@@ -164,4 +213,12 @@ void main()
     color             = pow(color, vec3(1.0 / gamma));
 
     FragColor = vec4(color, 1.0);
+
+    // Visualize depth
+    // FragColor = vec4(vec3(1.0 - (depth / farClip)), 1.0);
+    // FragColor = texture(gNormal, TexCoords);
+    // FragColor = vec4(vec3(ao), 1.0);
+    // FragColor = vec4(vec3(depth / farClip), 1.0);
+    // FragColor = texture(gPosition, TexCoords);
+    // FragColor = texture(ssaoNoise, TexCoords);
 }

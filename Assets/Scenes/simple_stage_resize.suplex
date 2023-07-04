@@ -1,0 +1,32 @@
+Scene: Untitled
+Entities:
+  - Entity: 15219777646152478774
+    TagComponent:
+      Tag: Vroid JK
+    TransformComponent:
+      Translation: [0, 1.20000005, 0]
+      Rotation: [-90, 0, 0]
+      Scale: [10, 10, 10]
+    MeshRendererComponent:
+      Filepath: H:/GameDev Asset/Models/Vroid_JK.fbx
+      MaterialIndex: 0
+  - Entity: 741447445518478461
+    TagComponent:
+      Tag: Simple Stage
+    TransformComponent:
+      Translation: [0, 1.00000584, -20.1412449]
+      Rotation: [-89.9999847, 0, 0]
+      Scale: [10, 9.99989891, 9.99989891]
+    MeshRendererComponent:
+      Filepath: H:/GameDev Asset/Scenes/Simple Stage/park.fbx
+      MaterialIndex: 0
+  - Entity: 2293108131213131239
+    TagComponent:
+      Tag: Sphere
+    TransformComponent:
+      Translation: [0, 7.88267326, 30.6385708]
+      Rotation: [0, -0, 0]
+      Scale: [10, 10, 10]
+    MeshRendererComponent:
+      Filepath: H:/GameDev Asset/Models/sphere.obj
+      MaterialIndex: 0

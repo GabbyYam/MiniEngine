@@ -98,6 +98,16 @@ build CMakeFiles/Runtime.dir/Runtime/src/InputSystem/Input.cpp.obj: CXX_COMPILER
   TARGET_COMPILE_PDB = CMakeFiles\Runtime.dir\Runtime.pdb
   TARGET_PDB = Runtime.pdb
 
+build CMakeFiles/Runtime.dir/Runtime/src/Random/Random.cpp.obj: CXX_COMPILER__Runtime_Release ../Runtime/src/Random/Random.cpp || cmake_object_order_depends_target_Runtime
+  DEFINES = -DSPDLOG_COMPILED_LIB
+  DEP_FILE = CMakeFiles\Runtime.dir\Runtime\src\Random\Random.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20
+  INCLUDES = -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem "C:/Program Files (x86)/spdlog/include" -isystem "C:/Program Files (x86)/glm/include" -isystem D:/vcpkg/installed/x64-windows/include
+  OBJECT_DIR = CMakeFiles\Runtime.dir
+  OBJECT_FILE_DIR = CMakeFiles\Runtime.dir\Runtime\src\Random
+  TARGET_COMPILE_PDB = CMakeFiles\Runtime.dir\Runtime.pdb
+  TARGET_PDB = Runtime.pdb
+
 build CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Depthbuffer.cpp.obj: CXX_COMPILER__Runtime_Release ../Runtime/src/Render/Buffer/Depthbuffer.cpp || cmake_object_order_depends_target_Runtime
   DEFINES = -DSPDLOG_COMPILED_LIB
   DEP_FILE = CMakeFiles\Runtime.dir\Runtime\src\Render\Buffer\Depthbuffer.cpp.obj.d
@@ -216,7 +226,7 @@ build CMakeFiles/Runtime.dir/Runtime/src/UUID.cpp.obj: CXX_COMPILER__Runtime_Rel
 #############################################
 # Link the static library Runtime.lib
 
-build Runtime.lib: CXX_STATIC_LIBRARY_LINKER__Runtime_Release CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImCurveEdit.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGradient.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGuizmo.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImSequencer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Application.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/InputSystem/Input.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Depthbuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Framebuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/HdrFramebuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Camera/Camera.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Geometry/Shape/Shape.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/RenderPass/ForwardPass.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Renderer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/Entity/Entity.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/Scene.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/SceneSerilizer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/UUID.cpp.obj || 3rdparty/glfw/src/glfw3.lib glad.lib imgui.lib imguizmo
+build Runtime.lib: CXX_STATIC_LIBRARY_LINKER__Runtime_Release CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImCurveEdit.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGradient.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGuizmo.cpp.obj CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImSequencer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Application.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/InputSystem/Input.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Random/Random.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Depthbuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/Framebuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Buffer/HdrFramebuffer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Camera/Camera.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Geometry/Shape/Shape.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/RenderPass/ForwardPass.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Render/Renderer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/Entity/Entity.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/Scene.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/Scene/SceneSerilizer.cpp.obj CMakeFiles/Runtime.dir/Runtime/src/UUID.cpp.obj || 3rdparty/glfw/src/glfw3.lib glad.lib imgui.lib imguizmo
   LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt
   OBJECT_DIR = CMakeFiles\Runtime.dir
   POST_BUILD = cd .

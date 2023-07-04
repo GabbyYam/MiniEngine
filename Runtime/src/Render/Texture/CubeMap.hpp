@@ -59,30 +59,31 @@ namespace suplex {
             glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
         }
 
-        virtual void LoadData(std::string const& path, ImageFormat format) override {}
-        virtual void LoadData(const aiTexture* aiTex, ImageFormat format) override {}
+        virtual void LoadData(std::string const& path, TextureFormat format) override {}
+        virtual void LoadData(const aiTexture* aiTex, TextureFormat format) override {}
 
-        void LoadData(std::vector<std::string> const& paths, ImageFormat format)
+        void LoadData(std::vector<std::string> const& paths, TextureFormat format)
         {
             stbi_set_flip_vertically_on_load(true);
             for (unsigned int i = 0; i < paths.size(); i++) {
                 void* data;
                 switch (format) {
-                    case ImageFormat::RGB:
+                    case TextureFormat::RGB:
                         data = stbi_load((texture_prefix + paths[i]).c_str(), &m_Width, &m_Height, &m_Channels, 0);
                         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE,
                                      data);
                         break;
-                    case ImageFormat::RGBA:
+                    case TextureFormat::RGBA:
                         data = stbi_load((texture_prefix + paths[i]).c_str(), &m_Width, &m_Height, &m_Channels, 0);
                         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
                                      data);
                         break;
 
-                    case ImageFormat::RGBA32F:
+                    case TextureFormat::RGBA32F:
                         data = stbi_loadf((texture_prefix + paths[i]).c_str(), &m_Width, &m_Height, &m_Channels, 0);
                         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, m_Width, m_Height, 0, GL_RGBA, GL_FLOAT, data);
                         break;
+                    default: error("Not Supported Format!"); break;
                 }
 
                 if (data == nullptr)

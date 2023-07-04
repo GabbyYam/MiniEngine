@@ -16,6 +16,11 @@
 },
 {
   "directory": "E:/Graphics/Toy/MiniEngine/build",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Random\\Random.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Random\\Random.cpp",
+  "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Random/Random.cpp"
+},
+{
+  "directory": "E:/Graphics/Toy/MiniEngine/build",
   "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DSPDLOG_COMPILED_LIB -I../Runtime/src -I../3rdparty/tinyobjloader -I../3rdparty/stb -I../3rdparty/IconFontAwesome -I../3rdparty/glfw/include -I../3rdparty/glad/include -I../3rdparty/imgui -I../3rdparty/imgui/backends -I../3rdparty/ImGuizmo -isystem \"C:/Program Files (x86)/spdlog/include\" -isystem \"C:/Program Files (x86)/glm/include\" -isystem D:/vcpkg/installed/x64-windows/include -O3 -DNDEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -std=gnu++20 -o CMakeFiles\\Runtime.dir\\Runtime\\src\\Render\\Buffer\\Depthbuffer.cpp.obj -c E:\\Graphics\\Toy\\MiniEngine\\Runtime\\src\\Render\\Buffer\\Depthbuffer.cpp",
   "file": "E:/Graphics/Toy/MiniEngine/Runtime/src/Render/Buffer/Depthbuffer.cpp"
 },

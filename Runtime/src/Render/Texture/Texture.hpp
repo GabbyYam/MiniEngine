@@ -4,7 +4,10 @@
 #include <stdint.h>
 
 namespace suplex {
-    enum class ImageFormat { RGB, RGBA, RGBA32F };
+
+    enum class TextureFormat { None = 0, RGB, RGBA, RGBA32F, DEPTH24STENCIL8, Depth = DEPTH24STENCIL8, RED_INTEGER };
+    enum class TextureWrap { ClampToEdge, ClampToBorder, Repeat };
+    enum class TextureFilter { Nearest, Linear };
 
     class Texture {
     public:
@@ -13,8 +16,9 @@ namespace suplex {
         virtual void Allocate(){};
         virtual void Allocate(uint32_t w, uint32_t h){};
 
-        virtual void LoadData(std::string const& path, ImageFormat format) {}
-        virtual void LoadData(const aiTexture* aiTex, ImageFormat format) {}
+        virtual void LoadData(std::string const& path, TextureFormat format) {}
+        virtual void LoadData(void* data, TextureFormat format) {}
+        virtual void LoadData(const aiTexture* aiTex, TextureFormat format) {}
 
         const uint8_t* data() const { return m_ImageData; }
 
