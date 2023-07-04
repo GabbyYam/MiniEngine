@@ -13,6 +13,7 @@ uniform sampler2D DepthMap;
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D ssaoNoise;
+uniform sampler2D SSAOMap;
 
 uniform int   tonemappingType = 0;
 uniform float exposure;
@@ -163,11 +164,24 @@ float SSAO(vec2 coord)
     return occlusion;
 }
 
+float BlurSSAOMap(sampler2D ssaoInput)
+{
+    vec2  texelSize = 1.0 / vec2(textureSize(ssaoInput, 0));
+    float result    = 0.0;
+    for (int x = -2; x < 2; ++x) {
+        for (int y = -2; y < 2; ++y) {
+            vec2 offset = vec2(float(x), float(y)) * texelSize;
+            result += texture(ssaoInput, TexCoords + offset).r;
+        }
+    }
+    return result / (4.0 * 4.0);
+}
+
 void main()
 {
     // float depth = texture(gPosition, TexCoords).w;
     float depth = LinearizeDepth(texture(DepthMap, TexCoords).r);
-    float ao    = SSAO(TexCoords);
+    float ao    = BlurSSAOMap(SSAOMap);
 
     highp vec2 rcpFrame = 1.0 / (textureSize(scene, 0).xy);
     vec4       uv       = vec4(TexCoords, TexCoords - (rcpFrame * (0.5 + FXAA_SUBPIX_SHIFT)));
@@ -214,7 +228,7 @@ void main()
 
     FragColor = vec4(color, 1.0);
 
-    // Visualize depth
+    // Visualization
     // FragColor = vec4(vec3(1.0 - (depth / farClip)), 1.0);
     // FragColor = texture(gNormal, TexCoords);
     // FragColor = vec4(vec3(ao), 1.0);

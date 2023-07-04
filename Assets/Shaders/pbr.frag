@@ -297,6 +297,7 @@ void main()
     vec2        envBRDF            = texture(BRDF_LUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3        specular           = prefilteredColor * (F * envBRDF.x + envBRDF.y);
 
+    // float ssao    = texture(SSAOMap, TexCoord).r;
     vec3 ambient = (useEnvMap == 1 ? (kD * diffuse + specular) : vec3(0.03)) * ao;
 
     vec3 color = (ambient + Lo) * albedo.rgb;

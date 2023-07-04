@@ -234,7 +234,13 @@ namespace suplex {
             }
 
             {
-                // ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0.0, 0.0});
+                ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0.0, 0.0});
+                ImGui::Begin("debug");
+                ImGui::Image((void*)(intptr_t)m_Renderer->GetGraphicsContext()->SSAOMap, ImGui::GetContentRegionAvail(), {0.0f, 1.0f},
+                             {1.0f, 0.0f});
+                // info("ssao map id = {}", m_Renderer->GetGraphicsContext()->SSAOMap);
+                ImGui::End();
+
                 // ImGui::Begin("Depth Buffer (Light Space)");
 
                 // ImGui::Image((void*)(intptr_t)m_Renderer->DepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f}, {1.0f, 0.0f});
@@ -247,7 +253,7 @@ namespace suplex {
                 //              {1.0f, 0.0f});
                 // ImGui::End();
 
-                // ImGui::PopStyleVar(1);
+                ImGui::PopStyleVar(1);
             }
 
             {
@@ -316,9 +322,11 @@ namespace suplex {
                 ImGui::ColorEdit3("Light Color", &config->lightSetting.lightColor[0]);
 
                 bool distanceChange = false;
-                distanceChange |= ImGui::InputFloat("Light Camera Near", &cameraLS->GetNearClip());
-                distanceChange |= ImGui::InputFloat("Light Camera Far", &cameraLS->GetFarClip());
-                // if (distanceChange) cameraLS->Recal();
+                distanceChange |= ImGui::SliderFloat("Light Camera View Range", &cameraLS->GetViewRange(), 5.0, 100.0f);
+                distanceChange |= ImGui::SliderFloat("Light Camera Near", &cameraLS->GetNearClip(), 0, 10);
+                distanceChange |= ImGui::SliderFloat("Light Camera Far", &cameraLS->GetFarClip(), 10, 100);
+                if (distanceChange)
+                    cameraLS->RecalculateProjection();
 
                 // Rotate Directional Light
                 float        radius = 10;
@@ -334,14 +342,15 @@ namespace suplex {
                 ImGui::Text("Shadow");
                 ImGui::Checkbox("Cast Shadow", &config->lightSetting.castShadow);
 
+                // Skybox and IBL ambient
                 ImGui::Text("Ambient");
-                ImGui::Checkbox("Use EnvMap", &config->lightSetting.useEnvMap);
+                ImGui::Checkbox("Enable Environment Map", &config->lightSetting.useEnvMap);
 
                 ImGui::End();
             }
 
             {
-                ImGui::Begin("Postprocess");
+                ImGui::Begin("Post FX");
                 ImGui::Checkbox("Enable Postprocess", &config->postprocessSetting.enablePostprocess);
 
                 if (config->postprocessSetting.enablePostprocess) {

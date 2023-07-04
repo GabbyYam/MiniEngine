@@ -144,6 +144,7 @@ namespace suplex {
 
             // Return to default framebuffer
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glCullFace(GL_BACK);
         }
 
         virtual uint32_t GetFramebufferImage() override { return m_Framebuffer->GetDepthAttachmentID(); }

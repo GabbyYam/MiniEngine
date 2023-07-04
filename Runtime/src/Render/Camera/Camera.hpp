@@ -29,16 +29,17 @@ namespace suplex {
 
         auto& GetNearClip() { return m_NearClip; }
         auto& GetFarClip() { return m_FarClip; }
+        auto& GetViewRange() { return m_ViewRange; }
         auto& GetForward() { return m_Forward; }
         void  LookAtWorldCenter() { m_View = glm::lookAt(m_Position - m_Forward, glm::vec3(0.0f), glm::vec3(0, 1, 0)); }
 
-    protected:
+    public:
         virtual void  RecalculateView();
         virtual void  RecalculateProjection();
         virtual float GetRotationSpeed();
 
     protected:
-        float     m_VerticalFOV = 45.0f, m_NearClip = 0.01f, m_FarClip = 100.f;
+        float     m_VerticalFOV = 45.0f, m_NearClip = 0.01f, m_FarClip = 100.f, m_ViewRange = 64.0f;
         uint32_t  m_ViewportWidth = 800, m_ViewportHeight = 600;
         glm::vec3 m_Position = {0.0f, 0.0f, 0.0f};
         glm::vec3 m_Forward  = {0.0f, 0.0f, -1.0f};

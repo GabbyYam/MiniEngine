@@ -87,6 +87,8 @@ namespace suplex {
         uint32_t                        depthMapLS = 0;
         uint32_t                        gPosition  = 0;
         uint32_t                        gNormal    = 0;
+        uint32_t                        mainImage  = 0;
+        uint32_t                        SSAOMap    = 0;
     };
 
 }  // namespace suplex

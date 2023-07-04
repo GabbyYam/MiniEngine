@@ -28,16 +28,16 @@ The CXX compiler identification is Clang, found in "E:/Graphics/Toy/MiniEngine/b
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: E:/Graphics/Toy/MiniEngine/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):D:/ninja-win/ninja.exe cmTC_56d4c && [1/2] Building C object CMakeFiles/cmTC_56d4c.dir/CMakeCCompilerABI.c.obj
-[2/2] Linking C executable cmTC_56d4c.exe
+Run Build Command(s):D:/ninja-win/ninja.exe cmTC_6eb4a && [1/2] Building C object CMakeFiles/cmTC_6eb4a.dir/CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_6eb4a.exe
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: E:/Graphics/Toy/MiniEngine/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):D:/ninja-win/ninja.exe cmTC_9c2c7 && [1/2] Building CXX object CMakeFiles/cmTC_9c2c7.dir/CMakeCXXCompilerABI.cpp.obj
-[2/2] Linking CXX executable cmTC_9c2c7.exe
+Run Build Command(s):D:/ninja-win/ninja.exe cmTC_8517b && [1/2] Building CXX object CMakeFiles/cmTC_8517b.dir/CMakeCXXCompilerABI.cpp.obj
+[2/2] Linking CXX executable cmTC_8517b.exe
 
 
 
@@ -46,8 +46,8 @@ Run Build Command(s):D:/ninja-win/ninja.exe cmTC_9c2c7 && [1/2] Building CXX obj
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
 Change Dir: E:/Graphics/Toy/MiniEngine/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):D:/ninja-win/ninja.exe cmTC_09613 && [1/2] Building CXX object CMakeFiles/cmTC_09613.dir/feature_tests.cxx.obj
-[2/2] Linking CXX executable cmTC_09613.exe
+Run Build Command(s):D:/ninja-win/ninja.exe cmTC_ec1e8 && [1/2] Building CXX object CMakeFiles/cmTC_ec1e8.dir/feature_tests.cxx.obj
+[2/2] Linking CXX executable cmTC_ec1e8.exe
 
 
 
@@ -112,8 +112,8 @@ Run Build Command(s):D:/ninja-win/ninja.exe cmTC_09613 && [1/2] Building CXX obj
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
 Change Dir: E:/Graphics/Toy/MiniEngine/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):D:/ninja-win/ninja.exe cmTC_aa8c6 && [1/2] Building CXX object CMakeFiles/cmTC_aa8c6.dir/feature_tests.cxx.obj
-[2/2] Linking CXX executable cmTC_aa8c6.exe
+Run Build Command(s):D:/ninja-win/ninja.exe cmTC_5896e && [1/2] Building CXX object CMakeFiles/cmTC_5896e.dir/feature_tests.cxx.obj
+[2/2] Linking CXX executable cmTC_5896e.exe
 
 
 

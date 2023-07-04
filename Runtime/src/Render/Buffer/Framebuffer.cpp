@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <stdint.h>
 #include <vector>
+#include "Render/Texture/Texture.hpp"
 #include "glad/glad.h"
 #include "spdlog/spdlog.h"
 #include <algorithm>

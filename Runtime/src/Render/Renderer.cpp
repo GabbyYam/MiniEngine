@@ -13,6 +13,7 @@
 #include "Render/RenderPass/PrecomputePass.hpp"
 #include "Render/RenderPass/RenderPass.hpp"
 #include "Render/RenderPass/CubeMapPass.hpp"
+#include "Render/RenderPass/SSAOPass.hpp"
 #include "Render/Renderer.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
@@ -60,9 +61,6 @@ namespace suplex {
         // Bind Render Pass
         BindRenderPass();
 
-        m_Bloom            = std::make_shared<Bloom>(1920, 1080, 5);
-        m_BloomMergeShader = std::make_shared<Shader>("quad.vert", "postprocess.frag");
-
         solidWhite.Allocate(16, 16);
         solidWhite.SolidColor();
 
@@ -103,6 +101,8 @@ namespace suplex {
 
             m_EnvMapPass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
         }
+
+        m_SSAOPass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
 
         m_PostprocessPass->Render(camera, m_Scene, m_Context, m_PrecomputeContext);
     }
@@ -183,8 +183,12 @@ namespace suplex {
         // Forward Pass
         m_Framebuffer->Bind();
         m_ForwardPass = m_PassQueue.emplace_back(std::make_shared<ForwardRenderPass>());
-
         m_ForwardPass->BindFramebuffer(m_Framebuffer);
+        m_Context->mainImage = m_ForwardPass->GetFramebufferImage();
+
+        m_SSAOPass = m_PassQueue.emplace_back(std::make_shared<SSAOPass>());
+        m_SSAOPass->BindFramebuffer(m_PrecomputeContext->precomputeFrambuffer);
+        m_Context->SSAOMap = m_SSAOPass->GetFramebufferImage();
 
         // EnvironmentMap Pass
         m_EnvMapPass = m_PassQueue.emplace_back(std::make_shared<CubeMapPass>());

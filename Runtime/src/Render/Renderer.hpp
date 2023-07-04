@@ -76,6 +76,7 @@ namespace suplex {
         std::shared_ptr<RenderPass>              m_OutlinePass     = nullptr;
         std::shared_ptr<RenderPass>              m_DepthPassLS     = nullptr;
         std::shared_ptr<RenderPass>              m_DepthPass       = nullptr;
+        std::shared_ptr<RenderPass>              m_SSAOPass        = nullptr;
         std::shared_ptr<RenderPass>              m_EnvMapPass      = nullptr;
         std::shared_ptr<RenderPass>              m_PrecomputePass  = nullptr;
         std::shared_ptr<RenderPass>              m_PostprocessPass = nullptr;
@@ -83,9 +84,6 @@ namespace suplex {
         std::shared_ptr<Scene> m_Scene;
 
         std::shared_ptr<Camera> m_ActiveCamera = nullptr;
-
-        std::shared_ptr<Bloom>  m_Bloom            = nullptr;
-        std::shared_ptr<Shader> m_BloomMergeShader = nullptr;
 
         std::shared_ptr<Camera> m_LightCamera = nullptr;
 

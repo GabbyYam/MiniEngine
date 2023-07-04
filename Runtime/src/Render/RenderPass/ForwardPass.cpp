@@ -1,6 +1,7 @@
 #include "ForwardPass.hpp"
 #include "Render/Geometry/Shape/Shape.hpp"
 #include "Render/RenderPass/ForwardPass.hpp"
+#include "Render/Shader/Shader.hpp"
 #include "Render/Texture/Texture2D.hpp"
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -42,15 +43,17 @@ namespace suplex {
 
             shader->BindTexture("BRDF_LUT", context->BRDF_LUT.GetID(), 12, SamplerType::Texture2D);
 
+            shader->BindTexture("SSAOMap", graphicsContext->SSAOMap, 11, SamplerType::Texture2D);
+
             // Light position
             for (unsigned int i = 0; i < 4; ++i) {
                 shader->SetFloat3("lightPositions[" + std::to_string(i) + "]", glm::value_ptr(lightPositions[i]));
                 shader->SetFloat3("lightColors[" + std::to_string(i) + "]", glm::value_ptr(lightColors[i]));
             }
 
-            for (unsigned int i = 0; i < 100; ++i) {
-                shader->SetMaterix4("boneTransform[" + std::to_string(i) + "]", glm::value_ptr(glm::mat4(1.0f)));
-            }
+            // for (unsigned int i = 0; i < 100; ++i) {
+            //     shader->SetMaterix4("boneTransform[" + std::to_string(i) + "]", glm::value_ptr(glm::mat4(1.0f)));
+            // }
 
             shader->Unbind();
         }

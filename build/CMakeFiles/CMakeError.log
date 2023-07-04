@@ -1,9 +1,9 @@
 Determining if the include file pthread.h exists failed with the following output:
 Change Dir: E:/Graphics/Toy/MiniEngine/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):D:/ninja-win/ninja.exe cmTC_6663d && [1/2] Building C object CMakeFiles/cmTC_6663d.dir/CheckIncludeFile.c.obj
-FAILED: CMakeFiles/cmTC_6663d.dir/CheckIncludeFile.c.obj 
-C:\PROGRA~1\LLVM\bin\clang.exe   -g -Xclang -gcodeview -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -MD -MT CMakeFiles/cmTC_6663d.dir/CheckIncludeFile.c.obj -MF CMakeFiles\cmTC_6663d.dir\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_6663d.dir/CheckIncludeFile.c.obj -c CheckIncludeFile.c
+Run Build Command(s):D:/ninja-win/ninja.exe cmTC_dde2f && [1/2] Building C object CMakeFiles/cmTC_dde2f.dir/CheckIncludeFile.c.obj
+FAILED: CMakeFiles/cmTC_dde2f.dir/CheckIncludeFile.c.obj 
+C:\PROGRA~1\LLVM\bin\clang.exe   -g -Xclang -gcodeview -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -MD -MT CMakeFiles/cmTC_dde2f.dir/CheckIncludeFile.c.obj -MF CMakeFiles\cmTC_dde2f.dir\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_dde2f.dir/CheckIncludeFile.c.obj -c CheckIncludeFile.c
 CheckIncludeFile.c:1:10: fatal error: 'pthread.h' file not found
 #include <pthread.h>
          ^~~~~~~~~~~

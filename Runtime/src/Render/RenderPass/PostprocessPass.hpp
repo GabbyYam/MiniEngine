@@ -32,7 +32,6 @@ namespace suplex {
             for (int i = 0; i < 64; ++i)
                 m_MergeShader->SetFloat3(("samples[" + std::to_string(i) + "]"), glm::value_ptr(ssaoKernel[i]));
 
-            // Framebuffer out();
             m_OutputFramebuffer = std::make_shared<Framebuffer>(spec);
         }
 
@@ -76,6 +75,7 @@ namespace suplex {
                 m_MergeShader->BindTexture("gPosition", graphicsContext->gPosition, 3, SamplerType::Texture2D);
                 m_MergeShader->BindTexture("gNormal", graphicsContext->gNormal, 4, SamplerType::Texture2D);
                 m_MergeShader->BindTexture("ssaoNoise", m_NoiseMap->GetID(), 5, SamplerType::Texture2D);
+                m_MergeShader->BindTexture("SSAOMap", graphicsContext->SSAOMap, 6, SamplerType::Texture2D);
 
                 // Render result in screen space quad
                 m_OutputFramebuffer->Bind();

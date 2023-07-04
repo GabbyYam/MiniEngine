@@ -108,7 +108,9 @@ namespace suplex {
                 m_Projection = glm::perspectiveFov(glm::radians(m_VerticalFOV), (float)m_ViewportWidth, (float)m_ViewportHeight,
                                                    m_NearClip, m_FarClip);
                 break;
-            case ProjectionType::Orthogonal: m_Projection = glm::ortho<float>(-100, 100, -100, 100, 0, 64); break;
+            case ProjectionType::Orthogonal:
+                m_Projection = glm::ortho<float>(-m_ViewRange, m_ViewRange, -m_ViewRange, m_ViewRange, m_NearClip, m_FarClip);
+                break;
         }
     }
 }  // namespace suplex

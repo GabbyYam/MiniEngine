@@ -5,7 +5,7 @@
 
 namespace suplex {
 
-    enum class TextureFormat { None = 0, RGB, RGBA, RGBA32F, DEPTH24STENCIL8, Depth = DEPTH24STENCIL8, RED_INTEGER };
+    enum class TextureFormat { None = 0, RED, RGB, RGBA, RGBA32F, DEPTH24STENCIL8, Depth = DEPTH24STENCIL8, RED_INTEGER };
     enum class TextureWrap { ClampToEdge, ClampToBorder, Repeat };
     enum class TextureFilter { Nearest, Linear };
 
