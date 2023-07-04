@@ -234,13 +234,6 @@ namespace suplex {
             }
 
             {
-                ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {0.0, 0.0});
-                ImGui::Begin("debug");
-                ImGui::Image((void*)(intptr_t)m_Renderer->GetGraphicsContext()->SSAOMap, ImGui::GetContentRegionAvail(), {0.0f, 1.0f},
-                             {1.0f, 0.0f});
-                // info("ssao map id = {}", m_Renderer->GetGraphicsContext()->SSAOMap);
-                ImGui::End();
-
                 // ImGui::Begin("Depth Buffer (Light Space)");
 
                 // ImGui::Image((void*)(intptr_t)m_Renderer->DepthMapID(), ImGui::GetContentRegionAvail(), {0.0f, 1.0f}, {1.0f, 0.0f});

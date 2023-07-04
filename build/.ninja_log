@@ -116,3 +116,9 @@
 7092	7368	7101764918359770	Runtime.lib	e97ac9fd68a06dd0
 7368	7902	7101764919460706	Sandbox.exe	2414d265d05bfc46
 7373	8045	7101764919656904	Editor.exe	3bcef1c5a5159eaa
+19	4647	7101773380840482	CMakeFiles/Editor.dir/Editor/src/EditorLayer.cpp.obj	517d7c9355b5aee3
+15	7453	7101773408854529	CMakeFiles/Editor.dir/Editor/src/Editor.cpp.obj	9f6e31914e70a70f
+7453	8163	7101773410558880	Editor.exe	3bcef1c5a5159eaa
+36	4693	7101799252372194	CMakeFiles/Editor.dir/Editor/src/EditorLayer.cpp.obj	517d7c9355b5aee3
+30	7462	7101799280047723	CMakeFiles/Editor.dir/Editor/src/Editor.cpp.obj	9f6e31914e70a70f
+7463	8174	7101799281610856	Editor.exe	3bcef1c5a5159eaa
