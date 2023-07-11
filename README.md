@@ -6,6 +6,7 @@
 
 - Cook-Torrance BRDF
 - IBL
+- Kulla-Conty Approximation
 
 **Shadow**
 
@@ -18,7 +19,7 @@
 - Tone Mapping (ACES)
 - Bloom
 - Depth of Field
-- Fog: (Linear/Exponential Height)
+- Fog (Depth/Height)
 - SSAO
 
 ## Gallery
