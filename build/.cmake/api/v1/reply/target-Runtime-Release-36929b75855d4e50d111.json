@@ -41,13 +41,13 @@
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 68,
+				"line" : 69,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 69,
+				"line" : 68,
 				"parent" : 0
 			},
 			{
@@ -85,7 +85,7 @@
 			"defines" : 
 			[
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"define" : "SPDLOG_COMPILED_LIB"
 				}
 			],
@@ -108,37 +108,37 @@
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/IconFontAwesome"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/glfw/include"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/glad/include"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 3,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/imgui"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 3,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/imgui/backends"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 3,
 					"path" : "E:/Graphics/Toy/MiniEngine/3rdparty/ImGuizmo"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"isSystem" : true,
 					"path" : "C:/Program Files (x86)/spdlog/include"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"isSystem" : true,
 					"path" : "C:/Program Files (x86)/glm/include"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"isSystem" : true,
 					"path" : "D:/vcpkg/installed/x64-windows/include"
 				}
@@ -175,18 +175,18 @@
 	[
 		{
 			"backtrace" : 3,
-			"id" : "glad::@6890427a1f51a3e7e1df"
-		},
-		{
-			"backtrace" : 4,
 			"id" : "imgui::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 4,
-			"id" : "imguizmo::@6890427a1f51a3e7e1df"
+			"id" : "glad::@6890427a1f51a3e7e1df"
 		},
 		{
 			"backtrace" : 3,
+			"id" : "imguizmo::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 4,
 			"id" : "glfw::@0aa6f7fc354a61a17aaf"
 		}
 	],
@@ -318,25 +318,25 @@
 			"sourceGroupIndex" : 0
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImCurveEdit.cpp.obj",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGradient.cpp.obj",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImGuizmo.cpp.obj",
 			"sourceGroupIndex" : 1
 		},
 		{
-			"backtrace" : 4,
+			"backtrace" : 3,
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/imguizmo.dir/3rdparty/ImGuizmo/ImSequencer.cpp.obj",
 			"sourceGroupIndex" : 1

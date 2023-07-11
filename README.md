@@ -13,7 +13,7 @@
 - PCF
 - PCSS
 
-**Post-FX**
+**Post FX**
 
 - Tone Mapping (ACES)
 - Bloom

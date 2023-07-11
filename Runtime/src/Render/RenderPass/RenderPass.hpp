@@ -100,7 +100,7 @@ namespace suplex {
             spec.Attachments     = {{TextureFormat::Depth}, {TextureFormat::RGBA}, {TextureFormat::RGB}};
             spec.SwapChainTarget = false;
             m_Framebuffer        = std::make_shared<Framebuffer>(spec);
-            m_Framebuffer->OnResize(2048, 2048);
+            m_Framebuffer->OnResize(m_DepthmapResolution, m_DepthmapResolution);
             // m_Depthbuffer->OnResize(2048, 2048);
 
             m_Shaders = {std::make_shared<Shader>("depth.vert", "depth.frag")};
@@ -114,10 +114,7 @@ namespace suplex {
             // render to custom framebuffer
             // ------
             glCullFace(GL_FRONT);
-            glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
-            // glBindFramebuffer(GL_FRAMEBUFFER, m_Depthbuffer->GetID());
-            glViewport(0, 0, 2048, 2048);
-            // glBindFramebuffer(GL_FRAMEBUFFER, m_OutputFramebuffer->GetID());
+            m_Framebuffer->Bind();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             auto config = graphicsContext->config;
             auto viewLS = camera->GetView();
@@ -148,10 +145,9 @@ namespace suplex {
         }
 
         virtual uint32_t GetFramebufferImage() override { return m_Framebuffer->GetDepthAttachmentID(); }
-        // virtual uint32_t GetFramebufferImage() override { return m_Depthbuffer->GetTextureID(); }
 
     private:
-        // std::shared_ptr<Depthbuffer> m_Depthbuffer = std::make_shared<Depthbuffer>();
+        float m_DepthmapResolution = 2048;
     };
 
     class ImGuiRenderPass : public RenderPass {

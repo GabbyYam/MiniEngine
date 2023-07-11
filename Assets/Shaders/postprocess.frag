@@ -33,6 +33,7 @@ uniform float fogEnd;
 
 uniform float nearClip;
 uniform float farClip;
+uniform float dofIntensity;
 
 #define FXAA_SPAN_MAX 8.0
 #define FXAA_REDUCE_MUL (1.0 / FXAA_SPAN_MAX)
@@ -177,43 +178,46 @@ float BlurSSAOMap(sampler2D ssaoInput)
     return result / (4.0 * 4.0);
 }
 
+vec3 Bloom(vec3 color)
+{
+    vec3 bloom = texture(bloomBlur, TexCoords).rgb;
+    return mix(color, bloom, bloomIntensity);
+}
+
 void main()
 {
-    // float depth = texture(gPosition, TexCoords).w;
-    float depth = LinearizeDepth(texture(DepthMap, TexCoords).r);
-    float ao    = BlurSSAOMap(SSAOMap);
+    // float depth = LinearizeDepth(texture(DepthMap, TexCoords).r);
+    float depth = texture(gPosition, TexCoords).w;
 
-    highp vec2 rcpFrame = 1.0 / (textureSize(scene, 0).xy);
-    vec4       uv       = vec4(TexCoords, TexCoords - (rcpFrame * (0.5 + FXAA_SUBPIX_SHIFT)));
+    vec3 color = texture(scene, TexCoords).rgb;
+    if (enableFXAA != 0) {
+        highp vec2 rcpFrame = 1.0 / (textureSize(scene, 0).xy);
 
-    vec3 guassian = GuassianBlur(scene, TexCoords);
+        vec4 uv = vec4(TexCoords, TexCoords - (rcpFrame * (0.5 + FXAA_SUBPIX_SHIFT)));
+        color   = Fxaa(uv, scene, rcpFrame);
+    }
 
-    // to bloom or not to bloom
-    vec3 origin = enableFXAA == 1 ? Fxaa(uv, scene, rcpFrame) : texture(scene, TexCoords).rgb;
-    vec3 bloom  = texture(bloomBlur, TexCoords).rgb;
-
-    vec3 color = enableBloom == 1 ? mix(origin, bloom, bloomIntensity) : origin;
+    if (enableBloom != 0)
+        color = Bloom(color);
 
     if (enableDoF != 0)
-        color = mix(color, guassian, depth / farClip);
+        color = mix(color, GuassianBlur(scene, TexCoords), dofIntensity * (depth / farClip));
 
     if (enableSSAO != 0)
-        color *= ao;
+        color *= BlurSSAOMap(SSAOMap);
 
-    {
-        float fogFactor = 1.0;
-        float dist      = depth / farClip;
-        switch (fogType) {
-            case 0: break;
-            case 1: fogFactor = (1.0 - fogDensity * dist); break;
-            case 2: fogFactor = exp(-(fogDensity * dist)); break;
-            case 3: fogFactor = exp(-pow(fogDensity * dist, 2)); break;
-        }
-        fogFactor = clamp(fogFactor, 0.0, 1.0);
-
-        vec3 fogColor = vec3(0.5, 0.5, 0.5);
-        color         = mix(fogColor, color, fogFactor);
+    // Fog
+    float fogFactor = 1.0;
+    vec3  fogColor  = vec3(0.5, 0.5, 0.5);
+    float dist      = depth / farClip;
+    switch (fogType) {
+        case 0: break;
+        case 1: fogFactor = (1.0 - fogDensity * dist); break;
+        case 2: fogFactor = exp(-(fogDensity * dist)); break;
+        case 3: fogFactor = exp(-pow(fogDensity * dist, 2)); break;
     }
+    fogFactor = clamp(fogFactor, 0.0, 1.0);
+    color     = mix(fogColor, color, fogFactor);
 
     // tone mapping
     switch (tonemappingType) {
@@ -222,11 +226,8 @@ void main()
         case 2: color = ACES_ToneMapping(color); break;
     }
 
-    // // also gamma correct while we're at it
-    const float gamma = 2.2;
-    color             = pow(color, vec3(1.0 / gamma));
-
-    FragColor = vec4(color, 1.0);
+    float gamma = 2.2;
+    FragColor   = vec4(pow(color, vec3(1.0 / gamma)), 1.0);
 
     // Visualization
     // FragColor = vec4(vec3(1.0 - (depth / farClip)), 1.0);

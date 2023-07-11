@@ -66,6 +66,7 @@ namespace suplex {
                 m_MergeShader->SetFloat("fogEnd", config->postprocessSetting.fogEnd);
 
                 m_MergeShader->SetInt("enableDoF", config->postprocessSetting.enableDoF);
+                m_MergeShader->SetFloat("dofIntensity", config->postprocessSetting.dofIntensity);
 
                 m_MergeShader->BindTexture("scene", m_Framebuffer->GetColorAttachmentID(0), 0, SamplerType::Texture2D);
                 m_MergeShader->BindTexture("bloomBlur", m_Bloom->GetResultID(), 1, SamplerType::Texture2D);

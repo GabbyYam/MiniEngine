@@ -7,9 +7,9 @@ in vec3 TexCoords;
 uniform samplerCube EnvironmentMap;
 
 void main()
-{    
+{
     vec3 color = texture(EnvironmentMap, TexCoords).rgb;
-    FragColor = vec4(color, 1.0);
+    FragColor  = vec4(color, 1.0);
 
-    BrightColor = vec4(color, 1.0);
+    BrightColor = vec4(0.0);
 }

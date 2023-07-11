@@ -54,7 +54,8 @@ namespace suplex {
         float   fogStart   = 0.0f;
         float   fogEnd     = 300.0f;
 
-        bool enableDoF = false;
+        bool  enableDoF    = false;
+        float dofIntensity = 1.0f;
 
         bool enableSSAO = true;
     };
@@ -62,10 +63,13 @@ namespace suplex {
     struct PBRSetting
     {
         // material parameters
-        vec3  baseColor = vec3(0.6);
+        float baseF     = 0.04;
+        vec3  baseColor = vec3(1.0);
         float metallic  = 0.0;
         float roughness = 0.1;
         float ao        = 1.0;
+
+        bool enableKullaConty = false;
     };
 
     struct GraphicsConfig

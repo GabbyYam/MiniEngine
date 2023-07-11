@@ -44,6 +44,8 @@ namespace suplex {
             shader->BindTexture("BRDF_LUT", context->BRDF_LUT.GetID(), 12, SamplerType::Texture2D);
 
             shader->BindTexture("SSAOMap", graphicsContext->SSAOMap, 11, SamplerType::Texture2D);
+            shader->BindTexture("gPosition", graphicsContext->gPosition, 10, SamplerType::Texture2D);
+            shader->BindTexture("gNormal", graphicsContext->gNormal, 9, SamplerType::Texture2D);
 
             // Light position
             for (unsigned int i = 0; i < 4; ++i) {

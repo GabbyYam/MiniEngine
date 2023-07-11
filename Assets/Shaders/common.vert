@@ -6,7 +6,7 @@ layout(location = 2) in vec2 aTexCoord;
 layout(location = 5) in ivec4 boneIds;
 layout(location = 6) in vec4 weights;
 
-out vec2 TexCoord;
+out vec2 TexCoords;
 out vec3 normalWS;
 out vec4 shadowCoord;
 out vec3 fragPos;
@@ -36,8 +36,8 @@ void main()
     // }
     gl_Position = proj * view * model * vec4(aPos, 1.0);
 
-    TexCoord = aTexCoord;
-    normalWS = transpose(inverse(mat3(model))) * aNormal;
+    TexCoords = aTexCoord;
+    normalWS  = transpose(inverse(mat3(model))) * aNormal;
 
     fragPos     = (model * vec4(aPos, 1.0)).xyz;
     shadowCoord = mvpLS * model * vec4(aPos, 1.0);

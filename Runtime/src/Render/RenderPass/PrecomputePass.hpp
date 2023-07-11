@@ -30,6 +30,7 @@ namespace suplex {
                             const std::shared_ptr<GraphicsContext>   graphicsContext,
                             const std::shared_ptr<PrecomputeContext> context) override
         {
+            // =============================================================================================================
             // Bake to cubemap
             glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer->GetID());
             glBindRenderbuffer(GL_RENDERBUFFER, m_Framebuffer->GetRenderbufferID());
@@ -51,6 +52,8 @@ namespace suplex {
                 utils::RenderCube(shader);
             }
 
+            // =============================================================================================================
+            // Diffuse Term
             shader = m_Shaders[1];
             shader->Bind();
             shader->SetMaterix4("proj", glm::value_ptr(captureProjection));
@@ -73,6 +76,8 @@ namespace suplex {
             }
             shader->Unbind();
 
+            // =============================================================================================================
+            //
             shader = m_Shaders[2];
             shader->Bind();
 
@@ -105,6 +110,8 @@ namespace suplex {
             }
             shader->Unbind();
 
+            // =============================================================================================================
+            //
             shader = m_Shaders[3];
             // then re-configure capture framebuffer object and render screen-space quad
             // with BRDF shader.

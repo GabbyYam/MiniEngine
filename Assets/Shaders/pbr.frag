@@ -4,7 +4,7 @@ layout(location = 0) out vec4 FragColor;
 layout(location = 1) out vec4 BrightColor;
 layout(location = 2) out int EntityID;
 
-in vec2 TexCoord;
+in vec2 TexCoords;
 in vec3 normalWS;
 in vec4 shadowCoord;
 in vec3 fragPos;
@@ -16,6 +16,7 @@ uniform samplerCube PrefilterMap;
 uniform sampler2D   BRDF_LUT;
 
 uniform int useEnvMap = 1;
+uniform int kullaConty;
 uniform int entityID;
 
 uniform vec3  lightPosition;
@@ -31,6 +32,7 @@ uniform vec3 lightColors[4];
 uniform vec3 viewPos;
 
 // material parameters
+uniform float baseF;
 uniform vec3  baseColor;
 uniform float metallic;
 uniform float roughness;
@@ -87,18 +89,17 @@ void poissonDiskSamples(const in vec2 randomSeed)
     }
 }
 
-float ShadowMapping(vec4 fragPosLightSpace)
+float ShadowMapping(vec3 coords)
 {
     float bias = max(0.05 * (dot(normalWS, lightDirection)), 0.005);
 
-    vec3 projCoords    = fragPosLightSpace.xyz / fragPosLightSpace.w;
-    projCoords         = projCoords * 0.5 + 0.5;
-    float closestDepth = texture(DepthMap, projCoords.xy).r;
-    float currentDepth = projCoords.z;
-    float shadow       = currentDepth > closestDepth + bias ? 1.0 : 0.0;
-    if (projCoords.z > 1.0)
-        return 0;
-    return shadow;
+    if (coords.z > 1.0)
+        return INVISIBLE_VALUE;
+    float closestDepth = texture(DepthMap, coords.xy).r;
+    float currentDepth = coords.z;
+    float visibility   = currentDepth > closestDepth + bias ? INVISIBLE_VALUE : VISIBLE_VALUE;
+
+    return visibility;
 }
 
 float PCF(vec4 coords, float filterRadius)
@@ -108,9 +109,15 @@ float PCF(vec4 coords, float filterRadius)
 #else
     uniformDiskSamples(coords.xy);
 #endif
+
+    float bias   = max(0.05 * (dot(normalWS, lightDirection)), 0.005);
+    bias         = 0.01;
     float result = 0.0;
+
     for (int i = 0; i < PCF_NUM_SAMPLES; ++i) {
-        float depth = unpack(texture(DepthMap, coords.xy + poissonDisk[i] * filterRadius / RESOLUTION)) + BIAS;
+        // float depth = unpack(texture(DepthMap, coords.xy + poissonDisk[i] * filterRadius / RESOLUTION)) + BIAS;
+        vec2  offset = poissonDisk[i] * filterRadius / RESOLUTION;
+        float depth  = texture(DepthMap, coords.xy + offset).r + bias;
         result += depth > coords.z ? VISIBLE_VALUE : INVISIBLE_VALUE;
     }
     return result / float(PCF_NUM_SAMPLES);
@@ -123,13 +130,13 @@ float findBlocker(vec2 uv, float zReceiver)
 #else
     uniformDiskSamples(uv);
 #endif
-
-    float bias = max(0.05 * (dot(normalWS, lightDirection)), 0.005);
+    float biasBase = 0.2;
+    float bias     = max(biasBase * (dot(normalWS, lightDirection)), biasBase);
 
     float blockerSum = 0.0;
     int   blockerCnt = 0;
     for (int i = 0; i < BLOCKER_SEARCH_NUM_SAMPLES; ++i) {
-        float depth = unpack(texture(DepthMap, uv + poissonDisk[i] / RESOLUTION)) + bias;
+        float depth = texture(DepthMap, uv + poissonDisk[i] / RESOLUTION).r + bias;
         if (depth < zReceiver) {
             ++blockerCnt;
             blockerSum += depth;
@@ -157,6 +164,7 @@ float PCSS(vec4 coords)
     float penumbra = (coords.z - zBlocker) * LIGHT_WIDTH / zBlocker;
     // STEP 3: filtering
     return PCF(coords, penumbra);
+    // return penumbra;
 }
 
 float CalculateShadow()
@@ -166,6 +174,7 @@ float CalculateShadow()
 
     // return PCSS(vec4(coords, 1.0));
     return PCF(vec4(coords, 1.0), 2);
+    // return ShadowMapping(coords);
 }
 
 float DistributionGGX(vec3 N, vec3 H, float roughness)
@@ -175,11 +184,11 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
     float NdotH  = max(dot(N, H), 0.0);
     float NdotH2 = NdotH * NdotH;
 
-    float num   = a2;
+    float nom   = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom       = PI * denom * denom;
 
-    return num / denom;
+    return nom / denom;
 }
 
 float GeometrySchlickGGX(float NdotV, float roughness)
@@ -189,10 +198,10 @@ float GeometrySchlickGGX(float NdotV, float roughness)
 
     float kIBL = (roughness * roughness) / 2.0;
 
-    float num   = NdotV;
+    float nom   = NdotV;
     float denom = NdotV * (1.0 - k) + k;
 
-    return num / denom;
+    return nom / denom;
 }
 
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
@@ -214,16 +223,16 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 
 void main()
 {
-    vec4 albedo = texture(DiffuseMap, TexCoord);
+    vec3 albedo = texture(DiffuseMap, TexCoords).rgb * baseColor;
 
     vec3 N = normalize(normalWS);
     vec3 V = normalize(viewPos - fragPos);
 
     vec3 F0 = vec3(0.04);
-    F0      = mix(F0, baseColor, metallic);
+    F0      = mix(F0, albedo, metallic);
 
     // reflectance equation
-    vec3 Lo = vec3(0.0);
+    vec3 pointLo = vec3(0.0);
 
     // =======================================================================================
     // Point Light
@@ -250,17 +259,31 @@ void main()
 
         // add to outgoing radiance Lo
         float NdotL = max(dot(N, L), 0.0);
-        Lo += (kD * baseColor / PI + specular) * radiance * NdotL;
+        float NdotV = dot(N, V);
+
+        float Eavg         = textureLod(BRDF_LUT, vec2(roughness, 0), 1).z;
+        float EmuL         = texture(BRDF_LUT, vec2(NdotL, 1.0 - roughness)).z;
+        float EmuV         = texture(BRDF_LUT, vec2(NdotV, 1.0 - roughness)).z;
+        float OneMinusEavg = 1.0 - Eavg;
+        vec3  Favg         = (1.0 + F0 * 20.0) / 21.0;
+        vec3  Fms          = (1.0 - EmuL) * (1.0 - EmuV) * OneMinusEavg * Favg / (PI * OneMinusEavg * (1.0 - Favg * Eavg));
+
+        vec3 lambertian = kD * albedo / PI;
+        if (kullaConty == 1)
+            pointLo += (lambertian + specular + Fms) * radiance * NdotL;
+        else
+            pointLo += (lambertian + specular) * radiance * NdotL;
     }
 
     // =======================================================================================
     // Directional Light
+    vec3 Lo = vec3(0.0);
     {
-        vec3  L           = normalize(lightPosition - fragPos);
-        vec3  H           = normalize(V + L);
-        float distance    = length(lightPosition - fragPos);
-        float attenuation = 1.0 / (distance * distance);
-        vec3  radiance    = lightColor;
+        vec3 L = normalize(lightPosition - fragPos);
+        vec3 H = normalize(V + L);
+        // float distance    = length(lightPosition - fragPos);
+        // float attenuation = 1.0 / (distance * distance);
+        vec3 radiance = lightColor;
 
         // cook-torrance brdf
         float NDF = DistributionGGX(N, H, roughness);
@@ -271,13 +294,28 @@ void main()
         vec3 kD = vec3(1.0) - kS;
         kD *= 1.0 - metallic;
 
+        float NdotL = max(0, dot(N, L));
+        float NdotV = dot(N, V);
+
         vec3  nominator   = NDF * G * F;
         float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001;
         vec3  specular    = nominator / denominator;
 
+        float alpha        = roughness * roughness;
+        float Eavg         = textureLod(BRDF_LUT, vec2(roughness, 0), 1).z;
+        float EmuL         = texture(BRDF_LUT, vec2(NdotL, 1.0 - roughness)).z;
+        float EmuV         = texture(BRDF_LUT, vec2(NdotV, 1.0 - roughness)).z;
+        float OneMinusEavg = 1.0 - Eavg;
+        vec3  Favg         = (1.0 + F0 * 20.0) / 21.0;
+        vec3  Fms          = (1.0 - EmuL) * (1.0 - EmuV) * OneMinusEavg * Favg / (PI * OneMinusEavg * (1.0 - Favg * Eavg));
+
         // add to outgoing radiance Lo
-        float NdotL = max(dot(N, L), 0.0);
-        Lo += (kD * baseColor / PI + specular) * radiance * NdotL;
+
+        vec3 lambertian = kD * albedo / PI;
+        if (kullaConty == 1)
+            Lo += (lambertian + specular + Fms) * radiance * NdotL;
+        else
+            Lo += (lambertian + specular) * radiance * NdotL;
     }
     // =======================================================================================
 
@@ -286,7 +324,7 @@ void main()
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;
     vec3 irradiance = texture(IrradianceMap, N).rgb;
-    vec3 diffuse    = irradiance * baseColor * 1.5;
+    vec3 diffuse    = irradiance * albedo;
 
     vec3        L                  = normalize(lightPosition - fragPos);
     vec3        H                  = normalize(V + L);
@@ -294,24 +332,37 @@ void main()
     vec3        R                  = reflect(-V, N);
     const float MAX_REFLECTION_LOD = 4.0;
     vec3        prefilteredColor   = textureLod(PrefilterMap, R, roughness * MAX_REFLECTION_LOD).rgb;
-    vec2        envBRDF            = texture(BRDF_LUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
-    vec3        specular           = prefilteredColor * (F * envBRDF.x + envBRDF.y);
 
-    // float ssao    = texture(SSAOMap, TexCoord).r;
+    // Kulla-conty
+    float NdotL        = max(0, dot(N, L));
+    float NdotV        = dot(N, V);
+    vec3  Favg         = (1.0 + F0 * 20.0) / 21.0;
+    float Eavg         = textureLod(BRDF_LUT, vec2(roughness, 0), 1).z;
+    float OneMinusEavg = 1.0 - Eavg;
+    float OneMinusEmuV = 1.0 - texture(BRDF_LUT, vec2(NdotV, 1.0 - roughness)).z;
+    vec3  fms          = Favg * OneMinusEavg * OneMinusEmuV / (PI * OneMinusEavg * (1.0 - Eavg * Favg));
+
+    // specular when VdotH and roughness
+    vec2 envBRDF = texture(BRDF_LUT, vec2(max(dot(N, V), 0.0), roughness)).rg;  // precompute BRDF = D * G * F / ...
+    vec3 specular;
+    if (kullaConty == 1)
+        specular = prefilteredColor * ((F + fms * PI * OneMinusEavg) * envBRDF.x + envBRDF.y);
+    else
+        specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
+
     vec3 ambient = (useEnvMap == 1 ? (kD * diffuse + specular) : vec3(0.03)) * ao;
+    // vec3 ambient = (useEnvMap == 1 ? (specular) : vec3(0.03)) * ao;
 
-    vec3 color = (ambient + Lo) * albedo.rgb;
-
-    // color = color / (color + vec3(1.0));
     float visibility = CalculateShadow();
-    color.rgb *= visibility;
+    vec3  color      = ((ambient + Lo + pointLo) * visibility) * albedo.rgb;
+    FragColor        = vec4(color, 1.0);
 
-    FragColor = vec4(color, 1.0);
+    // Multi-target
+    {
+        float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+        if (brightness > bloomThreshold)
+            BrightColor = vec4(FragColor.rgb, 1.0);
 
-    float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-
-    if (brightness > bloomThreshold)
-        BrightColor = vec4(FragColor.rgb, 1.0);
-
-    EntityID = entityID;
+        EntityID = entityID;
+    }
 }

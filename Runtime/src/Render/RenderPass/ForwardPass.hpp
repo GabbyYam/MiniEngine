@@ -7,6 +7,7 @@
 #include "Render/Texture/Texture2D.hpp"
 #include "RenderPass.hpp"
 #include "Scene/Component/Component.hpp"
+#include <cmath>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
@@ -26,7 +27,7 @@ namespace suplex {
         ForwardRenderPass()
         {
             PushShader(std::make_shared<Shader>("common.vert", "pbr.frag"));
-            PushShader(std::make_shared<Shader>("phong.vert", "phong.frag"));
+            PushShader(std::make_shared<Shader>("common.vert", "phong.frag"));
             PushShader(std::make_shared<Shader>("toon.vert", "toon.frag"));
             PushShader(std::make_shared<Shader>("common.vert", "light.frag"));
         }
@@ -93,10 +94,12 @@ namespace suplex {
                 shader->SetMaterix4("mvpLS", glm::value_ptr(mvpLS));
 
                 // material parameters
+                shader->SetFloat("baseF", config->pbrSetting.baseF);
                 shader->SetFloat3("baseColor", glm::value_ptr(config->pbrSetting.baseColor));
                 shader->SetFloat("metallic", &config->pbrSetting.metallic);
                 shader->SetFloat("roughness", &config->pbrSetting.roughness);
                 shader->SetFloat("ao", &config->pbrSetting.ao);
+                shader->SetInt("kullaConty", config->pbrSetting.enableKullaConty);
 
                 shader->BindTexture("DiffuseMap", solidWhite.GetID(), 0, SamplerType::Texture2D);
 

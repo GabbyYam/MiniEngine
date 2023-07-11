@@ -23,6 +23,7 @@
 #include <corecrt_math.h>
 #include <cstddef>
 #include <filesystem>
+#include <glm/common.hpp>
 #include <glm/fwd.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
@@ -408,6 +409,7 @@ namespace suplex {
                     {
                         ImGui::Text("Depth of Field");
                         ImGui::Checkbox("Enable DoF", &config->postprocessSetting.enableDoF);
+                        ImGui::SliderFloat("DoF Intensity", &config->postprocessSetting.dofIntensity, 0.0, 8.0);
                     }
 
                     {
@@ -425,6 +427,7 @@ namespace suplex {
                 ImGui::SliderFloat("Metalic", &config->pbrSetting.metallic, 0.0, 1.0);
                 ImGui::SliderFloat("Roughness", &config->pbrSetting.roughness, 0.1, 1.0);
                 ImGui::SliderFloat("AO", &config->pbrSetting.ao, 0.0, 1.0);
+                ImGui::Checkbox("Enable Kulla-Conty", &config->pbrSetting.enableKullaConty);
                 ImGui::End();
             }
 
